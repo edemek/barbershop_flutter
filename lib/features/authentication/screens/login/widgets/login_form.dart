@@ -6,6 +6,7 @@ import '../../../../../utils/constants/sizes.dart';
 import '../../../../../utils/constants/text_strings.dart';
 import '../../../../../utils/validators/validation.dart';
 import '../../../../dashboard/dashboard.dart';
+import '../../../../forgot_password_page.dart';
 import '../../../../support.dart';
 import '../../signup/signup.dart';
 import '../../signup/verify_email.dart';
@@ -165,7 +166,14 @@ class _TLoginFormState extends State<TLoginForm> {
                       ],
                     ),
                     TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(context, 
+                           MaterialPageRoute(builder: (context)=>ForgotPasswordPage()) 
+                            );
+                        
+                        
+                        
+                      },
                       child: const Text(TTexts.forgotPassword),
                     ),
                   ],
