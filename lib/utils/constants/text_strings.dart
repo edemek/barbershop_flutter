@@ -50,6 +50,7 @@ class TTexts {
       "Découvrez des Illimités et une commedité inégalée.";
   static const String signupTitle = "Créons votre compte";
   static const String forgotPasswordTitle = "Mot de passe Oublié?";
+  static const String clientSupport = "Support client";
   static const String forgotPasswordSubTitle =
       "Ne vous inquièté pas, entrer votre numéro de téléphone et nous vous enverrons un lien de reinitialisation";
   static const String changeYourPasswordTitle =

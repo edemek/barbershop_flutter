@@ -14,15 +14,15 @@ import '../login/login.dart';
 
 class VerifyEmailScreen extends StatelessWidget {
 
-  final String phoneNumber;
+  final String emailOrPhoneNumber;
 
-  VerifyEmailScreen({required this.phoneNumber});
+  VerifyEmailScreen({required this.emailOrPhoneNumber});
 
   void verifyOtp(String otp, BuildContext context) async {
     final response = await http.post(
       Uri.parse('http://votre-backend-url/api/verify-otp'),
       body: {
-        'phone_number': phoneNumber,
+        'phone_number': emailOrPhoneNumber,
         'otp': otp,
       },
     );

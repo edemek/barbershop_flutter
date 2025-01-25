@@ -52,7 +52,7 @@ class _TSignupFormState extends State<TSignupForm> {
         context,
         MaterialPageRoute(
           builder: (context) =>
-              VerifyEmailScreen(phoneNumber: _phoneController.text),
+              VerifyEmailScreen(emailOrPhoneNumber: _phoneController.text),
         ),
       );
     } else {
