@@ -29,6 +29,10 @@ class ForgotPasswordPage extends StatelessWidget {
               ElevatedButton(
                 onPressed: () {
                   final String email = emailController.text;
+
+                  if(email.isEmpty){
+                    return;
+                  }
                   // Simuler l'envoi d'un lien sécurisé
                   Navigator.push(
                     context,

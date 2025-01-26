@@ -8,6 +8,7 @@ import '../../../../../utils/validators/validation.dart';
 import '../../../../dashboard/dashboard.dart';
 import '../../../../forgot_password_page.dart';
 import '../../../../support.dart';
+import '../../../../verification.dart';
 import '../../signup/signup.dart';
 import '../../signup/verify_email.dart';
 
@@ -167,7 +168,7 @@ class _TLoginFormState extends State<TLoginForm> {
                     ),
                     TextButton(
                       onPressed: () {
-                        Navigator.push(context, 
+                        Navigator.push(context,
                            MaterialPageRoute(builder: (context)=>ForgotPasswordPage()) 
                             );
                         
@@ -220,6 +221,8 @@ class _TLoginFormState extends State<TLoginForm> {
                     sendOtp(context);
 
                   }*/
+
+                  //simulation d'identifiant
                   final String usernameOremail = "test";
                   final String password = "test";
 
@@ -231,7 +234,7 @@ class _TLoginFormState extends State<TLoginForm> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => DashboardPage()),
+                            builder: (context) => VerificationPage(emailOrPhone: _emailOrPhoneController.text)),
                       );
                       ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
@@ -282,7 +285,7 @@ class _TLoginFormState extends State<TLoginForm> {
             SizedBox(
               width: double.infinity,
               child: OutlinedButton(
-                onPressed: () => Get.to(() => const SignupScreen()),
+                onPressed: () => Get.to(() => const SignupScreen()),//defiler entre les pages en utilisant la classe Get.to
                 child: const Text(TTexts.createAccount),
               ),
             ),
