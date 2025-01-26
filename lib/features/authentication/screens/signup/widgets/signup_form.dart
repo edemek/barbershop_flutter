@@ -136,7 +136,7 @@ class _TSignupFormState extends State<TSignupForm> {
             expands: false,
             decoration: const InputDecoration(
               labelText: TTexts.shopName,
-              prefixIcon: Icon(Iconsax.user),
+              prefixIcon: Icon(Iconsax.home),
             ),
             inputFormatters: [
               TextInputFormatter.withFunction((oldValue, newValue) {
@@ -167,16 +167,16 @@ class _TSignupFormState extends State<TSignupForm> {
             expands: false,
             decoration: const InputDecoration(
               labelText: TTexts.email,
-              prefixIcon: Icon(Iconsax.direct),
+              prefixIcon: Icon(Iconsax.message),
             ),
-            validator: (value) {
+            /*validator: (value) {
               if (value == null || value.isEmpty) {
-                return 'Veuillez entrer un mot de passe';
+                return 'Veuillez entrer un email';
               } else if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
                 return 'Adresse email invalide';
               }
               return null;
-            },
+            },*/
           ),
 
           const SizedBox(
@@ -191,7 +191,7 @@ class _TSignupFormState extends State<TSignupForm> {
               TogolesePhoneNumberFormatter(), // Formatter personnalisé
             ],
             decoration: const InputDecoration(
-              prefixIcon: Icon(Iconsax.direct_right),
+              prefixIcon: Icon(Iconsax.call),
               labelText: "Numéro de téléphone",
               hintText: "+228 90 90 90 90",
             ),

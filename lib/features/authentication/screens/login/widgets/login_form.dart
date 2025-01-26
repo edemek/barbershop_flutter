@@ -85,7 +85,7 @@ class _TLoginFormState extends State<TLoginForm> {
                 TogolesePhoneNumberFormatter(), // Formatter personnalisé
               ],
               decoration: const InputDecoration(
-                prefixIcon: Icon(Iconsax.direct_right),
+                prefixIcon: Icon(Iconsax.call),
                 labelText: "Numéro de téléphone",
                 hintText: "+228 90 90 90 90",
               ),
