@@ -18,7 +18,7 @@ class _VerificationPageState extends State<VerificationPage> {
     setState(() {
       isError = false; // Réinitialiser l'erreur
 
-      // Simulation d'une validation (par exemple, un code correct est "123456")
+      // Simulation d'une validation
       if (codeController.text == "123456") {
         // Redirection vers le tableau de bord
         Navigator.pushAndRemoveUntil(
