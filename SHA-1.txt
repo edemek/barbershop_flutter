@@ -1,0 +1,9 @@
+signingReport
+Variant: debugAndroidTest
+Config: debug
+Store: C:\Users\edemek\.android\debug.keystore
+Alias: AndroidDebugKey
+MD5: 90:2E:49:A4:D6:44:E6:37:6A:C3:3E:07:47:CD:53:37
+SHA1: 22:00:D9:0A:7E:6C:59:5F:5B:7D:97:40:79:B0:56:64:DD:4A:15:0F
+SHA-256: 68:92:57:11:39:1C:B8:E4:70:B0:80:F0:D4:C4:53:FF:8C:A1:0E:9E:EB:64:6B:C6:93:69:FB:25:E4:AC:DC:CF
+Valid until: mardi 29 dÚcembre 2054

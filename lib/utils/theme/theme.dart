@@ -11,11 +11,11 @@ import 'custom_themes/text_theme.dart';
 
 /// -- Light & dark App Themes
 
-class TApptheme {
-  TApptheme._();
+class TAppTheme {
+  TAppTheme._();
 
   /// -- Light Theme
-  static ThemeData ligthTheme = ThemeData(
+  static ThemeData lightTheme  = ThemeData(
     useMaterial3: true,
     fontFamily: 'Poppins',
     brightness: Brightness.light,

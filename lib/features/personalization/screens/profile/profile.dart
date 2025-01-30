@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../../utils/constants/colors.dart';
@@ -13,7 +12,7 @@ class ProfileScreen extends StatelessWidget {
       title: Text(
         'Profile',
         style: TextStyle(
-          color: TColors.textprimary,
+          color: TColors.textPrimary,
           fontSize: TSizes.fontSizeMd,
           fontWeight: FontWeight.normal,
         ),
@@ -98,7 +97,7 @@ class ProfileScreen extends StatelessWidget {
               'Terminer',
               textAlign: TextAlign.center,
               style: TextStyle(
-                color: TColors.textwhite,
+                color: TColors.textWhite,
                 fontSize: TSizes.fontSizeMd,
                 fontWeight: FontWeight.normal,
               ),
@@ -135,7 +134,7 @@ class ProfileScreen extends StatelessWidget {
               'Déconnexion',
               textAlign: TextAlign.center,
               style: TextStyle(
-                color: TColors.textwhite,
+                color: TColors.textWhite,
                 fontSize: TSizes.fontSizeMd,
                 fontWeight: FontWeight.normal,
               ),
@@ -158,7 +157,6 @@ class ProfileScreen extends StatelessWidget {
               child: Container(
                 child: Column(
                   children: [
-
                     /// -- User Profile Picture
                     _buildProfilePhoto(),
 
@@ -175,7 +173,8 @@ class ProfileScreen extends StatelessWidget {
 
                           const SizedBox(height: TSizes.spaceBtwInputFields),
 
-                          Text('Gérer Par: ${userController.firstName.value} ${userController.lastName.value}'),
+                          Text(
+                              'Gérer Par: ${userController.firstName.value} ${userController.lastName.value}'),
 
                           //const SizedBox(height: TSizes.spaceBtwInputFields),
 
@@ -187,8 +186,8 @@ class ProfileScreen extends StatelessWidget {
 
                           const SizedBox(height: TSizes.spaceBtwInputFields),
 
-                          Text('Numéro de téléphone: ${userController.phoneNumber.value}'),
-
+                          Text(
+                              'Numéro de téléphone: ${userController.phoneNumber.value}'),
                         ],
                       ),
                     ),

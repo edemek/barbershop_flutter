@@ -60,6 +60,25 @@ class TValidator {
   }
 }
 
+class TogoleseOtpFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(
+      TextEditingValue oldValue, TextEditingValue newValue) {
+    // Supprime les espaces et garde uniquement les chiffres
+    String digitsOnly = newValue.text;
+
+    // Limite à 1 chiffres maximum
+    if (digitsOnly.length > 1) {
+      digitsOnly = digitsOnly.substring(0, 1);
+    }
+
+    return TextEditingValue(
+      text: digitsOnly,
+      selection: TextSelection.collapsed(offset: digitsOnly.length),
+    );
+  }
+}
+
 class TogolesePhoneNumberFormatter extends TextInputFormatter {
   @override
   TextEditingValue formatEditUpdate(
