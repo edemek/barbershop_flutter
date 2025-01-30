@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:http/http.dart' as http;
+import '../../../../../api_service/api_service.dart';
 import '../../../../../utils/constants/sizes.dart';
 import '../../../../../utils/constants/text_strings.dart';
 import '../../../../../utils/validators/validation.dart';
-import '../../../../dashboard/dashboard.dart';
 import '../../../../forgot_password_page.dart';
 import '../../../../support.dart';
 import '../../../../verification.dart';
@@ -210,7 +210,7 @@ class _TLoginFormState extends State<TLoginForm> {
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: () {
+                onPressed: () async {
                   /*if (_formKey.currentState!.validate()) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
@@ -230,7 +230,17 @@ class _TLoginFormState extends State<TLoginForm> {
                   if ((_emailOrPhoneController.text.isNotEmpty &&
                       _passwordController.text.isNotEmpty)
                      ) {
-                    if (usernameOremail == _emailOrPhoneController.text && password == _passwordController.text){
+
+
+                      /*final response = await ApiService.login(_emailOrPhoneController.text, _passwordController.text);
+
+                      if (response.statusCode == 201){
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => VerificationPage(emailOrPhone: _emailOrPhoneController.text)),
+                      );*/
+                    if (_emailOrPhoneController.text == usernameOremail && _passwordController.text == password){
                       Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -243,13 +253,14 @@ class _TLoginFormState extends State<TLoginForm> {
                           ));
                       nbError=0;
                     }else{
-                      ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('Erreur de connexion! vos identifiants sont incorrect'),
-                            duration: Duration(seconds: 3),
-
-                          ));
-                      nbError++;
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                                content: Text(
+                                //  "Erreur de connexion : ${response.body.toString()}",
+                                    "Erreur de connexion "
+                                ),
+                            ));
+                                nbError++;
                       print("nombre d'erreur:" + nbError.toString());
                       _emailOrPhoneController.clear();
                       _passwordController.clear();
@@ -297,8 +308,6 @@ class _TLoginFormState extends State<TLoginForm> {
     );
   }
 }
-
-
 
 /*
 import 'package:flutter/material.dart';

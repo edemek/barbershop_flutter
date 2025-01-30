@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'dashboard/dashboard.dart';
+import '../account/views/account_view.dart';
+
 
 class VerificationPage extends StatefulWidget {
   final String emailOrPhone;
@@ -23,7 +24,7 @@ class _VerificationPageState extends State<VerificationPage> {
         // Redirection vers le tableau de bord
         Navigator.pushAndRemoveUntil(
           context,
-          MaterialPageRoute(builder: (context) =>  DashboardPage()),
+          MaterialPageRoute(builder: (context) =>  AccountView()),
               (route) => false,
         );
       } else {

@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 class TValidator {
   static String? validateEmail(String? value) {
     if (value == null || value.isEmpty) {
-      return 'Email est obligatoir.';
+      return 'Email est obligatoire.';
     }
 
     // Regular expression for email validation
@@ -18,7 +18,7 @@ class TValidator {
 
   static String? validatePassword(String? value) {
     if (value == null || value.isEmpty) {
-      return 'Mot de passe obligatoir.';
+      return 'Mot de passe obligatoire.';
     }
 
     // Check for minimun password length

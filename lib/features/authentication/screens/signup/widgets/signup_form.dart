@@ -1,3 +1,4 @@
+import 'package:barbershpo_flutter/api_service/api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -359,7 +360,7 @@ class _TSignupFormState extends State<TSignupForm> {
           SizedBox(
             width: double.infinity,
             child: ElevatedButton(
-              onPressed: () {
+              onPressed: () async {
                 if (_formKey.currentState!.validate()) {
                   // Mettre à jour les données utilisateur dans GetX
                   final userController = Get.find<UserController>();
@@ -370,14 +371,21 @@ class _TSignupFormState extends State<TSignupForm> {
                     _phoneController.text,
                     _shopNameController.text,
                   );
-
+                  final name = _firstNameController.text + " " + _lastNameController.text;
+                  print("Nom complet1:"+name);
+                  final reponse =  await ApiService.register(name, _phoneController.text,_passwordController.text);
                   // Afficher un message de confirmation
+                  if(reponse.statusCode == 201){
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text('Compte créé avec succès !')),
+
                   );
+                  print("Nom complet2:"+name);
+                  Get.to(() => ProfileScreen());
+                  }
 
                   // Aller à la page de profil
-                  Get.to(() => ProfileScreen());
+
                 }
               },
               child: const Text(TTexts.signIn),

@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../../../account/views/account_view.dart';
 import '../../../../utils/constants/colors.dart';
 import '../../../../utils/constants/sizes.dart';
 import '../../../../utils/validators/validation.dart';
@@ -94,14 +95,13 @@ class ProfileScreen extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
-              'Terminer',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: TColors.textwhite,
-                fontSize: TSizes.fontSizeMd,
-                fontWeight: FontWeight.normal,
-              ),
+
+            TextButton(
+              child: (Text("Terminer")),
+              onPressed: (){
+                Get.to(() => AccountView());
+              },
+
             ),
           ],
         ),
