@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 
 import '../../features/Reservation/reservationPage.dart';
+import '../../features/Reservation_client/views/reservation_form.dart';
 import '../../features/Reservation_client/views/reservation_page.dart';
 import '../../features/Salon/screen/salon_liste.dart';
 
@@ -36,7 +37,7 @@ class AccountViewClient extends StatelessWidget {
             } else if (value == 'Reservations') {
              Navigator.push(
                context,
-               MaterialPageRoute(builder: (context) => ReservationPage())
+               MaterialPageRoute(builder: (context) => ReservationHomeScreen())
              ); // Remplacez '/reservations' par la route de votre page des réservations
             }
             else if (value == 'avis') {

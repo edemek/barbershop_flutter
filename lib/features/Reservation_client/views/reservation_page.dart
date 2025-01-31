@@ -1,3 +1,4 @@
+import 'package:barbershpo_flutter/features/Reservation_client/views/reservation_liste.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -92,9 +93,7 @@ class _ReservationPageState extends State<ReservationPage> {
 
   // Fonction pour confirmer la réservation
   void _confirmReservation() {
-    // Vérification que tous les champs sont remplis
     if (selectedService == null || selectedSalon == null) {
-      // Affichage d'un message d'erreur si des champs sont manquants
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text("Veuillez sélectionner un service et un salon"),
@@ -104,37 +103,26 @@ class _ReservationPageState extends State<ReservationPage> {
       return;
     }
 
-    // Formattage de la date et de l'heure
     final DateFormat formatter = DateFormat('yyyy-MM-dd');
     final formattedDate = formatter.format(selectedDate);
     final formattedTime = selectedTime.format(context);
-
-    // Affichage d'une boîte de dialogue de confirmation
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: Text('Réservation Confirmée'),
-          content: Text(
-            'Vous avez réservé le "$selectedService" au "$selectedSalon" le $formattedDate à $formattedTime.',
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context); // Fermeture de la boîte de dialogue
-              },
-              child: Text('OK'),
-            ),
-          ],
-        );
-      },
-    );
-
+    List<Map<String, String>> reservations = [];
+    // Ajouter la réservation à la liste
+    setState(() {
+      reservations.add({
+        'service': selectedService!,
+        'salon': selectedSalon!,
+        'date': formattedDate,
+        'heure': formattedTime,
+      });
+    });
+    ReservationListePage(reservations);
     // Notification de confirmation de réservation
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text("Réservation confirmée ! Un e-mail vous a été envoyé")),
     );
   }
+
 
   @override
   Widget build(BuildContext context) {
