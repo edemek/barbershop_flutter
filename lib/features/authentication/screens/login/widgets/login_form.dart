@@ -225,7 +225,8 @@ class _TLoginFormState extends State<TLoginForm> {
                   //simulation d'identifiant
                   final String usernameOremail = "test";
                   final String password = "test";
-
+                  final String usernameOremail_clt = "client";
+                  final String password_clt = "client";
 
                   if ((_emailOrPhoneController.text.isNotEmpty &&
                       _passwordController.text.isNotEmpty)
@@ -252,7 +253,24 @@ class _TLoginFormState extends State<TLoginForm> {
                             duration: Duration(seconds: 3),
                           ));
                       nbError=0;
-                    }else{
+                    }else if(_emailOrPhoneController.text == usernameOremail_clt && _passwordController.text == password_clt){
+
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => VerificationPage(emailOrPhone: _emailOrPhoneController.text)),
+                      );
+                      ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Connexion reussie'),
+                            duration: Duration(seconds: 3),
+                          ));
+                      nbError=0;
+
+                    }
+
+
+                    else{
                         ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                                 content: Text(

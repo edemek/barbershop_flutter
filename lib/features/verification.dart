@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../account/views/account_view.dart';
+import '../account/views/account_view_customer.dart';
 
 
 class VerificationPage extends StatefulWidget {
@@ -27,7 +28,17 @@ class _VerificationPageState extends State<VerificationPage> {
           MaterialPageRoute(builder: (context) =>  AccountView()),
               (route) => false,
         );
-      } else {
+        // à modifier plus tard par un parametre renseignant que l'user est coiffeur ou clt
+      }else if(codeController.text=="789123") {
+
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context)=> AccountViewClient())
+        );
+      }
+
+
+      else {
         // Afficher une erreur
         isError = true;
       }
