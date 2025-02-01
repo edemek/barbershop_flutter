@@ -1,74 +1,27 @@
-import 'package:barbershpo_flutter/features/Reservation_client/views/reservation_liste.dart';
+import 'package:barbershpo_flutter/features/Reservation_client/views/reservation_form.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
-class ReservationPage extends StatefulWidget {
-  @override
-  _ReservationPageState createState() => _ReservationPageState();
-}
+import '../controllers/reservation_controller.dart';
 
-class _ReservationPageState extends State<ReservationPage> {
-  // Définition d'une palette de couleurs personnalisée pour un design cohérent
-  static const Color goldColor = Color(0xFFD4AF37);     // Couleur dorée pour les accents
-  static const Color lightBlack = Color(0xFF333333);    // Noir clair pour le texte principal
-  static const Color offWhite = Color(0xFFF5F5F5);     // Blanc cassé pour le fond
-
-  // Variables pour stocker les sélections de l'utilisateur
-  String? selectedService;    // Service sélectionné
-  DateTime selectedDate = DateTime.now();  // Date de réservation (initialisée à aujourd'hui)
-  TimeOfDay selectedTime = TimeOfDay.now();  // Heure de réservation (initialisée à l'heure actuelle)
-  String? selectedSalon;  // Salon sélectionné
-
-  // Listes des services et salons disponibles
-  final List<String> services = ['Massage Relaxant', 'Manicure', 'Coiffure'];
-  final List<String> salons = ['Salon A', 'Salon B', 'Salon C'];
+class ReservationPage extends GetView<ReservationController> {
+  static const Color goldColor = Color(0xFFD4AF37);
+  static const Color lightBlack = Color(0xFF333333);
+  static const Color offWhite = Color(0xFFF5F5F5);
 
   // Fonction pour sélectionner une date de réservation
   Future<void> _selectDate(BuildContext context) async {
-    // Configuration de la plage de dates acceptables
-    final DateTime firstDate = DateTime.now(); // Aujourd'hui comme date minimum
-    final DateTime lastDate = DateTime(DateTime.now().year + 2); // 2 ans dans le futur
+    final DateTime firstDate = DateTime.now();
+    final DateTime lastDate = DateTime(DateTime.now().year + 2);
 
-    // Affichage du sélecteur de date avec personnalisation du thème
     final DateTime? picked = await showDatePicker(
       context: context,
-      initialDate: selectedDate, // Date initialement sélectionnée
-      firstDate: firstDate,      // Limite basse : aujourd'hui
-      lastDate: lastDate,        // Limite haute : 2 ans dans le futur
+      initialDate: controller.selectedDate.value,
+      firstDate: firstDate,
+      lastDate: lastDate,
       builder: (context, child) {
         return Theme(
-          // Personnalisation du thème du sélecteur de date
-          data: ThemeData.light().copyWith(
-            colorScheme: ColorScheme.light(
-              primary: goldColor,     // Couleur primaire personnalisée
-              onPrimary: Colors.white, // Couleur du texte sur la couleur primaire
-              surface: Colors.white,   // Couleur de surface
-              onSurface: lightBlack,   // Couleur du texte sur la surface
-            ),
-            dialogBackgroundColor: Colors.white, // Fond de la boîte de dialogue
-          ),
-          child: child!,
-        );
-      },
-    );
-
-    // Mise à jour de la date si une nouvelle date est sélectionnée
-    if (picked != null && picked != selectedDate) {
-      setState(() {
-        selectedDate = picked;
-      });
-    }
-  }
-
-  // Fonction pour sélectionner une heure de réservation
-  Future<void> _selectTime(BuildContext context) async {
-    // Affichage du sélecteur d'heure avec personnalisation du thème
-    final TimeOfDay? picked = await showTimePicker(
-      context: context,
-      initialTime: selectedTime,
-      builder: (context, child) {
-        return Theme(
-          // Personnalisation du thème du sélecteur d'heure
           data: ThemeData.light().copyWith(
             colorScheme: ColorScheme.light(
               primary: goldColor,
@@ -83,17 +36,40 @@ class _ReservationPageState extends State<ReservationPage> {
       },
     );
 
-    // Mise à jour de l'heure si une nouvelle heure est sélectionnée
-    if (picked != null && picked != selectedTime) {
-      setState(() {
-        selectedTime = picked;
-      });
+    if (picked != null && picked != controller.selectedDate.value) {
+      controller.selectedDate.value = picked;
+    }
+  }
+
+  // Fonction pour sélectionner une heure de réservation
+  Future<void> _selectTime(BuildContext context) async {
+    final TimeOfDay? picked = await showTimePicker(
+      context: context,
+      initialTime: controller.selectedTime.value,
+      builder: (context, child) {
+        return Theme(
+          data: ThemeData.light().copyWith(
+            colorScheme: ColorScheme.light(
+              primary: goldColor,
+              onPrimary: Colors.white,
+              surface: Colors.white,
+              onSurface: lightBlack,
+            ),
+            dialogBackgroundColor: Colors.white,
+          ),
+          child: child!,
+        );
+      },
+    );
+
+    if (picked != null && picked != controller.selectedTime.value) {
+      controller.selectedTime.value = picked;
     }
   }
 
   // Fonction pour confirmer la réservation
-  void _confirmReservation() {
-    if (selectedService == null || selectedSalon == null) {
+  void _confirmReservation(BuildContext context) {
+    if (controller.selectedService.value == null || controller.selectedSalon.value == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text("Veuillez sélectionner un service et un salon"),
@@ -104,111 +80,85 @@ class _ReservationPageState extends State<ReservationPage> {
     }
 
     final DateFormat formatter = DateFormat('yyyy-MM-dd');
-    final formattedDate = formatter.format(selectedDate);
-    final formattedTime = selectedTime.format(context);
-    List<Map<String, String>> reservations = [];
+    final formattedDate = formatter.format(controller.selectedDate.value);
+    final formattedTime = controller.selectedTime.value.format(context);
+
     // Ajouter la réservation à la liste
-    setState(() {
-      reservations.add({
-        'service': selectedService!,
-        'salon': selectedSalon!,
-        'date': formattedDate,
-        'heure': formattedTime,
-      });
+    ReservationHomeScreen.reservationListe.add({
+      'service': controller.selectedService.value!,
+      'salon': controller.selectedSalon.value!,
+      'date': formattedDate,
+      'heure': formattedTime,
     });
-    ReservationListePage(reservations);
+
     // Notification de confirmation de réservation
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text("Réservation confirmée ! Un e-mail vous a été envoyé")),
     );
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // Fond de l'écran en blanc cassé
-      backgroundColor: offWhite,
-
-      // Barre d'application personnalisée
       appBar: AppBar(
         backgroundColor: Colors.white,
-        elevation: 0, // Pas d'ombre
+        elevation: 0,
         title: Text(
           'Réservation',
           style: TextStyle(color: lightBlack),
         ),
-        // Personnalisation de l'icône de retour
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: lightBlack),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
       ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _buildSectionTitle("Choisissez un salon"),
+            _buildDropdown(
+              value: controller.selectedSalon.value,
+              hint: 'Sélectionnez un salon',
+              items: controller.salons,
+              onChanged: (String? newValue) {
+                controller.selectedSalon.value = newValue!;
+              },
+            ),
+            SizedBox(height: 20),
 
-      // Corps de la page avec défilement
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Section de sélection du salon
-              _buildSectionTitle("Choisissez un salon"),
-              _buildDropdown(
-                value: selectedSalon,
-                hint: 'Sélectionnez un salon',
-                items: salons,
-                onChanged: (String? newValue) {
-                  setState(() {
-                    selectedSalon = newValue;
-                  });
-                },
-              ),
-              SizedBox(height: 20),
+            _buildSectionTitle("Choisissez un service"),
+            _buildDropdown(
+              value: controller.selectedService.value,
+              hint: 'Sélectionnez un service',
+              items: controller.services,
+              onChanged: (String? newValue) {
+                controller.selectedService.value = newValue!;
+              },
+            ),
+            SizedBox(height: 20),
 
-              // Section de sélection du service
-              _buildSectionTitle("Choisissez un service"),
-              _buildDropdown(
-                value: selectedService,
-                hint: 'Sélectionnez un service',
-                items: services,
-                onChanged: (String? newValue) {
-                  setState(() {
-                    selectedService = newValue;
-                  });
-                },
-              ),
-              SizedBox(height: 20),
+            _buildSectionTitle("Choisissez une date"),
+            _buildDateTimeSelector(
+              text: DateFormat('dd MMMM yyyy').format(controller.selectedDate.value),
+              icon: Icons.calendar_today,
+              onPressed: () => _selectDate(context),
+            ),
+            SizedBox(height: 20),
 
-              // Section de sélection de la date
-              _buildSectionTitle("Choisissez une date"),
-              _buildDateTimeSelector(
-                text: DateFormat('dd MMMM yyyy').format(selectedDate),
-                icon: Icons.calendar_today,
-                onPressed: () => _selectDate(context),
-              ),
-              SizedBox(height: 20),
+            _buildSectionTitle("Choisissez une heure"),
+            _buildDateTimeSelector(
+              text: controller.selectedTime.value.format(context),
+              icon: Icons.access_time,
+              onPressed: () => _selectTime(context),
+            ),
+            SizedBox(height: 30),
 
-              // Section de sélection de l'heure
-              _buildSectionTitle("Choisissez une heure"),
-              _buildDateTimeSelector(
-                text: selectedTime.format(context),
-                icon: Icons.access_time,
-                onPressed: () => _selectTime(context),
+            ElevatedButton(
+              onPressed: () => _confirmReservation(context),
+              child: Text('Confirmer la réservation'),
+              style: ElevatedButton.styleFrom(
+                minimumSize: Size(double.infinity, 50),
               ),
-              SizedBox(height: 30),
-
-              // Bouton de confirmation de réservation
-              ElevatedButton(
-                onPressed: _confirmReservation,
-                child: Text('Confirmer la réservation'),
-                style: ElevatedButton.styleFrom(
-                  //primary: goldColor,
-                  minimumSize: Size(double.infinity, 50), // Largeur maximale
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

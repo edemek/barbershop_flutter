@@ -1,24 +1,29 @@
 import 'package:get/get.dart';
+import 'package:flutter/material.dart';
 
 class ReservationController extends GetxController {
+  // Liste des réservations (par exemple, pour stocker les réservations confirmées)
+  var reservations = <Map<String, String>>[].obs;
+
+  // Liste des salons disponibles
+  final List<String> salons = ['Salon A', 'Salon B', 'Salon C'];
+
+  // Liste des services disponibles
+  final List<String> services = ['Massage Relaxant', 'Manicure', 'Coiffure'];
+
+  // Valeur sélectionnée pour le service (initialement null pour indiquer aucune sélection)
+  var selectedService = Rxn<String>(); // Cela permet à la valeur d'être null
+
+  // Valeur sélectionnée pour le salon (initialement null pour indiquer aucune sélection)
+  var selectedSalon = Rxn<String>(); // Cela permet à la valeur d'être null
+
+  // Date et heure de réservation
   var selectedDate = DateTime.now().obs;
-  var selectedService = Rx<String?>(null);
+  var selectedTime = TimeOfDay.now().obs;
 
-  // Liste des services (à remplacer par ta source de données)
-  var services = [
-    'Service A',
-    'Service B',
-    'Service C',
-  ].obs;
-
-  // Fonction pour changer la date
-  void changeDate(DateTime date) {
-    selectedDate.value = date;
-  }
-
-  // Fonction pour réserver un service
-  void reserveService(String service) {
-    selectedService.value = service;
-    // Logique pour réserver le service
+  // Méthode de confirmation de la réservation
+  void confirmReservation() {
+    // Cette méthode pourrait envoyer la réservation ou effectuer une autre logique
+    print("Réservation confirmée pour $selectedService, $selectedSalon, $selectedDate, $selectedTime");
   }
 }
