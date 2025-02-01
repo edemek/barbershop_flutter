@@ -25,6 +25,7 @@ dependencies:
   smooth_page_indicator: ^1.2.0+3
 
 
+
   # Icons
   iconsax: ^0.0.8
   cupertino_icons: ^1.0.8
@@ -49,8 +50,21 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_launcher_icons: 0.14.3
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/images/icon/icon.ico"
 
   flutter_lints: ^5.0.0
+
+flutter_native_splash:
+  color: "#ffffff"  # Couleur de fond (blanc)
+  image: assets/images/splash_screen/logo.png # Chemin vers ton logo
+  android_12:
+    image: assets/images/splash_screen/logo.png
+    icon_background_color: "#ffffff"
 
 
 flutter:
