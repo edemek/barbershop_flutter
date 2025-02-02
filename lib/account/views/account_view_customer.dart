@@ -7,6 +7,8 @@ import '../../features/Reservation/reservationPage.dart';
 import '../../features/Reservation_client/views/reservation_form.dart';
 import '../../features/Reservation_client/views/reservation_page.dart';
 import '../../features/Salon/screen/salon_liste.dart';
+import '../../features/experience_client/views/experience_form.dart';
+import '../../features/experience_client/views/share_experience.dart';
 
 class AccountViewClient extends StatelessWidget {
   @override
@@ -40,10 +42,10 @@ class AccountViewClient extends StatelessWidget {
                MaterialPageRoute(builder: (context) => ReservationHomeScreen())
              ); // Remplacez '/reservations' par la route de votre page des réservations
             }
-            else if (value == 'avis') {
+            else if (value == 'experience') {
                Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => ReservationDashboard())
+                MaterialPageRoute(builder: (context) => ExperienceHomeScreen())
                 ); // Remplacez '/reservations' par la route de votre page des réservations
             }
 
@@ -71,12 +73,12 @@ class AccountViewClient extends StatelessWidget {
                 ),
               ),
               PopupMenuItem<String>(
-                value: 'avis',
+                value: 'experience',
                 child: Row(
                   children: [
                     Icon(Icons.calendar_today, color: Theme.of(context).hintColor),
                     SizedBox(width: 8),
-                    Text('Avis'),
+                    Text('Partagez vos expériences'),
                   ],
                 ),
               ),

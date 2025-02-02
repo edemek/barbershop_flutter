@@ -10,6 +10,7 @@ import '../../../../forgot_password_page.dart';
 import '../../../../support.dart';
 import '../../../../verification.dart';
 import '../../signup/signup.dart';
+import '../../signup/signup_choice.dart';
 import '../../signup/verify_email.dart';
 
 class TLoginForm extends StatefulWidget {
@@ -314,7 +315,7 @@ class _TLoginFormState extends State<TLoginForm> {
             SizedBox(
               width: double.infinity,
               child: OutlinedButton(
-                onPressed: () => Get.to(() => const SignupScreen()),//defiler entre les pages en utilisant la classe Get.to
+                onPressed: () => Get.to(() =>  AccountTypeSelection()),//defiler entre les pages en utilisant la classe Get.to
                 child: const Text(TTexts.createAccount),
               ),
             ),
