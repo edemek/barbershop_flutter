@@ -1,34 +1,53 @@
 import 'dart:convert';
+import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 
 class ApiService {
-  static const String baseUrl = "http://192.168.1.1:8000"; // Changez avec votre URL de base
+
+  static const String baseUrl = "https://barber.businesshelpconsulting.com"; // Changez avec votre URL de base
 
   /// Connexion utilisateur
-  static Future<http.Response> login(String email, String password) async {
+  static Future<http.Response> login(String phone, String password) async {
+    final url = Uri.parse("$baseUrl/api/login"); // ✅ Vérifie bien que c'est le bon chemin
 
-    final url = Uri.parse("$baseUrl/login/");
-    final body = {
-      "email": email,
+    print("Request URL: $url"); // 🔍 Debug
+
+    final body = jsonEncode({
+      "phone_number": phone,// phone seule pour simuler
       "password": password,
-    };
-    return await http.post(url, body: jsonEncode(body), headers: {
+    });
+
+    final response = await http.post(url, body: body, headers: {
       "Content-Type": "application/json",
     });
+
+    print("Response Code: ${response.statusCode}");
+    print("Response Body: ${response.body}");
+
+
+    return response;
   }
 
-  static Future<http.Response> register(String name, String phone, String password) async {
-    final url = Uri.parse("$baseUrl/register/");
+
+  static Future<http.Response> register(String name, String phone,String email, String password,String password_confirmation) async {
+    final url = Uri.parse("$baseUrl/api/register");
     print("Nom complet api:"+name);
-    final body = {
+    final body =jsonEncode( {
       "name": name,
-      "phone":phone,
-      "password": password,
-    };
-    print("Nom complet api2:"+name);
-    return await http.post(url, body: jsonEncode(body), headers: {
+      "phone_number":phone,
+      "email":email,
+      "password":password,
+      "password_confirmation": password_confirmation,
+    });
+    final response = await http.post(url, body: body, headers: {
       "Content-Type": "application/json",
     });
+
+    print("Nom complet api2:"+name);
+    print("Response Code: ${response.statusCode}");
+    print("Response Body: ${response.body}");
+    return response;
+
 
   }
 

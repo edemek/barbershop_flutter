@@ -4,15 +4,14 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 
 import '../../features/Reservation/reservationPage.dart';
+import '../../utils/validators/validation.dart';
 
 class AccountView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // Dummy user data
+    final userController = Get.find<UserController>();
     var _currentUser = {
-      "name": "test",
-      "email": "teste@example.com",
-      "avatar": null
+      "name": userController.firstName.value
     };
 
     return Scaffold(

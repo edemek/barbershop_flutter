@@ -9,15 +9,17 @@ import '../../features/Reservation_client/views/reservation_page.dart';
 import '../../features/Salon/screen/salon_liste.dart';
 import '../../features/experience_client/views/experience_form.dart';
 import '../../features/experience_client/views/share_experience.dart';
+import '../../features/personalization/screens/profile/profile.dart';
+import '../../utils/validators/validation.dart';
 
 class AccountViewClient extends StatelessWidget {
+  const AccountViewClient({super.key});
   @override
   Widget build(BuildContext context) {
+    final userController = Get.find<UserController>();
     // Dummy user data
     var _currentUser = {
-      "name": "client",
-      "email": "client@example.com",
-      "avatar": null
+      "name": userController.firstName.value
     };
 
     return Scaffold(
@@ -136,9 +138,12 @@ class AccountViewClient extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
             child: Column(
               children: [
-                _buildMenuItem(context, Icons.person_outline, "Profile", () {
+                _buildMenuItem(context, Icons.person_outline, "Profile", (){
+                  Navigator.pop(context); // Ferme le drawer si c'est un menu
+                  Get.to(() => ProfileScreen());
+                }
                   // Handle navigation
-                }),
+                ),
                 _buildMenuItem(context, Icons.notifications_outlined, "Notifications", () {
                   // Handle navigation
                 }),

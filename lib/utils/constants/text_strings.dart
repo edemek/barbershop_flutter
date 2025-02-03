@@ -31,6 +31,7 @@ class TTexts {
   static const String newPassword = "Nouveau Mot de Passe";
   static const String username = "Nom d'utilisateur";
   static const String remenderMe = "Se souvenir de moi";
+  static const String ConnectAsBarber = "Authentification coiffeur";
   static const String forgotPassword = "Mot de Passe oublié?";
   static const String signIn = "Se connecter";
   static const String createAccount = "Creer un compte";

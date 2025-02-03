@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../../../account/views/account_view.dart';
+import '../../../../account/views/account_view_customer.dart';
 import '../../../../utils/constants/colors.dart';
 import '../../../../utils/constants/sizes.dart';
 import '../../../../utils/validators/validation.dart';
@@ -99,7 +99,7 @@ class ProfileScreen extends StatelessWidget {
             TextButton(
               child: (Text("Terminer")),
               onPressed: (){
-                Get.to(() => AccountView());
+                Get.to(() => AccountViewClient());
               },
 
             ),

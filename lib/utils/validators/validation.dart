@@ -109,11 +109,11 @@ class UserController extends GetxController {
   var shopName = ''.obs;
 
   // Méthode pour mettre à jour les données de l'utilisateur
-  void updateUser(String fName, String lName, String email, String phone, String? shop) {
+  void updateUser(String fName, String? lName, String? email, String? phone, String? shop) {
     firstName.value = fName;
-    lastName.value = lName;
-    this.email.value = email;
-    phoneNumber.value = phone;
+    lastName.value = lName!;
+    this.email.value = email!;
+    phoneNumber.value = phone!;
     shopName.value = shop!;
   }
 }

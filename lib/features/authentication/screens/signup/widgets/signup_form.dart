@@ -187,14 +187,15 @@ class _TSignupFormState extends State<TSignupForm> {
           /// -- Phone Number
           TextFormField(
             controller: _phoneController,
-            keyboardType: TextInputType.phone,
+            //keyboardType: TextInputType.phone,
+            /*
             inputFormatters: [
               TogolesePhoneNumberFormatter(), // Formatter personnalisé
-            ],
+            ],*/
             decoration: const InputDecoration(
               prefixIcon: Icon(Iconsax.direct_right),
               labelText: "Numéro de téléphone",
-              hintText: "+228 90 90 90 90",
+              hintText: "+22890909090",
             ),
             validator: (value) {
               if (value == null || value.isEmpty) {
@@ -206,10 +207,11 @@ class _TSignupFormState extends State<TSignupForm> {
                   value.replaceAll(' ', '').replaceAll('+228', '');
 
               // Validation pour s'assurer qu'il contient exactement 8 chiffres
-              if (cleanedValue.length != 8 ||
+              /*
+              if (cleanedValue.length != 12 ||
                   !RegExp(r'^\d{8}$').hasMatch(cleanedValue)) {
                 return 'Numéro de téléphone invalide';
-              }
+              }*/
 
               return null;
             },
@@ -373,7 +375,8 @@ class _TSignupFormState extends State<TSignupForm> {
                   );
                   final name = _firstNameController.text + " " + _lastNameController.text;
                   print("Nom complet1:"+name);
-                  final reponse =  await ApiService.register(name, _phoneController.text,_passwordController.text);
+                  print(_phoneController.text);
+                  final reponse =  await ApiService.register(name, _phoneController.text,_emailController.text,_passwordController.text,_passwordController.text);
                   // Afficher un message de confirmation
                   if(reponse.statusCode == 201){
                   ScaffoldMessenger.of(context).showSnackBar(

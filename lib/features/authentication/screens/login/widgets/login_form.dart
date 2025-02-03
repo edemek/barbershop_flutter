@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
@@ -23,9 +25,10 @@ class TLoginForm extends StatefulWidget {
 class _TLoginFormState extends State<TLoginForm> {
   // Clé globale pour accéder au formulaire
   final _formKey = GlobalKey<FormState>();
-
+  var connectAsBarber = false.obs;
   // Champs de saisie
   final TextEditingController _emailOrPhoneController  = TextEditingController();
+  final TextEditingController _NomController  = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final FocusNode _emailFocusNode = FocusNode(); // création d'une instance focus sur _email
   bool _obscureText = true; // Contrôle l'état du texte masqué
@@ -79,6 +82,7 @@ class _TLoginFormState extends State<TLoginForm> {
 
   @override
   Widget build(BuildContext context) {
+    final userController = Get.find<UserController>();
     return Form(
       key: _formKey,
       child: Padding(
@@ -163,18 +167,20 @@ class _TLoginFormState extends State<TLoginForm> {
                   children: [
                     Row(
                       children: [
-                        Checkbox(value: true, onChanged: (value) {}),
-                        const Text(TTexts.remenderMe),
+                        Checkbox(value: false, onChanged: (value) {}),
+                        const Text(TTexts.ConnectAsBarber),
                       ],
+
                     ),
+
                     TextButton(
                       onPressed: () {
                         Navigator.push(context,
-                           MaterialPageRoute(builder: (context)=>ForgotPasswordPage()) 
+                           MaterialPageRoute(builder: (context)=>ForgotPasswordPage())
                             );
-                        
-                        
-                        
+
+
+
                       },
                       child: const Text(TTexts.forgotPassword),
                     ),
@@ -197,6 +203,7 @@ class _TLoginFormState extends State<TLoginForm> {
                       );
                     },
                     child: const Text(TTexts.clientSupport),
+
                   ),
                 ),
               ],
@@ -221,71 +228,62 @@ class _TLoginFormState extends State<TLoginForm> {
                     );
                     sendOtp(context);
 
-                  }*/
+                  }
 
                   //simulation d'identifiant
                   final String usernameOremail = "test";
                   final String password = "test";
                   final String usernameOremail_clt = "client";
-                  final String password_clt = "client";
+                  final String password_clt = "client";*/
 
-                  if ((_emailOrPhoneController.text.isNotEmpty &&
+                  if (_emailOrPhoneController.text.isNotEmpty &&
                       _passwordController.text.isNotEmpty)
-                     ) {
+                      {
+                      final response = await ApiService.login(_emailOrPhoneController.text, _passwordController.text);
 
-
-                      /*final response = await ApiService.login(_emailOrPhoneController.text, _passwordController.text);
-
-                      if (response.statusCode == 201){
+                      if (response.statusCode == 200) {
                       Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => VerificationPage(emailOrPhone: _emailOrPhoneController.text)),
-                      );*/
-                    if (_emailOrPhoneController.text == usernameOremail && _passwordController.text == password){
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => VerificationPage(emailOrPhone: _emailOrPhoneController.text)),
+                      context,
+                      MaterialPageRoute(
+                      builder: (context) =>
+                      VerificationPage(
+                      emailOrPhone: _emailOrPhoneController
+                          .text)),
+                      );print("Contenu : ${response.body.toString()}");
+                      final Map<String, dynamic> responseData = jsonDecode(response.body);
+
+                      if (responseData.containsKey("data")) {
+                      String name = responseData["data"]["name"];
+                      _NomController.text = name; // ✅ Mise à jour du TextEditingController
+                      userController.updateUser(
+                         _NomController.text,
+                        null,
+                        null,
+                        null,
+                        null
                       );
-                      ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('Connexion reussie'),
-                            duration: Duration(seconds: 3),
-                          ));
-                      nbError=0;
-                    }else if(_emailOrPhoneController.text == usernameOremail_clt && _passwordController.text == password_clt){
+                      print("Nom de l'utilisateur mis à jour : ${_NomController.text}");
+                      } else {
+                      print("Erreur : 'user' non trouvé dans la réponse.");
+                      }
 
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => VerificationPage(emailOrPhone: _emailOrPhoneController.text)),
-                      );
-                      ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('Connexion reussie'),
-                            duration: Duration(seconds: 3),
-                          ));
-                      nbError=0;
-
-                    }
-
-
-                    else{
+                      }else{
                         ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                                 content: Text(
-                                //  "Erreur de connexion : ${response.body.toString()}",
-                                    "Erreur de connexion "
+                                    "Erreur de connexion : ${response.body.toString()}",
+
                                 ),
                             ));
+                        print("Erreur de connexion : ${response.body.toString()}");
                                 nbError++;
-                      print("nombre d'erreur:" + nbError.toString());
-                      _emailOrPhoneController.clear();
-                      _passwordController.clear();
+                        print("nombre d'erreur:" + nbError.toString());
 
-                      if(nbError == 5){
-                        ScaffoldMessenger.of(context).showSnackBar(
+                        _emailOrPhoneController.clear();
+                        _passwordController.clear();
+
+                        if(nbError == 5){
+                          ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
                               content: Text("Vous avez essayer à plus de 5 tentaives, votre compte est momentanément suspendu! contacter le service client pour reinitialisation"),
                             )
