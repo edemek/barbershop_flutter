@@ -24,7 +24,6 @@ class TTexts {
   static const String onBoardingSubTitle3 =
       "Choisissez une prestation, réservez votre créneau, et profitez de rappels pour ne jamais manquer un rendez-vous!";
 
-
   // -- Authentication Form Text
   static const String firstName = "votre Prénoms";
   static const String lastName = "Votre Nom";
@@ -36,7 +35,8 @@ class TTexts {
   static const String newPassword = "Nouveau Mot de Passe";
   static const String username = "Nom d'utilisateur";
   static const String remenderMe = "Se souvenir de moi";
-  static const String forgetPassword = "Mot de Passe oublié?";
+  static const String ConnectAsBarber = "Se connecter en tant que coiffeur";
+  static const String forgotPassword = "Mot de Passe oublié?";
   static const String signIn = "Se connecter";
   static const String createAccount = "Creer un compte";
   static const String orSignInWith = "Ou";
@@ -46,23 +46,30 @@ class TTexts {
   static const String privacyPolicy = "Politique de confidencialité";
   static const String termsOffUse = "Conditions d'utilisation";
   static const String verificationCode = "Code de vérification";
-  static const String resendSms = "Renvoyez le message";
-  static const String resendSmsIn = "Renvoyez le message dans";
-
+  static const String resendEmail = "Renvoyez le message";
+  static const String resendEmailIn = "Renvoyez le message dans";
 
   // -- Authentication Heading Text
   static const String loginTitle = "Bon retour";
-  static const String loginSubTitle =  "Découvrez des offres Illimités et une commodité inégalée.";
+  static const String loginSubTitle =
+      "Découvrez des Illimités et une commedité inégalée.";
   static const String signupTitle = "Créons votre compte";
   static const String forgotPasswordTitle = "Mot de passe Oublié?";
-  static const String forgotPasswordSubTitle = "Ne vous inquièté pas, entrer votre numéro de téléphone et nous vous enverrons un Code de reinitialisation";
-  static const String changeYourPasswordTitle =  "Code de reinitialisation du mot de passe envoyé";
-  static const String changeYourPasswordSubTitle =  "La sécurité de ton compte est notre priorité! Nous vous avons envoyer un SMS contenant le code de réinitialisation";
-  static const String confirmPhoneNumber = "Verifiez vos messages";
-  static const String confirmPhoneNumberSubtitle =  "Votre compte vous attend: verifier vos messages.";
+  static const String clientSupport = "Support client";
+  static const String forgotPasswordSubTitle =
+      "Ne vous inquièté pas, entrer votre numéro de téléphone et nous vous enverrons un lien de reinitialisation";
+  static const String changeYourPasswordTitle =
+      "E-mail de reinitialisation du mot de passe envoyé";
+  static const String changeYourPasswordSubTitle =
+      "La sécurité de ton compte est notre priorité! Nous vous avons envoyer";
+  static const String confirmEmail = "Verifiez vos messages";
+  static const String confirmEmailSubtitle =
+      "Félicitation! Votre compte vous attend: verifier vos messages.";
   static const String emailNotReceivedMessage = "Renvoyez le message";
   static const String yourAccountCreatedTitle = "Compte Créé avec succès";
-  static const String yourAccountCreatedSubTitle =   "Bienvenue dans votre compte";
-  static const String done = "Terminer";
+  static const String yourAccountCreatedSubTitle =
+      "Bienvenue dans votre compte";
+  static const String done = "Compte reinitialisé avec succès";
 
+  static const String resendSms = "Renvoyer le code";
 }
