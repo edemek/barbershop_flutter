@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 
+import '../features/Salon/models/salon_model.dart';
+
 class ApiService {
 
   static const String baseUrl = "https://barber.businesshelpconsulting.com"; // Changez avec votre URL de base
@@ -79,4 +81,48 @@ class ApiService {
     final url = Uri.parse("$baseUrl/support-info/");
     return await http.get(url);
   }
+  static Future<List<Salon>> getSalons() async {
+    final url = Uri.parse("$baseUrl/api/salons"); // Vérifiez l'URL exacte de l'API
+
+    try {
+      final response = await http.get(url);
+
+      if (response.statusCode == 200) {
+        List<dynamic> jsonData = jsonDecode(response.body);
+        return jsonData.map((data) => Salon.fromJson(data)).toList();
+      } else {
+        debugPrint("Erreur HTTP ${response.statusCode}: ${response.body}");
+        return [];
+      }
+    } catch (e) {
+      debugPrint("Erreur lors de la récupération des salons: $e");
+      return [];
+    }
+  }
+  /// 🔹 Ajouter un salon (POST)
+  static Future<bool> createSalon(Salon salon) async {
+    final url = Uri.parse("$baseUrl/api/salons");
+
+    try {
+      final response = await http.post(
+        url,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: jsonEncode(salon.toJson()), // Utilisation directe de toJson()
+      );
+
+      if (response.statusCode == 201) {
+        debugPrint("Salon ajouté avec succès !");
+        return true;
+      } else {
+        debugPrint("Erreur lors de l'ajout du salon: ${response.statusCode} - ${response.body}");
+        return false;
+      }
+    } catch (e) {
+      debugPrint("Erreur lors de l'ajout du salon: $e");
+      return false;
+    }
+  }
 }
+

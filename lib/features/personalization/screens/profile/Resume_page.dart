@@ -7,8 +7,8 @@ import '../../../../utils/constants/colors.dart';
 import '../../../../utils/constants/sizes.dart';
 import '../../../../utils/validators/validation.dart';
 
-class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({super.key});
+class Resume extends StatelessWidget {
+  const Resume({super.key});
 
   AppBar _buildAppbar() {
     return AppBar(

@@ -112,7 +112,7 @@ class _ShareExperienceState extends State<ShareExperience> {
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text("Votre expérience a été publiée avec succès !"),
+        content: Text("Votre expérience est soumis avec succès en attente d'approbation!"),
         backgroundColor: primaryGold,
         behavior: SnackBarBehavior.floating,
       ),

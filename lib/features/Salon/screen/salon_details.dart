@@ -1,8 +1,15 @@
-import 'package:barbershpo_flutter/features/Salon/screen/salon_photo.dart';
 import 'package:flutter/material.dart';
-import 'salon_avis.dart'; // Importation de la page des avis
+import '../../rating/rating_view.dart';
+import 'salon_avis.dart';
+import 'salon_photo.dart';
 
 class SalonDetails extends StatelessWidget {
+  // Définition des couleurs principales
+  static const Color primaryGold = Color(0xFFDAA520);
+  static const Color backgroundBlack = Color(0xFF1A1A1A);
+  static const Color softWhite = Color(0xFFF5F5F5);
+  static const Color darkGrey = Color(0xFF2A2A2A);
+
   final String salonName;
   final List<String> salonImages;
   final String salonDescription;
@@ -17,17 +24,18 @@ class SalonDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: backgroundBlack,
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: Colors.white,
-        iconTheme: IconThemeData(color: Colors.black),
+        backgroundColor: darkGrey,
+        iconTheme: IconThemeData(color: softWhite),
         title: Text(
           salonName,
           style: TextStyle(
-            color: Colors.black,
+            color: softWhite,
             fontSize: 22,
             fontWeight: FontWeight.bold,
+            letterSpacing: 0.5,
           ),
         ),
         centerTitle: true,
@@ -40,7 +48,7 @@ class SalonDetails extends StatelessWidget {
               child: salonImages.isNotEmpty
                   ? SalonPhotos(imageUrls: salonImages)
                   : Container(
-                color: Colors.grey[100],
+                color: darkGrey,
                 child: Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -48,13 +56,13 @@ class SalonDetails extends StatelessWidget {
                       Icon(
                         Icons.image_not_supported,
                         size: 50,
-                        color: Colors.black.withOpacity(0.5),
+                        color: primaryGold,
                       ),
                       SizedBox(height: 12),
                       Text(
                         "Aucune image disponible",
                         style: TextStyle(
-                          color: Colors.black.withOpacity(0.7),
+                          color: softWhite.withOpacity(0.7),
                           fontSize: 16,
                         ),
                       ),
@@ -65,6 +73,13 @@ class SalonDetails extends StatelessWidget {
             ),
             Container(
               padding: EdgeInsets.all(24),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [darkGrey, backgroundBlack],
+                ),
+              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -73,7 +88,8 @@ class SalonDetails extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 28,
                       fontWeight: FontWeight.bold,
-                      color: Colors.black,
+                      color: softWhite,
+                      letterSpacing: 0.5,
                     ),
                   ),
                   SizedBox(height: 16),
@@ -81,7 +97,7 @@ class SalonDetails extends StatelessWidget {
                     salonDescription,
                     style: TextStyle(
                       fontSize: 16,
-                      color: Colors.black.withOpacity(0.8),
+                      color: softWhite.withOpacity(0.8),
                       height: 1.5,
                     ),
                   ),
@@ -91,7 +107,8 @@ class SalonDetails extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
-                      color: Colors.black,
+                      color: softWhite,
+                      letterSpacing: 0.5,
                     ),
                   ),
                   SizedBox(height: 16),
@@ -100,32 +117,41 @@ class SalonDetails extends StatelessWidget {
                   _buildServiceCard("Coloration", "À partir de 2000F", Icons.color_lens),
                   SizedBox(height: 32),
 
+                  // Section des avis
                   Container(
-                    height: 300,  // Définir une hauteur fixe ou ajuster selon vos besoins
+                    height: 300,
                     child: SalonReviews(),
                   ),
+
+                  // Bouton pour donner un avis
+                  _buildStyledButton(
+                    text: "Donner un avis",
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => RatingView(
+                            salonName: salonName,
+                            salonImageUrl: salonImages.isNotEmpty ? salonImages[0] : '',
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+
+                  SizedBox(height: 16),
+
                   // Bouton de réservation
-                  Container(
-                    width: double.infinity,
-                    height: 54,
-                    child: ElevatedButton(
-                      onPressed: () {},
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.orange,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
+                  _buildStyledButton(
+                    text: "Réserver maintenant",
+                    onPressed: () {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text("Réservation effectuée avec succès (test)"),
+                          backgroundColor: primaryGold,
                         ),
-                        elevation: 0,
-                      ),
-                      child: Text(
-                        "Réserver maintenant",
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
+                      );
+                    },
                   ),
                 ],
               ),
@@ -141,26 +167,39 @@ class SalonDetails extends StatelessWidget {
       margin: EdgeInsets.only(bottom: 12),
       padding: EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: darkGrey,
         borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: primaryGold.withOpacity(0.3),
+          width: 1.5,
+        ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 8,
-            offset: Offset(0, 2),
+            color: Colors.black.withOpacity(0.2),
+            blurRadius: 10,
+            offset: Offset(0, 4),
           ),
         ],
       ),
       child: Row(
         children: [
-          Icon(icon, color: Colors.blue, size: 24),
+          Container(
+            width: 40,
+            height: 40,
+            decoration: BoxDecoration(
+              color: backgroundBlack,
+              borderRadius: BorderRadius.circular(8),
+              border: Border.all(color: primaryGold, width: 1.5),
+            ),
+            child: Icon(icon, color: primaryGold, size: 24),
+          ),
           SizedBox(width: 16),
           Expanded(
             child: Text(
               name,
               style: TextStyle(
                 fontSize: 16,
-                color: Colors.black,
+                color: softWhite,
                 fontWeight: FontWeight.w500,
               ),
             ),
@@ -169,11 +208,51 @@ class SalonDetails extends StatelessWidget {
             price,
             style: TextStyle(
               fontSize: 16,
-              color: Colors.orange,
+              color: primaryGold,
               fontWeight: FontWeight.bold,
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildStyledButton({
+    required String text,
+    required VoidCallback onPressed,
+  }) {
+    return Container(
+      width: double.infinity,
+      height: 54,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: primaryGold.withOpacity(0.3),
+            blurRadius: 10,
+            offset: Offset(0, 4),
+          ),
+        ],
+      ),
+      child: ElevatedButton(
+        onPressed: onPressed,
+        style: ElevatedButton.styleFrom(
+          backgroundColor: primaryGold,
+          foregroundColor: backgroundBlack,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          elevation: 0,
+        ),
+        child: Text(
+          text,
+          style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.w600,
+            color: backgroundBlack,
+            letterSpacing: 0.5,
+          ),
+        ),
       ),
     );
   }

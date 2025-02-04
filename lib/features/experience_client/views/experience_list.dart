@@ -26,7 +26,7 @@ class ExperienceList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Expériences Partagées"),
+        title: Text("Expériences des autres utilisateurs"),
         backgroundColor: Colors.blue,
       ),
       body: ListView.builder(

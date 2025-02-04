@@ -7,6 +7,7 @@ import '../../features/Reservation/reservationPage.dart';
 import '../../features/Reservation_client/views/reservation_form.dart';
 import '../../features/Reservation_client/views/reservation_page.dart';
 import '../../features/Salon/screen/salon_liste.dart';
+import '../../features/authentication/screens/login/widgets/login_form.dart';
 import '../../features/experience_client/views/experience_form.dart';
 import '../../features/experience_client/views/share_experience.dart';
 import '../../features/personalization/screens/profile/profile.dart';
@@ -139,11 +140,12 @@ class AccountViewClient extends StatelessWidget {
             child: Column(
               children: [
                 _buildMenuItem(context, Icons.person_outline, "Profile", (){
-                  Navigator.pop(context); // Ferme le drawer si c'est un menu
                   Get.to(() => ProfileScreen());
+
                 }
                   // Handle navigation
                 ),
+                /*
                 _buildMenuItem(context, Icons.notifications_outlined, "Notifications", () {
                   // Handle navigation
                 }),
@@ -152,7 +154,8 @@ class AccountViewClient extends StatelessWidget {
                 }),
                 _buildMenuItem(context, Icons.logout, "Logout", () {
                   // Handle logout
-                }),
+                  Get.to(() => TLoginForm());
+                }),*/
               ],
             ),
           ),

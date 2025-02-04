@@ -4,6 +4,9 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 
 import '../../features/Reservation/reservationPage.dart';
+import '../../features/Salon/screen/salon_coiffeur.dart';
+import '../../features/authentication/screens/login/widgets/login_form.dart';
+import '../../features/personalization/screens/profile/profile.dart';
 import '../../utils/validators/validation.dart';
 
 class AccountView extends StatelessWidget {
@@ -114,17 +117,25 @@ class AccountView extends StatelessWidget {
             child: Column(
               children: [
                 _buildMenuItem(context, Icons.person_outline, "Profile", () {
+                  Get.to(() => ProfileScreen());
                   // Handle navigation
                 }),
-                _buildMenuItem(context, Icons.notifications_outlined, "Notifications", () {
+                _buildMenuItem(context, Icons.content_cut, "Salon", () {
                   // Handle navigation
+                  Get.to(()=>SalonViewForm());
                 }),
+                _buildMenuItem(context, Icons.calendar_today, "Reservations", () {
+                  Get.to(() => ReservationDashboard());
+
+                }),
+                /*
                 _buildMenuItem(context, Icons.settings_outlined, "Settings", () {
                   // Handle navigation
                 }),
                 _buildMenuItem(context, Icons.logout, "Logout", () {
+                  Get.to(() => TLoginForm());
                   // Handle logout
-                }),
+                }),*/
               ],
             ),
           ),

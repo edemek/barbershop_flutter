@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:barbershpo_flutter/api_service/api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -9,6 +11,7 @@ import '../../../../../utils/constants/text_strings.dart';
 import 'package:http/http.dart' as http;
 
 import '../../../../../utils/validators/validation.dart';
+import '../../../../personalization/screens/profile/Resume_page.dart';
 import '../../../../personalization/screens/profile/profile.dart';
 import '../verify_email.dart';
 
@@ -378,14 +381,20 @@ class _TSignupFormState extends State<TSignupForm> {
                   print(_phoneController.text);
                   final reponse =  await ApiService.register(name, _phoneController.text,_emailController.text,_passwordController.text,_passwordController.text);
                   // Afficher un message de confirmation
-                  if(reponse.statusCode == 201){
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('Compte créé avec succès !')),
+                  if (reponse.statusCode == 200) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Compte créé avec succès !')),
+                    );
 
-                  );
-                  print("Nom complet2:"+name);
-                  Get.to(() => ProfileScreen());
+                    print("Nom complet : $name");
+                    Get.to(() => Resume());
+                  } else {
+                    var responseBody = jsonDecode(reponse.body); // Décoder la réponse JSON
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text("Erreur lors de la création : ${responseBody['message']}")),
+                    );
                   }
+
 
                   // Aller à la page de profil
 

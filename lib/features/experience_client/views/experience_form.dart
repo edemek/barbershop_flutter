@@ -1,6 +1,7 @@
 import 'package:barbershpo_flutter/features/experience_client/views/share_experience.dart';
 import 'package:flutter/material.dart';
 
+import '../../rating/rating_view.dart';
 import '../../support.dart';
 import 'experience_list.dart';
 
@@ -17,7 +18,8 @@ class _ExperienceHomeScreenState extends State<ExperienceHomeScreen> {
   int _selectedIndex = 0; // Index de la page sélectionnée
   final List<Widget> _pages = [
     ShareExperience(), // Page principale de réservation
-    ExperienceList(), // Page affichant la liste des réservations
+    ExperienceList(),// Page affichant la liste des réservations
+    //RatingView()
   ];
 
   // Méthode de gestion de l'index sélectionné du BottomNavigationBar
@@ -37,6 +39,7 @@ class _ExperienceHomeScreenState extends State<ExperienceHomeScreen> {
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.calendar_today), label: "Partager votre expérience"),
           BottomNavigationBarItem(icon: Icon(Icons.list), label: 'Voir les experiences des autres'),
+          BottomNavigationBarItem(icon: Icon(Icons.list), label: 'Donner vos avis '),
         ],
       ),
     );

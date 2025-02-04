@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import '../account/views/account_view.dart';
 import '../account/views/account_view_customer.dart';
 
-
 class VerificationPage extends StatefulWidget {
   final String emailOrPhone;
-
-  const VerificationPage( {required this.emailOrPhone, super.key});
+  final bool isChecked;
+  const VerificationPage({required this.emailOrPhone, required this.isChecked, super.key});
 
   @override
   State<VerificationPage> createState() => _VerificationPageState();
@@ -21,24 +20,20 @@ class _VerificationPageState extends State<VerificationPage> {
       isError = false; // Réinitialiser l'erreur
 
       // Simulation d'une validation
-      if (codeController.text == "123456") {
-        // Redirection vers le tableau de bord
+      if (codeController.text == "123456" && widget.isChecked == true) {
+        // Redirection vers la page du coiffeur
         Navigator.pushAndRemoveUntil(
           context,
-          MaterialPageRoute(builder: (context) =>  AccountView()),
+          MaterialPageRoute(builder: (context) => AccountView()),
               (route) => false,
         );
-        // à modifier plus tard par un parametre renseignant que l'user est coiffeur ou clt
-      }else if(codeController.text=="789123") {
-
+      } else if (codeController.text == "789123" && widget.isChecked == false) {
+        // Redirection vers la page du client
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context)=> AccountViewClient())
+          MaterialPageRoute(builder: (context) => AccountViewClient()),
         );
-      }
-
-
-      else {
+      } else {
         // Afficher une erreur
         isError = true;
       }
@@ -64,7 +59,7 @@ class _VerificationPageState extends State<VerificationPage> {
               decoration: InputDecoration(
                 labelText: "Entrez le code",
                 border: const OutlineInputBorder(),
-                errorText: isError ? "Code invalide, essayez encore." : null,
+                errorText: isError ? "Code invalide, essayez encore en tapant le code dédié à votre type de conmpte." : null,
               ),
               keyboardType: TextInputType.number,
             ),

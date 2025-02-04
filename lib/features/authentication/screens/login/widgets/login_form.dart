@@ -25,7 +25,7 @@ class TLoginForm extends StatefulWidget {
 class _TLoginFormState extends State<TLoginForm> {
   // Clé globale pour accéder au formulaire
   final _formKey = GlobalKey<FormState>();
-  var connectAsBarber = false.obs;
+  bool isChecked = false;
   // Champs de saisie
   final TextEditingController _emailOrPhoneController  = TextEditingController();
   final TextEditingController _NomController  = TextEditingController();
@@ -156,7 +156,24 @@ class _TLoginFormState extends State<TLoginForm> {
             ),
 
             const SizedBox(height: TSizes.spaceBtwInputFields / 2),
-
+            //
+            Align(
+              alignment: Alignment.centerLeft, // Aligne le contenu à gauche
+              child: Row(
+                children: [
+                  Checkbox(
+                    value: isChecked,
+                    onChanged: (value) {
+                      // Gestion du changement de l'état de la checkbox
+                      setState(() {
+                        isChecked = value!;
+                      });
+                    },
+                  ),
+                  const Text(TTexts.ConnectAsBarber),
+                ],
+              ),
+            ),
             /// -- Remember Me & Forget Password
             ///
             Column(
@@ -167,8 +184,8 @@ class _TLoginFormState extends State<TLoginForm> {
                   children: [
                     Row(
                       children: [
-                        Checkbox(value: false, onChanged: (value) {}),
-                        const Text(TTexts.ConnectAsBarber),
+                        Checkbox(value: true, onChanged: (value) {}),
+                        const Text(TTexts.remenderMe),
                       ],
 
                     ),
@@ -186,6 +203,7 @@ class _TLoginFormState extends State<TLoginForm> {
                     ),
                   ],
                 ),
+
                 const SizedBox(height: 2), // Espacement entre les widgets
                 Align(
                   alignment: Alignment.centerLeft, // Aligne le bouton à gauche
@@ -205,9 +223,13 @@ class _TLoginFormState extends State<TLoginForm> {
                     child: const Text(TTexts.clientSupport),
 
                   ),
+
                 ),
+
               ],
             ),
+
+
 
 
 
@@ -248,7 +270,7 @@ class _TLoginFormState extends State<TLoginForm> {
                       builder: (context) =>
                       VerificationPage(
                       emailOrPhone: _emailOrPhoneController
-                          .text)),
+                          .text,isChecked: isChecked,)),
                       );print("Contenu : ${response.body.toString()}");
                       final Map<String, dynamic> responseData = jsonDecode(response.body);
 
@@ -268,10 +290,11 @@ class _TLoginFormState extends State<TLoginForm> {
                       }
 
                       }else{
+                        var responseBody = jsonDecode(response.body); // Décoder la réponse JSON
                         ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                                 content: Text(
-                                    "Erreur de connexion : ${response.body.toString()}",
+                                    "Erreur de connexion : ${responseBody['message']}",
 
                                 ),
                             ));

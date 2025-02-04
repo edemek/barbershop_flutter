@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:barbershpo_flutter/api_service/api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -346,14 +348,18 @@ class _TSignupFormState extends State<TSignupClientForm> {
                   print("Nom complet1:"+name);
                   final reponse =  await ApiService.register(name, _phoneController.text,_emailController.text,_passwordController.text,_passwordController.text);
                   // Afficher un message de confirmation
-                  if(reponse.statusCode == 200){
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('Compte créé avec succès !')),
+                  if (reponse.statusCode == 200) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Compte créé avec succès !')),
+                    );
 
-                  );
-
-                  print("Nom complet2:"+name);
-                  Get.to(() => ProfileScreen());
+                    print("Nom complet : $name");
+                    Get.to(() => ProfileScreen());
+                  } else {
+                    var responseBody = jsonDecode(reponse.body); // Décoder la réponse JSON
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text("Erreur lors de la création : ${responseBody['message']}")),
+                    );
                   }
 
                   // Aller à la page de profil
