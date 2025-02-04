@@ -26,7 +26,7 @@ class Salon {
   factory Salon.fromJson(Map<String, dynamic> json) {
     return Salon(
       id: json['id'] ?? 0, // Si la clé 'id' est absente, on met 0 par défaut
-      nom: json['nom'] ?? '', // Nom du salon, chaîne vide par défaut si null
+      nom: json['name'] ?? '', // Nom du salon, chaîne vide par défaut si null
       description: json['description'] ?? '', // Description du salon
       images: (json['images'] as List<dynamic>?)?.map((e) => e.toString()).toList() ?? [],
       phoneNumber: json['phone_number'] ?? '', // Numéro de téléphone mobile

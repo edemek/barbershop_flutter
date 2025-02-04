@@ -26,6 +26,7 @@ class _TLoginFormState extends State<TLoginForm> {
   // Clé globale pour accéder au formulaire
   final _formKey = GlobalKey<FormState>();
   bool isChecked = false;
+  final TextEditingController tokenTaker = TextEditingController();
   // Champs de saisie
   final TextEditingController _emailOrPhoneController  = TextEditingController();
   final TextEditingController _NomController  = TextEditingController();
@@ -261,6 +262,7 @@ class _TLoginFormState extends State<TLoginForm> {
                   if (_emailOrPhoneController.text.isNotEmpty &&
                       _passwordController.text.isNotEmpty)
                       {
+                        Get.put(UserController());
                       final response = await ApiService.login(_emailOrPhoneController.text, _passwordController.text);
 
                       if (response.statusCode == 200) {
@@ -273,17 +275,23 @@ class _TLoginFormState extends State<TLoginForm> {
                           .text,isChecked: isChecked,)),
                       );print("Contenu : ${response.body.toString()}");
                       final Map<String, dynamic> responseData = jsonDecode(response.body);
-
                       if (responseData.containsKey("data")) {
                       String name = responseData["data"]["name"];
+                      String token = responseData["data"]["api_token"];
+                      print("token de l'utilisateur:$token");
                       _NomController.text = name; // ✅ Mise à jour du TextEditingController
+                      tokenTaker.text = token;
+                      print("token de l'utilisateur recuperé:$token");
                       userController.updateUser(
                          _NomController.text,
+                          null,
                         null,
                         null,
                         null,
-                        null
+                        tokenTaker.text,
                       );
+                      print("UserController token: ${userController.UToken}");
+                      print("UserController token value: ${userController.UToken.value}");
                       print("Nom de l'utilisateur mis à jour : ${_NomController.text}");
                       } else {
                       print("Erreur : 'user' non trouvé dans la réponse.");

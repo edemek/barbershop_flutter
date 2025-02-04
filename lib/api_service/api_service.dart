@@ -100,14 +100,16 @@ class ApiService {
     }
   }
   /// 🔹 Ajouter un salon (POST)
-  static Future<bool> createSalon(Salon salon) async {
+  static Future<bool> createSalon(Salon salon, String token) async {
     final url = Uri.parse("$baseUrl/api/salons");
+    print(url);
 
     try {
       final response = await http.post(
         url,
         headers: {
           "Content-Type": "application/json",
+          "Authorization": "Bearer $token",  // 🔹 Ajout du token dans l'en-tête
         },
         body: jsonEncode(salon.toJson()), // Utilisation directe de toJson()
       );
@@ -116,11 +118,11 @@ class ApiService {
         debugPrint("Salon ajouté avec succès !");
         return true;
       } else {
-        debugPrint("Erreur lors de l'ajout du salon: ${response.statusCode} - ${response.body}");
+        print("Erreur lors de l'ajout du salon: ${response.statusCode} - ${response.body}");
         return false;
       }
     } catch (e) {
-      debugPrint("Erreur lors de l'ajout du salon: $e");
+      print("Erreur lors de POST de  l'ajout du salon: $e");
       return false;
     }
   }

@@ -107,14 +107,16 @@ class UserController extends GetxController {
   var email = ''.obs;
   var phoneNumber = ''.obs;
   var shopName = ''.obs;
+  var UToken = ''.obs;
 
-  // Méthode pour mettre à jour les données de l'utilisateur
-  void updateUser(String fName, String? lName, String? email, String? phone, String? shop) {
+  // Méthode pour mettre à jour les données de l'utilisateur avec possibilité d'être à nul
+  void updateUser(String fName, String? lName, String? email, String? phone, String? shop, String? Utoken) {
     firstName.value = fName;
-    lastName.value = lName!;
-    this.email.value = email!;
-    phoneNumber.value = phone!;
-    shopName.value = shop!;
+    if (lName != null) lastName.value = lName;
+    if (email != null) this.email.value = email;
+    if (phone != null) phoneNumber.value = phone;
+    if (shop != null) shopName.value = shop;
+    if (Utoken != null) UToken.value = Utoken;
   }
 }
 

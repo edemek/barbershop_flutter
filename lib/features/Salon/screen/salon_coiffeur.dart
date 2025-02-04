@@ -1,18 +1,24 @@
 import 'dart:io';
-
+import 'dart:convert';
+import 'package:barbershpo_flutter/features/Salon/screen/salon_horaire_view.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:image_picker/image_picker.dart';
-
+import '../../../api_service/api_service.dart';
+import '../../../utils/validators/validation.dart';
 import '../models/salon_model.dart';
+import 'package:http/http.dart';
 
-void main() {
-  runApp(SalonViewForm());
-}
+
 
 /// Thème personnalisé utilisant du noir clair, du doré et du blanc.
 class SalonViewForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+
+    //
+
     return MaterialApp(
       title: 'Gestion des Salons',
       debugShowCheckedModeBanner: false,
@@ -74,7 +80,7 @@ class _SalonListPageState extends State<SalonListPage> {
       body: salons.isEmpty
           ? Center(
         child: Text(
-          "Aucun salon n'a été créé.Commencer par en créer en cliquant sur le button + en bas de l'écran",
+          "Aucun salon n'a été créé.",
           style: TextStyle(fontSize: 18),
         ),
       )
@@ -192,6 +198,7 @@ class _SalonListPageState extends State<SalonListPage> {
 
 /// Page permettant de créer ou de modifier un salon.
 class SalonFormPage extends StatefulWidget {
+
   final Salon? salon; // Si null, création d'un nouveau salon
 
   SalonFormPage({this.salon});
@@ -201,6 +208,7 @@ class SalonFormPage extends StatefulWidget {
 }
 
 class _SalonFormPageState extends State<SalonFormPage> {
+  late SalonAvailabilityFormView _availabilityController;
   final _formKey = GlobalKey<FormState>();
 
   late TextEditingController _nomController;
@@ -223,6 +231,7 @@ class _SalonFormPageState extends State<SalonFormPage> {
     _phoneNumberController = TextEditingController(text: widget.salon?.phoneNumber ?? "");
     _landlineNumberController = TextEditingController(text: widget.salon?.landlineNumber ?? "");
     _imagePaths = widget.salon?.images ?? [];
+    _availabilityController = SalonAvailabilityFormView();
     if (widget.salon != null) {
       _openingTime = widget.salon!.openingTime;
       _closingTime = widget.salon!.closingTime;
@@ -269,24 +278,45 @@ class _SalonFormPageState extends State<SalonFormPage> {
   }
 
   /// Enregistre le salon et retourne l'objet via Navigator.pop.
-  void _enregistrer() {
+  void _enregistrer(String token) async {
+    print("le token à mettre en paramètre: $token");
     if (_formKey.currentState!.validate()) {
-      final salon = Salon(
-        id: widget.salon?.id ?? 0,
-        nom: _nomController.text,
-        description: _descriptionController.text,
-        images: _imagePaths,
-        phoneNumber: _phoneNumberController.text,
-        landlineNumber: _landlineNumberController.text,
-        openingTime: _openingTime,
-        closingTime: _closingTime,
-      );
-      Navigator.pop(context, salon);
+      try {
+        final salon = Salon(
+          id: widget.salon?.id ?? 0,
+          nom: _nomController.text,
+          description: _descriptionController.text,
+          images: _imagePaths,
+          phoneNumber: _phoneNumberController.text,
+          landlineNumber: _landlineNumberController.text,
+          openingTime: _openingTime,
+          closingTime: _closingTime,
+        );
+        var isCreated = await ApiService.createSalon(salon,token);
+        if (isCreated) {
+          Navigator.pop(context, salon);
+        } else {
+          // Afficher une erreur si la création échoue
+          ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('Erreur lors de la création du salon'))
+          );
+        }
+      } catch (e) {
+        // Gestion des erreurs d'API ou de réseau
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Erreur réseau ou serveur: $e'))
+        );
+      }
     }
   }
 
+
   @override
   Widget build(BuildContext context) {
+    Get.put(UserController());
+    final userController = Get.find<UserController>();
+    String token = userController.UToken.value;
+    print("token widget: $token");
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -356,24 +386,8 @@ class _SalonFormPageState extends State<SalonFormPage> {
               ),
               SizedBox(height: 16),
               // Sélection de l'horaire d'ouverture
-              ListTile(
-                title: Text("Heure d'ouverture"),
-                trailing: Text("${_openingTime.format(context)}"),
-                onTap: () => _selectTime(context, _openingTime, (newTime) {
-                  setState(() {
-                    _openingTime = newTime;
-                  });
-                }),
-              ),
-              // Sélection de l'horaire de fermeture
-              ListTile(
-                title: Text("Heure de fermeture"),
-                trailing: Text("${_closingTime.format(context)}"),
-                onTap: () => _selectTime(context, _closingTime, (newTime) {
-                  setState(() {
-                    _closingTime = newTime;
-                  });
-                }),
+              SalonAvailabilityFormView(
+
               ),
               SizedBox(height: 16),
               Text(
@@ -426,7 +440,7 @@ class _SalonFormPageState extends State<SalonFormPage> {
                 ),
               SizedBox(height: 24),
               ElevatedButton(
-                onPressed: _enregistrer,
+                onPressed: () => _enregistrer(token),
                 style: ElevatedButton.styleFrom(
                   padding: EdgeInsets.symmetric(vertical: 16),
                 ),
@@ -442,3 +456,4 @@ class _SalonFormPageState extends State<SalonFormPage> {
     );
   }
 }
+

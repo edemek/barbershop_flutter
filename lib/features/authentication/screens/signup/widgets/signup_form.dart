@@ -375,6 +375,7 @@ class _TSignupFormState extends State<TSignupForm> {
                     _emailController.text,
                     _phoneController.text,
                     _shopNameController.text,
+                    null,
                   );
                   final name = _firstNameController.text + " " + _lastNameController.text;
                   print("Nom complet1:"+name);
