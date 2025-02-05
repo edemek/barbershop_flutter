@@ -56,7 +56,7 @@ class _TSignupFormState extends State<TSignupForm> {
         context,
         MaterialPageRoute(
           builder: (context) =>
-              VerifyEmailScreen(emailOrPhoneNumber: _phoneController.text),
+              VerifyEmailScreen(PhoneNumber: _phoneController.text),
         ),
       );
     } else {
@@ -373,6 +373,7 @@ class _TSignupFormState extends State<TSignupForm> {
                     _emailController.text,
                     _phoneController.text,
                     _shopNameController.text,
+                    null,
                     null,
                   );
                   final name = _firstNameController.text + " " + _lastNameController.text;

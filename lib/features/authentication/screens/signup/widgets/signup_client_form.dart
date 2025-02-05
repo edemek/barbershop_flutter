@@ -55,7 +55,7 @@ class _TSignupFormState extends State<TSignupClientForm> {
         context,
         MaterialPageRoute(
           builder: (context) =>
-              VerifyEmailScreen(emailOrPhoneNumber: _phoneController.text),
+              VerifyEmailScreen(PhoneNumber: _phoneController.text),
         ),
       );
     } else {
@@ -344,12 +344,14 @@ class _TSignupFormState extends State<TSignupClientForm> {
                     _phoneController.text,
                     _shopNameController.text,
                     null,
+                    null,
                   );
                   final name = _firstNameController.text + " " + _lastNameController.text;
                   print("Nom complet1:"+name);
                   final reponse =  await ApiService.register(name, _phoneController.text,_emailController.text,_passwordController.text,_passwordController.text);
                   // Afficher un message de confirmation
                   if (reponse.statusCode == 200) {
+
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text('Compte créé avec succès !')),
                     );

@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import '../account/views/account_view.dart';
 import '../account/views/account_view_customer.dart';
+import 'home/homeScreen.dart';
+import 'home/mainScreen.dart';
 
 class VerificationPage extends StatefulWidget {
   final String emailOrPhone;
-  final bool isChecked;
-  const VerificationPage({required this.emailOrPhone, required this.isChecked, super.key});
+  //final bool isChecked;
+  final String role;
+  const VerificationPage({required this.emailOrPhone, required this.role, super.key});
 
   @override
   State<VerificationPage> createState() => _VerificationPageState();
@@ -20,18 +23,18 @@ class _VerificationPageState extends State<VerificationPage> {
       isError = false; // Réinitialiser l'erreur
 
       // Simulation d'une validation
-      if (codeController.text == "123456" && widget.isChecked == true) {
+      if (codeController.text == "123456" && widget.role == "salon_owner") {
         // Redirection vers la page du coiffeur
         Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(builder: (context) => AccountView()),
               (route) => false,
         );
-      } else if (codeController.text == "789123" && widget.isChecked == false) {
+      } else if (codeController.text == "789123" && widget.role == "customer") {
         // Redirection vers la page du client
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => AccountViewClient()),
+          MaterialPageRoute(builder: (context) => MainScreeen()),
         );
       } else {
         // Afficher une erreur

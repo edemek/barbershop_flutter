@@ -13,9 +13,10 @@ class ApiService {
     final url = Uri.parse("$baseUrl/api/login"); // ✅ Vérifie bien que c'est le bon chemin
 
     print("Request URL: $url"); // 🔍 Debug
-
+    var phone_to_string = phone.toString();
+    print(phone_to_string);
     final body = jsonEncode({
-      "phone_number": phone,// phone seule pour simuler
+      "phone_number": phone_to_string,// phone seule pour simuler
       "password": password,
     });
 
@@ -34,9 +35,11 @@ class ApiService {
   static Future<http.Response> register(String name, String phone,String email, String password,String password_confirmation) async {
     final url = Uri.parse("$baseUrl/api/register");
     print("Nom complet api:"+name);
+    var phone_to_string = phone.toString();
+    print(phone_to_string);
     final body =jsonEncode( {
       "name": name,
-      "phone_number":phone,
+      "phone_number":phone_to_string,
       "email":email,
       "password":password,
       "password_confirmation": password_confirmation,

@@ -23,7 +23,7 @@ class TValidator {
 
     // Check for minimun password length
     if (value.length < 6) {
-      return 'Le mot de passe doit avoir au moin 6 lettres';
+      return 'Le mot de passe doit avoir au moins 6 lettres';
     }
 
     // Check for uppercase letter
@@ -79,33 +79,83 @@ class TogoleseOtpFormatter extends TextInputFormatter {
   }
 }
 
+class NoSpaceFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(
+      TextEditingValue oldValue,
+      TextEditingValue newValue,
+      ) {
+    // Si le texte est vide, retourner tel quel
+    if (newValue.text.isEmpty) {
+      return newValue;
+    }
+
+    String newText = newValue.text.replaceAll(' ', '');
+
+    // Si c'est juste le préfixe +228, le garder
+    if (newText == '+228') {
+      return newValue;
+    }
+
+    return TextEditingValue(
+      text: newText,
+      selection: TextSelection.collapsed(
+        offset: newText.length,
+      ),
+    );
+  }
+}
+
 class TogolesePhoneNumberFormatter extends TextInputFormatter {
   @override
   TextEditingValue formatEditUpdate(
-      TextEditingValue oldValue, TextEditingValue newValue) {
-    // Supprime les espaces et garde uniquement les chiffres
-    String digitsOnly = newValue.text.replaceAll(' ', '').replaceAll('+228', '');
+      TextEditingValue oldValue,
+      TextEditingValue newValue,
+      ) {
+    // Ne rien faire si le texte est vide
+    if (newValue.text.isEmpty) {
+      return newValue;
+    }
+
+    // Garde uniquement les chiffres et le +
+    String cleaned = newValue.text.replaceAll(RegExp(r'[^\d+]'), '');
+
+    // Si c'est le début de la saisie, ajouter +228
+    if (!cleaned.startsWith('+228')) {
+      cleaned = '+228' + cleaned.replaceAll('+', '');
+    }
+
+    // Enlève +228 temporairement pour le formatage
+    String digitsOnly = cleaned.replaceAll('+228', '');
 
     // Limite à 8 chiffres maximum
     if (digitsOnly.length > 8) {
       digitsOnly = digitsOnly.substring(0, 8);
     }
 
-    // Ajoute un espace toutes les 2 chiffres
+    // Formate avec des espaces
     String formatted = '';
     for (int i = 0; i < digitsOnly.length; i++) {
-      formatted += digitsOnly[i];
-      if ((i + 1) % 2 == 0 && i != digitsOnly.length - 1) {
+      if (i > 0 && i % 2 == 0) {
         formatted += ' ';
       }
+      formatted += digitsOnly[i];
     }
 
-    // Ajoute l'indicatif +228 au début
-    formatted = '+228 $formatted';
+    // Réajoute le préfixe
+    if (formatted.isNotEmpty) {
+      formatted = '+228 ' + formatted;
+    } else {
+      formatted = '+228';
+    }
+
+    // Calcule la nouvelle position du curseur
+    int newCursor = newValue.selection.baseOffset;
+    newCursor = formatted.length;
 
     return TextEditingValue(
       text: formatted,
-      selection: TextSelection.collapsed(offset: formatted.length),
+      selection: TextSelection.collapsed(offset: newCursor),
     );
   }
 }
@@ -127,15 +177,17 @@ class UserController extends GetxController {
   var phoneNumber = ''.obs;
   var shopName = ''.obs;
   var UToken = ''.obs;
+  var UserRole = ''.obs;
 
   // Méthode pour mettre à jour les données de l'utilisateur avec possibilité d'être à nul
-  void updateUser(String fName, String? lName, String? email, String? phone, String? shop, String? Utoken) {
+  void updateUser(String fName, String? lName, String? email, String? phone, String? shop, String? Utoken, String? Role) {
     firstName.value = fName;
     if (lName != null) lastName.value = lName;
     if (email != null) this.email.value = email;
     if (phone != null) phoneNumber.value = phone;
     if (shop != null) shopName.value = shop;
     if (Utoken != null) UToken.value = Utoken;
+    if (Role != null) UserRole.value = Role;
   }
 }
 

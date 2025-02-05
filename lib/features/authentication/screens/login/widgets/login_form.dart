@@ -25,10 +25,10 @@ class TLoginForm extends StatefulWidget {
 class _TLoginFormState extends State<TLoginForm> {
   // Clé globale pour accéder au formulaire
   final _formKey = GlobalKey<FormState>();
-  bool isChecked = false;
   final TextEditingController tokenTaker = TextEditingController();
+  final TextEditingController Role = TextEditingController();
   // Champs de saisie
-  final TextEditingController _emailOrPhoneController  = TextEditingController();
+  final TextEditingController _PhoneController  = TextEditingController();
   final TextEditingController _NomController  = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final FocusNode _emailFocusNode = FocusNode(); // création d'une instance focus sur _email
@@ -41,7 +41,7 @@ class _TLoginFormState extends State<TLoginForm> {
     try {
       final response = await http.post(
         Uri.parse('http://127.0.0.1:8000/send-otp'),
-        body: {'phone_number': _emailOrPhoneController.text},
+        body: {'phone_number': _PhoneController.text},
       );
 
       if (response.statusCode == 200) {
@@ -57,7 +57,7 @@ class _TLoginFormState extends State<TLoginForm> {
           context,
           MaterialPageRoute(
             builder: (context) =>
-                VerifyEmailScreen(emailOrPhoneNumber: _emailOrPhoneController.text),
+                VerifyEmailScreen(PhoneNumber: _PhoneController.text),
           ),
 
         );
@@ -92,33 +92,35 @@ class _TLoginFormState extends State<TLoginForm> {
           children: [
             /// -- Numéro de Téléphone/email
             TextFormField(
-              focusNode: _emailFocusNode, // Liaison du FocusNode ici
-              controller: _emailOrPhoneController,
-              keyboardType: TextInputType.emailAddress,
-              //inputFormatters: [
-                //TogoleseemailOrPhoneNumberFormatter(), // Formatter personnalisé
-              //],
+              focusNode: _emailFocusNode,
+              controller: _PhoneController,
+              keyboardType: TextInputType.phone,
+              inputFormatters: [
+                TogolesePhoneNumberFormatter(),
+                NoSpaceFormatter()
+              ],
               decoration: const InputDecoration(
                 prefixIcon: Icon(Iconsax.direct_right),
-                labelText: "Numéro de téléphone/Email",
+                labelText: "Numéro de téléphone",
               ),
+              onChanged: (value) {
+                // Optionnel : vous pouvez ajouter une logique supplémentaire ici
+                print('Valeur actuelle: $value');
+              },
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Veuillez entrer votre numéro de téléphone ou votre email';
+                  return 'Veuillez entrer votre numéro de téléphone';
                 }
-                  // fonctionalité mis en attente
-                /*final cleanedValue =
-                //value.replaceAll(' ', '').replaceAll('+228', '');
 
-                if (cleanedValue.length != 8 ||
-                    !RegExp(r'^\d{8}$').hasMatch(cleanedValue)) {
+                final cleanedValue = value.replaceAll(' ', '').replaceAll('+228', '');
+
+                if (cleanedValue.length != 8 || !RegExp(r'^\d{8}$').hasMatch(cleanedValue)) {
                   return 'Numéro de téléphone invalide';
                 }
 
-                return null;*/
+                return null;
               },
             ),
-
             const SizedBox(height: TSizes.spaceBtwInputFields),
 
             /// -- Mot de passe
@@ -158,6 +160,7 @@ class _TLoginFormState extends State<TLoginForm> {
 
             const SizedBox(height: TSizes.spaceBtwInputFields / 2),
             //
+          /*
             Align(
               alignment: Alignment.centerLeft, // Aligne le contenu à gauche
               child: Row(
@@ -174,7 +177,7 @@ class _TLoginFormState extends State<TLoginForm> {
                   const Text(TTexts.ConnectAsBarber),
                 ],
               ),
-            ),
+            ),*/
             /// -- Remember Me & Forget Password
             ///
             Column(
@@ -259,58 +262,86 @@ class _TLoginFormState extends State<TLoginForm> {
                   final String usernameOremail_clt = "client";
                   final String password_clt = "client";*/
 
-                  if (_emailOrPhoneController.text.isNotEmpty &&
+                  if (_PhoneController.text.isNotEmpty &&
                       _passwordController.text.isNotEmpty)
                       {
                         Get.put(UserController());
-                      final response = await ApiService.login(_emailOrPhoneController.text, _passwordController.text);
-
+                      final response = await ApiService.login(_PhoneController.text, _passwordController.text);
+                      final Map<String, dynamic> responseData = jsonDecode(response.body);
                       if (response.statusCode == 200) {
+
+                        if (responseData.containsKey("data")) {
+                          String name = responseData["data"]["name"];
+                          String token = responseData["data"]["api_token"];
+                          String role = responseData["data"]["roles"][0]["name"];
+                          print("Role de l'utilisateur $role");
+                          print("token de l'utilisateur:$token");
+                          _NomController.text = name; // ✅ Mise à jour du TextEditingController
+                          tokenTaker.text = token;
+                          Role.text = role;
+                          print("token de l'utilisateur recuperé:$token");
+                          userController.updateUser(
+                              _NomController.text,
+                              null,
+                              null,
+                              null,
+                              null,
+                              tokenTaker.text,
+                              Role.text
+                          );
+                          print("UserController token: ${userController.UToken}");
+                          print("UserController token value: ${userController.UToken.value}");
+                          print("Nom de l'utilisateur mis à jour : ${_NomController.text}");
+                        } else {
+                          return;
+                        }
+
                       Navigator.push(
                       context,
                       MaterialPageRoute(
                       builder: (context) =>
                       VerificationPage(
-                      emailOrPhone: _emailOrPhoneController
-                          .text,isChecked: isChecked,)),
+                      emailOrPhone: _PhoneController
+                          .text,role: Role.text,)),
                       );print("Contenu : ${response.body.toString()}");
-                      final Map<String, dynamic> responseData = jsonDecode(response.body);
-                      if (responseData.containsKey("data")) {
-                      String name = responseData["data"]["name"];
-                      String token = responseData["data"]["api_token"];
-                      print("token de l'utilisateur:$token");
-                      _NomController.text = name; // ✅ Mise à jour du TextEditingController
-                      tokenTaker.text = token;
-                      print("token de l'utilisateur recuperé:$token");
-                      userController.updateUser(
-                         _NomController.text,
-                          null,
-                        null,
-                        null,
-                        null,
-                        tokenTaker.text,
-                      );
-                      print("UserController token: ${userController.UToken}");
-                      print("UserController token value: ${userController.UToken.value}");
-                      print("Nom de l'utilisateur mis à jour : ${_NomController.text}");
-                      } else {
-                      print("Erreur : 'user' non trouvé dans la réponse.");
-                      }
+
+
 
                       }else{
-                        var responseBody = jsonDecode(response.body); // Décoder la réponse JSON
-                        ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                                content: Text(
-                                    "Erreur de connexion : ${responseBody['message']}",
+                        if (responseData.containsKey("success")){
+                          ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                          content: Text(
+                          "Vos identifiants sont erronés",
+                          style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          ),
+                          ),
+                          backgroundColor: Colors.red,
+                          behavior: SnackBarBehavior.floating, // Fait flotter le SnackBar
+                          margin: EdgeInsets.all(10), // Ajoute une marge
+                          elevation: 6, // Ajoute une ombre
+                          duration: Duration(seconds: 3), // Durée d'affichage
+                          animation: CurvedAnimation( // Animation personnalisée
+                          parent: kAlwaysCompleteAnimation,
+                          curve: Curves.easeInOut,
+                          ),
+                          // Animation d'entrée et de sortie
+                          onVisible: () {
+                          // Vous pouvez ajouter une animation supplémentaire ici
+                          },
+                         // Bouton optionnel
 
-                                ),
-                            ));
+
+                          ),
+                          );
+                        }
                         print("Erreur de connexion : ${response.body.toString()}");
                                 nbError++;
                         print("nombre d'erreur:" + nbError.toString());
 
-                        _emailOrPhoneController.clear();
+                        _PhoneController.clear();
                         _passwordController.clear();
 
                         if(nbError == 5){
