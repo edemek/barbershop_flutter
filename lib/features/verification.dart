@@ -23,7 +23,7 @@ class _VerificationPageState extends State<VerificationPage> {
       isError = false; // Réinitialiser l'erreur
 
       // Simulation d'une validation
-      if (codeController.text == "123456" && widget.role == "salon_owner") {
+      if (codeController.text == "123456" && widget.role == "salon owner") {
         // Redirection vers la page du coiffeur
         Navigator.pushAndRemoveUntil(
           context,

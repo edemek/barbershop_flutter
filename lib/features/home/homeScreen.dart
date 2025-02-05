@@ -1,6 +1,9 @@
 import 'package:barbershpo_flutter/features/home/search_bar_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import '../../utils/constants/colors.dart';
+import '../../utils/validators/validation.dart';
 
 class MyHomeScreen extends StatefulWidget {
   const MyHomeScreen({super.key});
@@ -24,6 +27,8 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final userController = Get.find<UserController>();
+    String name = userController.firstName.value;
     return SafeArea(
       child: Column(
         children: [
@@ -35,7 +40,7 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
                 Row(
                   children: [
                     Text(
-                      'Edem KOFFI',
+                      "$name",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 32,
