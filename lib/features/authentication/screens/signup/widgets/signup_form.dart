@@ -1,18 +1,19 @@
 import 'dart:convert';
 
+import 'package:barbershpo_flutter/api_service/api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
-import '../../../../../api_service/api_service.dart';
 import '../../../../../utils/constants/colors.dart';
 import '../../../../../utils/constants/sizes.dart';
 import '../../../../../utils/constants/text_strings.dart';
 import 'package:http/http.dart' as http;
 
 import '../../../../../utils/validators/validation.dart';
-import '../../../../personalization/screens/profile/Resume_page.dart';
 import '../../../../personalization/screens/profile/profile.dart';
+import '../../login/login.dart';
+import '../../login/widgets/login_form.dart';
 import '../verify_email.dart';
 
 class TSignupForm extends StatefulWidget {
@@ -35,7 +36,7 @@ class _TSignupFormState extends State<TSignupForm> {
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController =
-      TextEditingController();
+  TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _shopNameController = TextEditingController();
   final TextEditingController _firstNameController = TextEditingController();
@@ -46,7 +47,7 @@ class _TSignupFormState extends State<TSignupForm> {
 
   void sendOtp(BuildContext context) async {
     final response = await http.post(
-      Uri.parse('http://172.20.10.2:8000/api/send-otp'),
+      Uri.parse('http://votre-backend-url/api/send-otp'),
       body: {'phone_number': _phoneController.text},
     );
 
@@ -134,36 +135,6 @@ class _TSignupFormState extends State<TSignupForm> {
             height: TSizes.spaceBtwInputFields,
           ),
 
-          /// -- ShopName
-          TextFormField(
-            controller: _shopNameController,
-            expands: false,
-            decoration: const InputDecoration(
-              labelText: TTexts.shopName,
-              prefixIcon: Icon(Iconsax.user),
-            ),
-            inputFormatters: [
-              TextInputFormatter.withFunction((oldValue, newValue) {
-                // Applique la capitalisation à chaque mot
-                String formatted = newValue.text.split(' ').map((word) {
-                  return word.isNotEmpty ? word[0].toUpperCase() + word.substring(1).toLowerCase() : '';
-                }).join(' ');
-                return newValue.copyWith(text: formatted);
-              }),
-            ],
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'Veuillez entrer le Nom de votre boutique';
-              } else if (value.length < 3) {
-                return 'Le Nom doit contenir au moins 3 caractères';
-              }
-              return null;
-            },
-          ),
-
-          const SizedBox(
-            height: TSizes.spaceBtwInputFields,
-          ),
 
           /// -- Email
           TextFormField(
@@ -190,14 +161,15 @@ class _TSignupFormState extends State<TSignupForm> {
           /// -- Phone Number
           TextFormField(
             controller: _phoneController,
-            keyboardType: TextInputType.phone,
+            //keyboardType: TextInputType.phone,
+            /*
             inputFormatters: [
               TogolesePhoneNumberFormatter(), // Formatter personnalisé
-            ],
+            ],*/
             decoration: const InputDecoration(
               prefixIcon: Icon(Iconsax.direct_right),
               labelText: "Numéro de téléphone",
-              hintText: "+228 90 90 90 90",
+              hintText: "+22890909090",
             ),
             validator: (value) {
               if (value == null || value.isEmpty) {
@@ -205,14 +177,14 @@ class _TSignupFormState extends State<TSignupForm> {
               }
 
               // Supprime les espaces pour la validation
-              final cleanedValue =
+              /*final cleanedValue =
                   value.replaceAll(' ', '').replaceAll('+228', '');
 
               // Validation pour s'assurer qu'il contient exactement 8 chiffres
               if (cleanedValue.length != 8 ||
                   !RegExp(r'^\d{8}$').hasMatch(cleanedValue)) {
                 return 'Numéro de téléphone invalide';
-              }
+              }*/
 
               return null;
             },
@@ -226,7 +198,7 @@ class _TSignupFormState extends State<TSignupForm> {
           TextFormField(
             controller: _passwordController,
             obscureText:
-                _obscureText, // Utilisation de l'état pour masquer/afficher le texte
+            _obscureText, // Utilisation de l'état pour masquer/afficher le texte
             decoration: InputDecoration(
               prefixIcon: const Icon(Iconsax.password_check),
               labelText: TTexts.password,
@@ -239,7 +211,7 @@ class _TSignupFormState extends State<TSignupForm> {
                 onPressed: () {
                   setState(() {
                     _obscureText =
-                        !_obscureText; // Change l'état de visibilité du mot de passe
+                    !_obscureText; // Change l'état de visibilité du mot de passe
                   });
                 },
               ),
@@ -268,7 +240,7 @@ class _TSignupFormState extends State<TSignupForm> {
           TextFormField(
             controller: _confirmPasswordController,
             obscureText:
-                _obscureText, // Utilisation de l'état pour masquer/afficher le texte
+            _obscureText, // Utilisation de l'état pour masquer/afficher le texte
             decoration: InputDecoration(
               prefixIcon: const Icon(Iconsax.password_check),
               labelText: TTexts.password,
@@ -281,7 +253,7 @@ class _TSignupFormState extends State<TSignupForm> {
                 onPressed: () {
                   setState(() {
                     _obscureText =
-                        !_obscureText; // Change l'état de visibilité du mot de passe
+                    !_obscureText; // Change l'état de visibilité du mot de passe
                   });
                 },
               ),
@@ -348,7 +320,7 @@ class _TSignupFormState extends State<TSignupForm> {
                         color: widget.dark ? TColors.white : TColors.primary,
                         decoration: TextDecoration.underline,
                         decorationColor:
-                            widget.dark ? TColors.white : TColors.primary),
+                        widget.dark ? TColors.white : TColors.primary),
                   ),
                 ]),
               ),
@@ -374,27 +346,33 @@ class _TSignupFormState extends State<TSignupForm> {
                     _phoneController.text,
                     _shopNameController.text,
                     null,
-                    null,
+                    userController.UserRole.value,
                   );
+
                   final name = _firstNameController.text + " " + _lastNameController.text;
                   print("Nom complet1:"+name);
-                  print(_phoneController.text);
-                  final reponse =  await ApiService.register(name, _phoneController.text,_emailController.text,_passwordController.text,_passwordController.text);
+                  var  reponse;
+                  if(userController.UserRole.value == "customer"){
+                    reponse =  await ApiService.register_client(name, _phoneController.text,_emailController.text,_passwordController.text,_passwordController.text);
+                  }else{
+                    reponse =  await ApiService.register_salon_owner(name, _phoneController.text,_emailController.text,_passwordController.text,_passwordController.text);
+                  }
+
                   // Afficher un message de confirmation
                   if (reponse.statusCode == 200) {
+
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text('Compte créé avec succès !')),
                     );
 
                     print("Nom complet : $name");
-                    Get.to(() => Resume());
+                    Get.to(() => LoginScreen());
                   } else {
                     var responseBody = jsonDecode(reponse.body); // Décoder la réponse JSON
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(content: Text("Erreur lors de la création : ${responseBody['message']}")),
                     );
                   }
-
 
                   // Aller à la page de profil
 

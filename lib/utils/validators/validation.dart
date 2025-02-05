@@ -180,8 +180,8 @@ class UserController extends GetxController {
   var UserRole = ''.obs;
 
   // Méthode pour mettre à jour les données de l'utilisateur avec possibilité d'être à nul
-  void updateUser(String fName, String? lName, String? email, String? phone, String? shop, String? Utoken, String? Role) {
-    firstName.value = fName;
+  void updateUser(String? fName, String? lName, String? email, String? phone, String? shop, String? Utoken, String? Role) {
+    if(fName != null)firstName.value = fName;
     if (lName != null) lastName.value = lName;
     if (email != null) this.email.value = email;
     if (phone != null) phoneNumber.value = phone;

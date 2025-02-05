@@ -32,7 +32,7 @@ class ApiService {
   }
 
 
-  static Future<http.Response> register(String name, String phone,String email, String password,String password_confirmation) async {
+  static Future<http.Response> register_client(String name, String phone,String email, String password,String password_confirmation) async {
     final url = Uri.parse("$baseUrl/api/register");
     print("Nom complet api:"+name);
     var phone_to_string = phone.toString();
@@ -55,6 +55,30 @@ class ApiService {
 
 
   }
+  static Future<http.Response> register_salon_owner(String name, String phone,String email, String password,String password_confirmation) async {
+    final url = Uri.parse("$baseUrl/api/salon_owner/register");
+    print("Nom complet api:"+name);
+    var phone_to_string = phone.toString();
+    print(phone_to_string);
+    final body =jsonEncode( {
+      "name": name,
+      "phone_number":phone_to_string,
+      "email":email,
+      "password":password,
+      "password_confirmation": password_confirmation,
+    });
+    final response = await http.post(url, body: body, headers: {
+      "Content-Type": "application/json",
+    });
+
+    print("Nom complet api2:"+name);
+    print("Response Code: ${response.statusCode}");
+    print("Response Body: ${response.body}");
+    return response;
+
+
+  }
+
 
   /// Demander un lien de réinitialisation
   static Future<http.Response> requestPasswordReset(String email) async {

@@ -1,8 +1,7 @@
 import 'package:barbershpo_flutter/features/home/homeScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
-
-import '../../account/views/account_view.dart';
+import '../../account/views/account_view_customer.dart';
 import '../../utils/constants/colors.dart';
 
 class MainScreeen extends StatefulWidget {
@@ -19,7 +18,7 @@ class _MainScreeen extends State<MainScreeen> {
     MyHomeScreen(),
     const Scaffold(),
     const Scaffold(),
-    AccountView()
+    AccountViewClient()
   ];
 
   @override

@@ -1,8 +1,10 @@
 import 'package:barbershpo_flutter/features/authentication/screens/signup/signup.dart';
-import 'package:barbershpo_flutter/features/authentication/screens/signup/signup_client.dart';
+import 'package:barbershpo_flutter/features/authentication/screens/signup/widgets/signup_form.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+
+import '../../../../utils/validators/validation.dart';
 
 class AccountTypeSelection extends StatelessWidget {
   // Définition des couleurs principales (les mêmes que précédemment)
@@ -10,9 +12,10 @@ class AccountTypeSelection extends StatelessWidget {
   static const Color backgroundBlack = Color(0xFF1A1A1A);
   static const Color softWhite = Color(0xFFF5F5F5);
   static const Color darkGrey = Color(0xFF2A2A2A);
-
+  bool isClient = false;
   @override
   Widget build(BuildContext context) {
+    final userController = Get.find<UserController>();
     return Scaffold(
       backgroundColor: backgroundBlack,
       body: Container(
@@ -39,6 +42,7 @@ class AccountTypeSelection extends StatelessWidget {
                     height: 1.3,
                   ),
                 ),
+
                 SizedBox(height: 50),
                 _buildAccountCard(
                   context: context,
@@ -47,8 +51,18 @@ class AccountTypeSelection extends StatelessWidget {
                   description: "Créez votre profil professionnel et gérez votre salon",
                   onTap: () {
                     // Navigation vers l'inscription coiffeur
+
+                        userController.updateUser(
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        "salon_owner"
+                        );
                     Get.to(()=>SignupScreen());
-                    print("Navigation vers inscription coiffeur");
+                    print("Navigation vers inscription en tant que coiffeur");
                   },
                 ),
                 SizedBox(height: 24),
@@ -60,9 +74,19 @@ class AccountTypeSelection extends StatelessWidget {
                   onTap: () {
                     // Navigation vers l'inscription client
 
-                    Get.to(()=>SignupClientScreen());
-                    print("Navigation vers inscription client");
-                  },
+                      userController.updateUser(
+                          null,
+                          null,
+                          null,
+                          null,
+                          null,
+                          null,
+                          "customer"
+                      );
+                      Get.to(()=>SignupScreen());
+                      print("Navigation vers inscription en tant que client");
+                    }
+
                 ),
               ],
             ),
