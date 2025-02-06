@@ -1,3 +1,4 @@
+import 'package:barbershpo_flutter/theme/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../routes/theme1_app_pages.dart';
@@ -12,9 +13,9 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       themeMode: ThemeMode.system,
-      theme: TApptheme.ligthTheme,
+      theme: TApptheme.lightTheme,
       darkTheme: TApptheme.darkTheme,
-      home: const OnBoardingScreen()
+      home: SettingsView()
     );
   }
 }

@@ -11,8 +11,8 @@ import 'custom_themes/text_theme.dart';
 
 /// -- Light & dark App Themes
 
-class TAppTheme {
-  TAppTheme._();
+class TApptheme {
+  TApptheme._();
 
   /// -- Light Theme
   static ThemeData lightTheme  = ThemeData(

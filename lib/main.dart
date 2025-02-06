@@ -7,6 +7,7 @@ import 'features/services/auth_service.dart';
 import 'features/services/settings_service.dart';
 import 'features/services/global_service.dart';
 import 'features/providers/laravel_provider.dart';
+import 'features/settings/controllers/settings_controller.dart';
 
 Future<void> initServices() async {
   Get.log('starting services ...');
@@ -28,9 +29,9 @@ Future<void> initServices() async {
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   //await Firebase.initializeApp();
+  Get.put<SettingsController>(SettingsController());
 
   Get.put(UserController());
   Get.put(ReservationController());
   runApp(App());
-
 }

@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:image_picker/image_picker.dart';
-import '../../../api_service/api_service.dart';
-import '../../../utils/validators/validation.dart';
+import '../../../api_service/api_service_.dart';
+import '../../../utils/validators/validation_.dart';
 import '../models/salon_model.dart';
 import 'package:http/http.dart';
 
@@ -294,7 +294,7 @@ class _SalonFormPageState extends State<SalonFormPage> {
           closingTime: _closingTime,
           closed: false,
         );
-        var isCreated = await ApiService.createSalon(salon,token);
+        var isCreated = await ApiService.createSalon(salon);
         if (isCreated) {
           Navigator.pop(context, salon);
         } else {
@@ -316,8 +316,8 @@ class _SalonFormPageState extends State<SalonFormPage> {
   Widget build(BuildContext context) {
     Get.put(UserController());
     final userController = Get.find<UserController>();
-    String token = userController.UToken.value;
-    print("token widget: $token");
+   // String token = userController.UToken.value;
+  //  print("token widget: $token");
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -441,7 +441,7 @@ class _SalonFormPageState extends State<SalonFormPage> {
                 ),
               SizedBox(height: 24),
               ElevatedButton(
-                onPressed: () => _enregistrer(token),
+                onPressed: () => _enregistrer(""),
                 style: ElevatedButton.styleFrom(
                   padding: EdgeInsets.symmetric(vertical: 16),
                 ),

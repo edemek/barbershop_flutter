@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 
-import '../../../../utils/validators/validation.dart';
+import '../../../../utils/validators/validation_.dart';
+
 
 class AccountTypeSelection extends StatelessWidget {
   // Définition des couleurs principales (les mêmes que précédemment)
@@ -57,9 +58,8 @@ class AccountTypeSelection extends StatelessWidget {
                         null,
                         null,
                         null,
-                        null,
-                        null,
-                        "salon_owner"
+                          null
+
                         );
                     Get.to(()=>SignupScreen());
                     print("Navigation vers inscription en tant que coiffeur");
@@ -80,8 +80,7 @@ class AccountTypeSelection extends StatelessWidget {
                           null,
                           null,
                           null,
-                          null,
-                          "customer"
+
                       );
                       Get.to(()=>SignupScreen());
                       print("Navigation vers inscription en tant que client");

@@ -5,7 +5,24 @@
  * Copyright (c) 2025
  */
 
+import 'package:get/get_navigation/src/routes/get_route.dart';
+
+import '../features/settings/bindings/settings_binding.dart';
+import '../features/settings/views/settings_view.dart';
+
 class Routes {
+
+  static final routes = [
+    GetPage(
+      name: '/settings',
+      page: () => SettingsView(),
+      binding: SettingsBinding(),
+    ),
+    // ... autres routes
+  ];
+
+
+
   static const LOGIN = '/login';
   static const REGISTER = '/register';
   static const FORGOT_PASSWORD = '/forgot_password';

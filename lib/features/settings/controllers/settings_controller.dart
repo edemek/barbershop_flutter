@@ -32,11 +32,11 @@ class SettingsController extends GetxController {
     //     Get.find<TabBarController>(tag: 'settings').selectedId.value = '0';
     //     Get.toNamed(Routes.LOGIN);
     //   }
-       //return GetPageRoute(
-        // settings: settings,
-         //page: () => ProfileView(hideAppBar: true),
-         //binding: ProfileBinding(),
-       //);
+    //return GetPageRoute(
+    // settings: settings,
+    //page: () => ProfileView(hideAppBar: true),
+    //binding: ProfileBinding(),
+    //);
     // }
     // if (settings.name == Routes.SETTINGS_ADDRESSES) {
     //   if (!Get.find<AuthService>().isAuth) {
@@ -65,25 +65,26 @@ class SettingsController extends GetxController {
     //     binding: SettingsBinding(),
     //   );
 
-       return MaterialPageRoute(
-         builder: (context) => Scaffold(
-           appBar: AppBar(
-             title: Text('Exemple Scaffold'),
-           ),
-           body: Center(
-             child: Text('Contenu ici'),
-           ),
-         ),
-       );
-
+    return MaterialPageRoute(
+      builder: (context) =>
+          Scaffold(
+            appBar: AppBar(
+              title: Text('Exemple Scaffold'),
+            ),
+            body: Center(
+              child: Text('Contenu ici'),
+            ),
+          ),
+    );
   }
-
+/*
   @override
   void onInit() {
-    // if (Get.isRegistered<TabBarController>(tag: 'settings')) {
-    //   Get.find<TabBarController>(tag: 'settings').selectedId.value = '0';
-    // }
+     if (Get.isRegistered<TabBarController>(tag: 'settings')) {
+       Get.find<TabBarController>(tag: 'settings').selectedId.value = '0';
+     }
     currentIndex.value = 0;
     super.onInit();
   }
+}*/
 }

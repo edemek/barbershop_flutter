@@ -8,7 +8,7 @@ class VerificationPage extends StatefulWidget {
   final String emailOrPhone;
   //final bool isChecked;
   final String role;
-  const VerificationPage({required this.emailOrPhone, required this.role, super.key});
+  const VerificationPage({required this.emailOrPhone, required this.role, super.key, required bool isChecked});
 
   @override
   State<VerificationPage> createState() => _VerificationPageState();
