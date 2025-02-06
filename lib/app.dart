@@ -19,7 +19,7 @@ class App extends StatelessWidget {
     return GetMaterialApp(
       title: 'BarberShop App',
       themeMode: ThemeMode.system, // Le thème change selon le mode du système
-      theme: TAppTheme.lightTheme,  // Thème clair
+      theme: TAppTheme.ligthTheme,  // Thème clair
       darkTheme: TAppTheme.darkTheme, // Thème sombre
       //getPages:[GetPage(name: '/login',page:() => const LoginScreen())],
       //home:  LoginScreen(),
