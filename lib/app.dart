@@ -1,8 +1,7 @@
-import 'package:barbershpo_flutter/utils/theme/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../routes/theme1_app_pages.dart';
-
+import 'utils/theme/theme_.dart';
 // import 'features/authentication/screens/onboarding/onboarding.dart';
 
 class App extends StatelessWidget {

@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:http/http.dart' as http;
-import '../../../../../api_service/api_service.dart';
+import '../../../../../api_service/api_service_.dart';
 import '../../../../../utils/constants/sizes.dart';
 import '../../../../../utils/constants/text_strings.dart';
-import '../../../../../utils/validators/validation.dart';
+import '../../../../../utils/validators/validation_.dart';
 import '../../../../forgot_password_page.dart';
 import '../../../../support.dart';
 import '../../../../verification.dart';
@@ -56,7 +56,7 @@ class _TLoginFormState extends State<TLoginForm> {
           context,
           MaterialPageRoute(
             builder: (context) =>
-                VerifyEmailScreen(emailOrPhoneNumber: _emailOrPhoneController.text),
+                VerifyEmailScreen(PhoneNumber: _emailOrPhoneController.text),
           ),
 
         );

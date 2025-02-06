@@ -5,7 +5,7 @@ import '../../../../account/views/account_view.dart';
 import '../../../../account/views/account_view_customer.dart';
 import '../../../../utils/constants/colors.dart';
 import '../../../../utils/constants/sizes.dart';
-import '../../../../utils/validators/validation.dart';
+import '../../../../utils/validators/validation_.dart';
 
 class Resume extends StatelessWidget {
   const Resume({super.key});
@@ -15,7 +15,7 @@ class Resume extends StatelessWidget {
       title: Text(
         'Profile',
         style: TextStyle(
-          color: TColors.textprimary,
+          //color: Colors.,
           fontSize: TSizes.fontSizeMd,
           fontWeight: FontWeight.normal,
         ),
@@ -136,7 +136,7 @@ class Resume extends StatelessWidget {
               'Déconnexion',
               textAlign: TextAlign.center,
               style: TextStyle(
-                color: TColors.textwhite,
+                color: Colors.white,
                 fontSize: TSizes.fontSizeMd,
                 fontWeight: FontWeight.normal,
               ),

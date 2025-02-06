@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:barbershpo_flutter/api_service/api_service.dart';
+import 'package:barbershpo_flutter/api_service/api_service_.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -10,7 +10,7 @@ import '../../../../../utils/constants/sizes.dart';
 import '../../../../../utils/constants/text_strings.dart';
 import 'package:http/http.dart' as http;
 
-import '../../../../../utils/validators/validation.dart';
+import '../../../../../utils/validators/validation_.dart';
 import '../../../../personalization/screens/profile/Resume_page.dart';
 import '../../../../personalization/screens/profile/profile.dart';
 import '../verify_email.dart';
@@ -56,7 +56,7 @@ class _TSignupFormState extends State<TSignupForm> {
         context,
         MaterialPageRoute(
           builder: (context) =>
-              VerifyEmailScreen(emailOrPhoneNumber: _phoneController.text),
+              VerifyEmailScreen(PhoneNumber: _phoneController.text),
         ),
       );
     } else {

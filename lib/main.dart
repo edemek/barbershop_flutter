@@ -1,4 +1,4 @@
-import 'package:barbershpo_flutter/utils/validators/validation.dart';
+import 'package:barbershpo_flutter/utils/validators/validation_.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'app.dart';

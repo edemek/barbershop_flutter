@@ -1,12 +1,10 @@
-/*
- * Copyright (c) 2020 .
- */
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../models/custom_page_model.dart';
 import '../../repositories/custom_page_repository.dart';
+import '../../repositories/custom_page_repository_.dart';
 // import '../repositories/notification_repository.dart';
 import '../../../routes/app_routes.dart';
 import '../../services/auth_service.dart';

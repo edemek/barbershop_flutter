@@ -7,7 +7,7 @@ import '../../features/Reservation/reservationPage.dart';
 import '../../features/Salon/screen/salon_coiffeur.dart';
 import '../../features/authentication/screens/login/widgets/login_form.dart';
 import '../../features/personalization/screens/profile/profile.dart';
-import '../../utils/validators/validation.dart';
+import '../../utils/validators/validation_.dart';
 
 class AccountView extends StatelessWidget {
   @override

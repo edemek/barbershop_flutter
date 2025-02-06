@@ -11,7 +11,7 @@ import '../../features/authentication/screens/login/widgets/login_form.dart';
 import '../../features/experience_client/views/experience_form.dart';
 import '../../features/experience_client/views/share_experience.dart';
 import '../../features/personalization/screens/profile/profile.dart';
-import '../../utils/validators/validation.dart';
+import '../../utils/validators/validation_.dart';
 
 class AccountViewClient extends StatelessWidget {
   const AccountViewClient({super.key});
