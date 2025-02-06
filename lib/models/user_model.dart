@@ -1,8 +1,7 @@
-import 'package:get/get.dart';
+// import 'package:get/get.dart';
 
-/*
-
-//import '../services/settings_service.dart';
+// import '../../common/uuid.dart';
+// import '../features/services/settings_service.dart';
 //import 'media_model.dart';
 import 'parent/model.dart';
 
@@ -10,7 +9,7 @@ class User extends Model {
   String? name;
   String? email;
   String? password;
- // Media avatar = Media();
+  // Media avatar = Media();
   String? apiToken;
   String? deviceToken;
   String? phoneNumber;
@@ -32,11 +31,40 @@ class User extends Model {
     this.verifiedPhone = false,
     this.address,
     this.bio,
-   // Media? avatar,
+    // Media? avatar,
     //this.auth   = false,
   }) {
     //this.avatar = avatar ?? Media();
     this.id = id;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['id'] = this.id;
+    data['name'] = this.name;
+    data['email'] = this.email;
+    if (password != null && password != '') {
+      data['password'] = this.password;
+    }
+    data['api_token'] = this.apiToken;
+    if (deviceToken != null) {
+      data["device_token"] = deviceToken;
+    }
+    data["phone_number"] = phoneNumber;
+    if (verifiedPhone) {
+      data["phone_verified_at"] = DateTime.now().toLocal().toString();
+    }
+    data["address"] = address;
+    data["bio"] = bio;
+    // if (Uuid.isUuid(avatar.id ?? '')) {
+    if ("hhhhhh" == "yyyyyy") {
+      // data['avatar'] = this.avatar.id;
+      data['avatar'] = 0;
+    }
+    // data["media"] = [avatar.toJson()];
+    data["media"] = [{}];
+    data['auth'] = this.auth;
+    return data;
   }
 
   User.fromJson(Map<String, dynamic>? json) {
@@ -61,4 +89,3 @@ class User extends Model {
     super.fromJson(json);
   }
 }
-*/

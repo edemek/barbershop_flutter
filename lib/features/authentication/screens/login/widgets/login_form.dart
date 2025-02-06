@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:http/http.dart' as http;
-import '../../../../../api_service/api_service.dart';
+import '../../../../../api_service/api_service_.dart';
 import '../../../../../utils/constants/sizes.dart';
 import '../../../../../utils/constants/text_strings.dart';
-import '../../../../../utils/validators/validation.dart';
+import '../../../../../utils/validators/validation_.dart';
 import '../../../../forgot_password_page.dart';
 import '../../../../support.dart';
 import '../../../../verification.dart';
@@ -246,6 +246,7 @@ class _TLoginFormState extends State<TLoginForm> {
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
+                //child: Text("data"),
                 onPressed: () async {
                   /*if (_formKey.currentState!.validate()) {
                     ScaffoldMessenger.of(context).showSnackBar(
@@ -264,15 +265,12 @@ class _TLoginFormState extends State<TLoginForm> {
                   final String usernameOremail_clt = "client";
                   final String password_clt = "client";*/
 
-                  if (_PhoneController.text.isNotEmpty &&
-                      _passwordController.text.isNotEmpty)
-                      {
-                        Get.put(UserController());
+                  if (_PhoneController.text.isNotEmpty && _passwordController.text.isNotEmpty){
+                      Get.put(UserController());
                       final response = await ApiService.login(_PhoneController.text, _passwordController.text);
                       final Map<String, dynamic> responseData = jsonDecode(response.body);
-                      if (response.statusCode == 200) {
 
-                        if (responseData.containsKey("data")) {
+                      if (responseData.containsKey("data")) {
                           String name = responseData["data"]["name"];
                           String token = responseData["data"]["api_token"];
                           String role = responseData["data"]["roles"][0]["name"];
@@ -291,56 +289,28 @@ class _TLoginFormState extends State<TLoginForm> {
                               tokenTaker.text,
                               Role.text
                           );
-                          print("UserController token: ${userController.UToken}");
-                          print("UserController token value: ${userController.UToken.value}");
-                          print("Nom de l'utilisateur mis à jour : ${_NomController.text}");
-                        } else {
-                          return;
-                        }
-
-                      Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                      builder: (context) =>
-                      VerificationPage(
-                      emailOrPhone: _PhoneController
-                          .text,role: Role.text,)),
-                      );print("Contenu : ${response.body.toString()}");
-
-
-
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                              builder: (context) =>
+                              VerificationPage(
+                              emailOrPhone: _PhoneController
+                                  .text, role:Role.text)),
+                          );
+                          print("Contenu : ${response.body.toString()}");
                       }else{
-                        if (responseData.containsKey("success")){
-                          ScaffoldMessenger.of(context).showSnackBar(
+                        var responseBody = jsonDecode(response.body); // Décoder la réponse JSON
+                        ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                           content: Text(
-                          "Vos identifiants sont erronés",
-                          style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          ),
-                          ),
-                          backgroundColor: Colors.red,
-                          behavior: SnackBarBehavior.floating, // Fait flotter le SnackBar
-                          margin: EdgeInsets.all(10), // Ajoute une marge
-                          elevation: 6, // Ajoute une ombre
-                          duration: Duration(seconds: 3), // Durée d'affichage
-                          animation: CurvedAnimation( // Animation personnalisée
-                          parent: kAlwaysCompleteAnimation,
-                          curve: Curves.easeInOut,
-                          ),
-                          // Animation d'entrée et de sortie
-                          onVisible: () {
-                          // Vous pouvez ajouter une animation supplémentaire ici
-                          },
-                         // Bouton optionnel
-
+                          "Erreur de connexion : ${responseBody['message']}",
 
                           ),
-                          );
-                        }
-                        print("Erreur de connexion : ${response.body.toString()}");
-                                nbError++;
+                        ));
+                        //print("UserController token: ${userController.UToken}");
+                       // print("UserController token value: ${userController.UToken.value}");
+                        print("Nom de l'utilisateur mis à jour : ${_NomController.text}");
+
                         print("nombre d'erreur:" + nbError.toString());
 
                         _PhoneController.clear();
@@ -356,9 +326,6 @@ class _TLoginFormState extends State<TLoginForm> {
                       //mettre le focus sur l'email
                       FocusScope.of(context).requestFocus(_emailFocusNode);
 
-
-
-
                     }
                     // Simulation de connexion réussie
 
@@ -367,7 +334,7 @@ class _TLoginFormState extends State<TLoginForm> {
                   };
 
                 },
-                  child: const Text(TTexts.signIn),
+                child: const Text(TTexts.signIn),
               ),
             ),
 
@@ -432,7 +399,7 @@ class _TLoginFormState extends State<TLoginForm> {
         context,
         MaterialPageRoute(
           builder: (context) =>
-              VerifyEmailScreen(phoneNumber: _phoneController.text),
+              VerifyEmailScreen(emailOrPhoneNumber: _phoneController.text),
         ),
       );
     } else {
@@ -454,7 +421,7 @@ class _TLoginFormState extends State<TLoginForm> {
               controller: _phoneController,
               keyboardType: TextInputType.phone,
               inputFormatters: [
-                TogolesePhoneNumberFormatter(), // Formatter personnalisé
+                TogoleseemailOrPhoneNumberFormatter(), // Formatter personnalisé
               ],
               decoration: const InputDecoration(
                 prefixIcon: Icon(Iconsax.direct_right),

@@ -1,16 +1,15 @@
 import 'dart:convert';
 
-import 'package:barbershpo_flutter/api_service/api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
+import '../../../../../api_service/api_service_.dart';
 import '../../../../../utils/constants/colors.dart';
 import '../../../../../utils/constants/sizes.dart';
 import '../../../../../utils/constants/text_strings.dart';
 import 'package:http/http.dart' as http;
-
-import '../../../../../utils/validators/validation.dart';
+import '../../../../../utils/validators/validation_.dart';
 import '../../../../personalization/screens/profile/profile.dart';
 import '../../login/login.dart';
 import '../../login/widgets/login_form.dart';

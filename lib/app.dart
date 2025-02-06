@@ -1,34 +1,21 @@
-import 'package:barbershpo_flutter/a/main_layout.dart';
-import 'package:barbershpo_flutter/data/services/api_service.dart';
-import 'package:barbershpo_flutter/navigation_menu.dart';
-import 'package:barbershpo_flutter/utils/theme/theme.dart';
+import 'package:barbershpo_flutter/theme/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
-import 'controllers/auth_controller.dart';
-import 'features/authentication/screens/onboarding/onboarding.dart';
+import '../routes/theme1_app_pages.dart';
+import 'features/settings/views/settings_view.dart';
+import 'utils/theme/theme_.dart';
+ import 'features/authentication/screens/onboarding/onboarding.dart';
 
 class App extends StatelessWidget {
-  App({super.key});
-
-  final apiService = Get.put(ApiService());
-  final authController = Get.put(AuthController());
+  const App({super.key});
 
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      title: 'BarberShop App',
-      themeMode: ThemeMode.system, // Le thème change selon le mode du système
-      theme: TAppTheme.lightTheme,  // Thème clair
-      darkTheme: TAppTheme.darkTheme, // Thème sombre
-      //getPages:[GetPage(name: '/login',page:() => const LoginScreen())],
-      //home:  LoginScreen(),
-      //home: const OnBoardingScreen(),
-      initialRoute: '/',
-      routes: {
-        '/':(context) => const OnBoardingScreen(),
-        'main': (context) => const MainLayout(),
-      },
+      themeMode: ThemeMode.system,
+      theme: TApptheme.lightTheme,
+      darkTheme: TApptheme.darkTheme,
+      home: const OnBoardingScreen()
     );
   }
 }
