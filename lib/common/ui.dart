@@ -120,6 +120,24 @@ class Ui {
         }));
     return list;
   }
+  static InputDecoration getInputDecoration({String? hintText = '', String? errorText, IconData? iconData, Widget? suffixIcon, Widget? suffix}) {
+    return InputDecoration(
+      hintText: hintText,
+      hintStyle: Get.textTheme.bodySmall,
+      prefixIcon: iconData != null ? Icon(iconData, color: Get.theme.focusColor).marginOnly(right: 14) : SizedBox(),
+      prefixIconConstraints: iconData != null ? BoxConstraints.expand(width: 38, height: 38) : BoxConstraints.expand(width: 0, height: 0),
+      floatingLabelBehavior: FloatingLabelBehavior.never,
+      contentPadding: EdgeInsets.all(0),
+      border: OutlineInputBorder(borderSide: BorderSide.none),
+      focusedBorder: OutlineInputBorder(borderSide: BorderSide.none),
+      enabledBorder: OutlineInputBorder(borderSide: BorderSide.none),
+      suffixIcon: suffixIcon,
+      suffix: suffix,
+      errorText: errorText,
+      counterText: errorText,
+    );
+  }
+
 
 // obtention du prix
   /*

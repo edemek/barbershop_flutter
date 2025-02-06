@@ -9,6 +9,7 @@ class Salon {
   String landlineNumber;
   TimeOfDay openingTime;
   TimeOfDay closingTime;
+  bool closed;
 
   // Constructeur de la classe Salon
   Salon({
@@ -20,6 +21,8 @@ class Salon {
     required this.landlineNumber,
     required this.openingTime,
     required this.closingTime,
+    required this.closed,
+
   });
 
   // Factory constructor pour convertir un JSON en objet Salon
@@ -32,7 +35,8 @@ class Salon {
       phoneNumber: json['phone_number'] ?? '', // Numéro de téléphone mobile
       landlineNumber: json['landline_number'] ?? '', // Numéro de téléphone fixe
       openingTime: _parseTimeOfDay(json['opening_time']), // Convertit l'heure d'ouverture en TimeOfDay
-      closingTime: _parseTimeOfDay(json['closing_time']), // Convertit l'heure de fermeture en TimeOfDay
+      closingTime: _parseTimeOfDay(json['closing_time']),
+      closed: json['closed'],// Convertit l'heure de fermeture en TimeOfDay
     );
   }
 

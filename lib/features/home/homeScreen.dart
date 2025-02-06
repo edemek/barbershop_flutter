@@ -65,7 +65,7 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
           const SizedBox(height: 20), // Espacement entre le header et la barre de recherche
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15),
-            child: SearchBarWidget(onSearch: _handleSearch), // Ajout de la barre de recherche
+            child: SearchBarWidget(onSearch: _handleSearch, onSortChange: (String ) {  },), // Ajout de la barre de recherche
           ),
           const SizedBox(height: 20), // Espacement après la barre de recherche
           // Ici tu peux ajouter la liste des salons filtrés

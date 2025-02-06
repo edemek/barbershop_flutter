@@ -291,6 +291,7 @@ class _SalonFormPageState extends State<SalonFormPage> {
           landlineNumber: _landlineNumberController.text,
           openingTime: _openingTime,
           closingTime: _closingTime,
+          closed: false,
         );
         var isCreated = await ApiService.createSalon(salon,token);
         if (isCreated) {

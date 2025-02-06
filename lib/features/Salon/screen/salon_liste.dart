@@ -25,10 +25,16 @@ class SalonListScreen extends StatelessWidget {
     }
   ];
 
+
   // Définition des couleurs personnalisées
   static const Color goldColor = Color(0xFFD4AF37);
   static const Color lightBlack = Color(0xFF333333);
   static const Color accentBlue = Color(0xFF1E3799);
+
+
+  
+
+
 
   @override
   Widget build(BuildContext context) {

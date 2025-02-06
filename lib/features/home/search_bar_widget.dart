@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 
 class SearchBarWidget extends StatefulWidget {
-  final Function(String, String) onSearch; // Callback pour envoyer les résultats de la recherche et du filtre
+  final Function(String, String) onSearch;
+  final Function(String) onSortChange;
 
-  const SearchBarWidget({Key? key, required this.onSearch}) : super(key: key);
+  const SearchBarWidget({
+    Key? key,
+    required this.onSearch,
+    required this.onSortChange,
+  }) : super(key: key);
 
   @override
   _SearchBarWidgetState createState() => _SearchBarWidgetState();
@@ -11,46 +16,53 @@ class SearchBarWidget extends StatefulWidget {
 
 class _SearchBarWidgetState extends State<SearchBarWidget> {
   TextEditingController _searchController = TextEditingController();
-  String _selectedFilter = "Tous"; // Filtre par défaut
+  String _selectedFilter = "Tous";
+  String _sortBy = "distance";
 
   @override
   Widget build(BuildContext context) {
-    return Row(
+    return Column(
       children: [
-        // Champ de texte pour la recherche
-        Expanded(
-          child: TextField(
-            controller: _searchController,
-            decoration: InputDecoration(
-              hintText: "Rechercher un salon ou un service...",
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-              prefixIcon: Icon(Icons.search), // Icône de loupe à gauche
-              suffixIcon: PopupMenuButton<String>(
-                icon: Icon(Icons.filter_list), // Icône de filtre
-                onSelected: (String value) {
-                  setState(() {
-                    _selectedFilter = value; // Met à jour le filtre sélectionné
-                  });
-                },
-                itemBuilder: (BuildContext context) => [
-                  PopupMenuItem(value: "Tous", child: Text("Tous")),
-                  PopupMenuItem(value: "Skin", child: Text("Skin")),
-                  PopupMenuItem(value: "Massage", child: Text("Massage")),
-                  PopupMenuItem(value: "Makeup", child: Text("Makeup")),
-                ],
+        Row(
+          children: [
+            Expanded(
+              child: TextField(
+                controller: _searchController,
+                decoration: InputDecoration(
+                  hintText: "Rechercher un salon...",
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+                  prefixIcon: Icon(Icons.search),
+                ),
               ),
             ),
-          ),
-        ),
-        SizedBox(width: 10), // Espacement entre le champ et le bouton
-        // Bouton de recherche
-        ElevatedButton(
-          onPressed: () {
-            widget.onSearch(_searchController.text, _selectedFilter);
-          },
-          child: Text("Rechercher"),
+            SizedBox(width: 10),
+            PopupMenuButton<String>(
+              icon: Icon(Icons.filter_list),
+              onSelected: (value) => setState(() {
+                _selectedFilter = value;
+                widget.onSearch(_searchController.text, _selectedFilter);
+              }),
+              itemBuilder: (context) => [
+                PopupMenuItem(value: "Tous", child: Text("Tous")),
+                PopupMenuItem(value: "Skin", child: Text("Skin")),
+                PopupMenuItem(value: "Massage", child: Text("Massage")),
+                PopupMenuItem(value: "Makeup", child: Text("Makeup")),
+              ],
+            ),
+            SizedBox(width: 10),
+            PopupMenuButton<String>(
+              icon: Icon(Icons.sort),
+              onSelected: (value) => setState(() {
+                _sortBy = value;
+                widget.onSortChange(_sortBy);
+              }),
+              itemBuilder: (context) => [
+                PopupMenuItem(value: "distance", child: Text("Trier par Distance")),
+                PopupMenuItem(value: "note", child: Text("Trier par Note")),
+                PopupMenuItem(value: "prix", child: Text("Trier par Prix")),
+              ],
+            ),
+          ],
         ),
       ],
     );
