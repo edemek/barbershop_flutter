@@ -15,6 +15,7 @@ class TSearchContainer extends StatelessWidget {
     this.showBorder = true,
     this.onTap,
     this.padding = const EdgeInsets.symmetric(horizontal: TSizes.defaultSpace),
+    this.onFilterSelected, // Callback pour les filtres
   });
 
   final String text;
@@ -22,10 +23,10 @@ class TSearchContainer extends StatelessWidget {
   final bool showBackground, showBorder;
   final VoidCallback? onTap;
   final EdgeInsetsGeometry padding;
+  final ValueChanged<String>? onFilterSelected; // Callback pour le filtre
 
   @override
   Widget build(BuildContext context) {
-
     final dark = THelperFunctions.isDarkMode(context);
 
     return GestureDetector(
@@ -37,23 +38,24 @@ class TSearchContainer extends StatelessWidget {
           padding: const EdgeInsets.all(TSizes.md),
           decoration: BoxDecoration(
             color: showBackground
-                ? dark
-                    ? TColors.dark
-                    : TColors.light
+                ? (dark ? TColors.dark : TColors.light)
                 : Colors.transparent,
             borderRadius: BorderRadius.circular(TSizes.cardRadiusLg),
             border: showBorder ? Border.all(color: TColors.grey) : null,
           ),
           child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween, // Espacement entre les éléments
             children: [
-              Icon(icon, color: TColors.black),
-              const SizedBox(
-                height: TSizes.spacetBtwItems,
+              Row(
+                children: [
+                  Icon(icon, color: TColors.black),
+                  const SizedBox(width: TSizes.spacetBtwItems),
+                  Text(
+                    text,
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
+                ],
               ),
-              Text(
-                text,
-                style: Theme.of(context).textTheme.bodySmall,
-              )
             ],
           ),
         ),

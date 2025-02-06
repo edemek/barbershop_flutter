@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import '../a/main_layout.dart';
 import '../account/views/account_view.dart';
-import '../account/views/account_view_customer.dart';
-import 'home/homeScreen.dart';
-import 'home/mainScreen.dart';
+import '../navigation_menu.dart';
+
 
 class VerificationPage extends StatefulWidget {
   final String emailOrPhone;
@@ -34,7 +34,7 @@ class _VerificationPageState extends State<VerificationPage> {
         // Redirection vers la page du client
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => MainScreeen()),
+          MaterialPageRoute(builder: (context) => NavigationMenu()),
         );
       } else {
         // Afficher une erreur

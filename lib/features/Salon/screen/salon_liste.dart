@@ -39,6 +39,7 @@ class SalonListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
       backgroundColor: Colors.white,
       appBar: AppBar(
         elevation: 0,
@@ -51,7 +52,10 @@ class SalonListScreen extends StatelessWidget {
             fontWeight: FontWeight.bold,
           ),
         ),
+
         centerTitle: true,
+    leading:
+         Icon(Icons.sort),
         iconTheme: IconThemeData(color: lightBlack),
       ),
       body: ListView.builder(

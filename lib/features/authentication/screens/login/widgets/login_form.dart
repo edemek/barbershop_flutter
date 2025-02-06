@@ -102,6 +102,7 @@ class _TLoginFormState extends State<TLoginForm> {
               decoration: const InputDecoration(
                 prefixIcon: Icon(Iconsax.direct_right),
                 labelText: "Numéro de téléphone",
+                hintText: "+228 90 90 90 90",
               ),
               onChanged: (value) {
                 // Optionnel : vous pouvez ajouter une logique supplémentaire ici
@@ -121,6 +122,7 @@ class _TLoginFormState extends State<TLoginForm> {
                 return null;
               },
             ),
+
             const SizedBox(height: TSizes.spaceBtwInputFields),
 
             /// -- Mot de passe
@@ -430,7 +432,7 @@ class _TLoginFormState extends State<TLoginForm> {
         context,
         MaterialPageRoute(
           builder: (context) =>
-              VerifyEmailScreen(emailOrPhoneNumber: _phoneController.text),
+              VerifyEmailScreen(phoneNumber: _phoneController.text),
         ),
       );
     } else {
@@ -452,7 +454,7 @@ class _TLoginFormState extends State<TLoginForm> {
               controller: _phoneController,
               keyboardType: TextInputType.phone,
               inputFormatters: [
-                TogoleseemailOrPhoneNumberFormatter(), // Formatter personnalisé
+                TogolesePhoneNumberFormatter(), // Formatter personnalisé
               ],
               decoration: const InputDecoration(
                 prefixIcon: Icon(Iconsax.direct_right),

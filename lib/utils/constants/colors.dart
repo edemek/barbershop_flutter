@@ -5,8 +5,10 @@ class TColors {
 
   // App Basic Colors
   static const Color primary = Color(0xFF4B68FF);
+  static const Color primary1 = Color(0xFFCBCCBF);
   static const Color secondary = Color(0xFFFFE24B);
   static const Color ascent = Color(0xFFB0C7FF);
+  static const Color blue = Color(0xFF3190E9);
 
   // Gradients Colors
   static const Gradient linearGradient = LinearGradient(

@@ -9,14 +9,15 @@ class ApiService {
   final FlutterSecureStorage _storage = const FlutterSecureStorage();
 
   // URL de base de l'API (adapter en fonction de l'environnement)
-  final String baseUrl = 'http://10.0.2.2:8000/api'; // Utiliser 10.0.2.2 pour les émulateurs Android
+  final String baseUrl =
+      'http://10.0.2.2:8000/api'; // Utiliser 10.0.2.2 pour les émulateurs Android
 
   // En-têtes par défaut pour les requêtes HTTP
   Map<String, String> get _headers => {
-    'Accept': 'application/json',
-    'Content-Type': 'application/json',
-    'X-Requested-With': 'XMLHttpRequest',
-  };
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'X-Requested-With': 'XMLHttpRequest',
+      };
 
   // Récupérer les en-têtes avec le token d'autorisation, si disponible
   Future<Map<String, String>> _getAuthHeaders() async {
@@ -47,8 +48,8 @@ class ApiService {
         // Extraire le token CSRF depuis les cookies
         final xsrfToken = cookies.split(';').firstWhere(
               (cookie) => cookie.trim().startsWith('XSRF-TOKEN='),
-          orElse: () => '',
-        );
+              orElse: () => '',
+            );
         if (xsrfToken.isNotEmpty) {
           return Uri.decodeComponent(xsrfToken.split('=')[1]);
         }
@@ -168,9 +169,6 @@ class ApiService {
     return error.toString();
   }
 }
-
-
-
 
 /*
 import 'dart:convert';

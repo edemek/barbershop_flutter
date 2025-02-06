@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import '../../account/views/account_view_customer.dart';
 import '../../utils/constants/colors.dart';
-
+import '../shop/screens/reservations.dart';
+// à ne pas utiliser
 class MainScreeen extends StatefulWidget {
   const MainScreeen({super.key});
 
@@ -17,7 +18,7 @@ class _MainScreeen extends State<MainScreeen> {
   final List pages = [
     MyHomeScreen(),
     const Scaffold(),
-    const Scaffold(),
+     //BookingScreen(),
     AccountViewClient()
   ];
 

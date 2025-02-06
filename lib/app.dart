@@ -1,4 +1,6 @@
+import 'package:barbershpo_flutter/a/main_layout.dart';
 import 'package:barbershpo_flutter/data/services/api_service.dart';
+import 'package:barbershpo_flutter/navigation_menu.dart';
 import 'package:barbershpo_flutter/utils/theme/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -21,7 +23,12 @@ class App extends StatelessWidget {
       darkTheme: TAppTheme.darkTheme, // Thème sombre
       //getPages:[GetPage(name: '/login',page:() => const LoginScreen())],
       //home:  LoginScreen(),
-      home: const OnBoardingScreen(),
+      //home: const OnBoardingScreen(),
+      initialRoute: '/',
+      routes: {
+        '/':(context) => const OnBoardingScreen(),
+        'main': (context) => const MainLayout(),
+      },
     );
   }
 }
