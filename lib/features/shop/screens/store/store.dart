@@ -10,10 +10,14 @@ import 'package:barbershpo_flutter/utils/constants/enums.dart';
 import 'package:barbershpo_flutter/utils/constants/sizes.dart';
 import 'package:barbershpo_flutter/utils/helpers/helper_functions.dart';
 import 'package:flutter/material.dart';
+import 'package:iconsax/iconsax.dart';
 
 import '../../../../common/widgets/images/t_circular_image.dart';
 import '../../../../common/widgets/texts/t_brand_title_text_with_verified_icon.dart';
 import '../../../../utils/constants/image_strings.dart';
+import '../../../../utils/constants/text_strings.dart';
+import '../home/widgets/promo_slider.dart';
+import 'Widgets/promo_slider2.dart';
 
 class StoreScreen extends StatelessWidget {
   const StoreScreen({super.key});
@@ -50,15 +54,39 @@ class StoreScreen extends StatelessWidget {
                     shrinkWrap: true,
                     physics: NeverScrollableScrollPhysics(),
                     children: [
-                      /// -- Bar de recherche
+                      /// -- Promo Slider
+                      const TPromoSlider2(
+                        banners: [
+                          TImages.promoBanner1,
+                          TImages.promoBanner2,
+                          TImages.promoBanner3,
+                        ],
+                      ), /// -- Bar de recherche
                       SizedBox(
                         height: TSizes.spacetBtwItems,
                       ),
-                      TSearchContainer(
-                        text: 'Recherche dans la Boutique',
-                        showBorder: true,
-                        showBackground: false,
-                        padding: EdgeInsets.zero,
+
+                      /// -- Bar de recherche
+
+                      TextFormField(
+                        decoration: InputDecoration(
+                          prefixIcon: const Icon(Iconsax.search_normal),
+                          labelText: 'Rechercher un service',
+                          suffixIcon: PopupMenuButton<String>(
+                            icon: Icon(Icons.filter_list), // Icône de filtre
+                            onSelected: (String value) {
+                              //setState(() {
+                              // _selectedFilter = value; // Met à jour le filtre sélectionné
+                              //});
+                            },
+                            itemBuilder: (BuildContext context) => [
+                              PopupMenuItem(value: "Tous", child: Text("Tous les services")),
+                              PopupMenuItem(value: "Skin", child: Text("Skin")),
+                              PopupMenuItem(value: "Massage", child: Text("Massage")),
+                              PopupMenuItem(value: "Makeup", child: Text("Makeup")),
+                            ],
+                          ),
+                        ),
                       ),
                       SizedBox(
                         height: TSizes.spacetBtwSections,
@@ -113,7 +141,7 @@ class StoreScreen extends StatelessWidget {
               child: Column(
                 children: [
                   /// -- Brands
-                  TRoundesContainer(
+                  TRoundedContainer(
                     shadowBorder: true,
                     borderColor: TColors.darkGrey,
                     backgroundColor: Colors.transparent,
@@ -127,7 +155,7 @@ class StoreScreen extends StatelessWidget {
                         Row(
                           children: [
                             Expanded(
-                              child: TRoundesContainer(
+                              child: TRoundedContainer(
                                 height: 100,
                                 backgroundColor: THelperFunctions.isDarkMode(context) ? TColors.darkGrey : TColors.light,
                                 margin: const EdgeInsets.only(right: TSizes.sm),
@@ -136,7 +164,7 @@ class StoreScreen extends StatelessWidget {
                               ),
                             ),
                             Expanded(
-                              child: TRoundesContainer(
+                              child: TRoundedContainer(
                                 height: 100,
                                 backgroundColor: THelperFunctions.isDarkMode(context) ? TColors.darkGrey : TColors.light,
                                 margin: const EdgeInsets.only(right: TSizes.sm),
@@ -145,7 +173,7 @@ class StoreScreen extends StatelessWidget {
                               ),
                             ),
                             Expanded(
-                              child: TRoundesContainer(
+                              child: TRoundedContainer(
                                 height: 100,
                                 backgroundColor: THelperFunctions.isDarkMode(context) ? TColors.darkGrey : TColors.light,
                                 margin: const EdgeInsets.only(right: TSizes.sm),
@@ -182,7 +210,7 @@ class TBrandCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
-      child: TRoundesContainer(
+      child: TRoundedContainer(
         padding: const EdgeInsets.all(TSizes.sm),
         shadowBorder: showBorder,
         backgroundColor: Colors.transparent,

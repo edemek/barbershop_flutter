@@ -8,8 +8,8 @@ import '../../../../../common/widgets/custom_shapes/containers/circular_containe
 import '../../../../../common/widgets/images/t_rounded_image.dart';
 import '../../../../../utils/constants/sizes.dart';
 
-class TPromoSlider extends StatelessWidget {
-  const TPromoSlider({
+class TPromoSlider2 extends StatelessWidget {
+  const TPromoSlider2({
     super.key,
     required this.banners,
   });
@@ -22,18 +22,11 @@ class TPromoSlider extends StatelessWidget {
 
     return Column(
       children: [
-        /*CarouselSlider(
-          options: CarouselOptions(
-            viewportFraction: 1,
-            onPageChanged: (index, _) => controller.updatePageIndicator(index),
-          ),
-          items: banners.map((url) => TRoundedImage(imageUrl: url)).toList(),
-        ),*/
         CarouselSlider(
             items: banners.map((url) => TRoundedImage(imageUrl: url)).toList(),
             options: CarouselOptions(
               height: 200,
-              aspectRatio: 16/9,
+              aspectRatio: 20/9,
               viewportFraction: 1,
               initialPage: 0,
               enableInfiniteScroll: true,

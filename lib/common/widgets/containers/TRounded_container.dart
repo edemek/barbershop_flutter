@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 
 import '../../../utils/constants/sizes.dart';
 
-class TRoundesContainer extends StatelessWidget {
-  const TRoundesContainer({
+class TRoundedContainer extends StatelessWidget {
+  const TRoundedContainer({
     super.key,
     this.width,
     this.height,

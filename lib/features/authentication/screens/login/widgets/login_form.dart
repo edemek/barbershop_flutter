@@ -151,7 +151,7 @@ class _TLoginFormState extends State<TLoginForm> {
                 return ElevatedButton(
                   onPressed: () {
                     Get.offAll(NavigationMenu());
-                    //Navigator.of(context).pushNamed(main)
+                    //Navigator.of(context).pushNamed('main');
                     /*if (_formKey.currentState!.validate()) {
                       _authController.login(
                         _phoneController.text,
