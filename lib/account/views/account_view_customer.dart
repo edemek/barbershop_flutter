@@ -1,4 +1,5 @@
 import 'package:barbershpo_flutter/features/Manageservice.dart';
+import 'package:barbershpo_flutter/features/settings/views/settings_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
@@ -148,10 +149,11 @@ class AccountViewClient extends StatelessWidget {
                 /*
                 _buildMenuItem(context, Icons.notifications_outlined, "Notifications", () {
                   // Handle navigation
-                }),
+                }),*/
                 _buildMenuItem(context, Icons.settings_outlined, "Settings", () {
                   // Handle navigation
-                }),
+                  Get.to(() => SettingsView());
+                }),/*
                 _buildMenuItem(context, Icons.logout, "Logout", () {
                   // Handle logout
                   Get.to(() => TLoginForm());

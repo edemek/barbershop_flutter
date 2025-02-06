@@ -1,17 +1,15 @@
 import 'dart:convert';
 
-import 'package:barbershpo_flutter/api_service/api_service_.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
+import '../../../../../api_service/api_service_.dart';
 import '../../../../../utils/constants/colors.dart';
 import '../../../../../utils/constants/sizes.dart';
 import '../../../../../utils/constants/text_strings.dart';
 import 'package:http/http.dart' as http;
-
 import '../../../../../utils/validators/validation_.dart';
-import '../../../../personalization/screens/profile/Resume_page.dart';
 import '../../../../personalization/screens/profile/profile.dart';
 import '../../login/login.dart';
 import '../../login/widgets/login_form.dart';
@@ -37,7 +35,7 @@ class _TSignupFormState extends State<TSignupForm> {
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController =
-      TextEditingController();
+  TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _shopNameController = TextEditingController();
   final TextEditingController _firstNameController = TextEditingController();
@@ -178,12 +176,11 @@ class _TSignupFormState extends State<TSignupForm> {
               }
 
               // Supprime les espaces pour la validation
-              final cleanedValue =
+              /*final cleanedValue =
                   value.replaceAll(' ', '').replaceAll('+228', '');
 
               // Validation pour s'assurer qu'il contient exactement 8 chiffres
-              /*
-              if (cleanedValue.length != 12 ||
+              if (cleanedValue.length != 8 ||
                   !RegExp(r'^\d{8}$').hasMatch(cleanedValue)) {
                 return 'Numéro de téléphone invalide';
               }*/
@@ -200,7 +197,7 @@ class _TSignupFormState extends State<TSignupForm> {
           TextFormField(
             controller: _passwordController,
             obscureText:
-                _obscureText, // Utilisation de l'état pour masquer/afficher le texte
+            _obscureText, // Utilisation de l'état pour masquer/afficher le texte
             decoration: InputDecoration(
               prefixIcon: const Icon(Iconsax.password_check),
               labelText: TTexts.password,
@@ -213,7 +210,7 @@ class _TSignupFormState extends State<TSignupForm> {
                 onPressed: () {
                   setState(() {
                     _obscureText =
-                        !_obscureText; // Change l'état de visibilité du mot de passe
+                    !_obscureText; // Change l'état de visibilité du mot de passe
                   });
                 },
               ),
@@ -242,7 +239,7 @@ class _TSignupFormState extends State<TSignupForm> {
           TextFormField(
             controller: _confirmPasswordController,
             obscureText:
-                _obscureText, // Utilisation de l'état pour masquer/afficher le texte
+            _obscureText, // Utilisation de l'état pour masquer/afficher le texte
             decoration: InputDecoration(
               prefixIcon: const Icon(Iconsax.password_check),
               labelText: TTexts.password,
@@ -255,7 +252,7 @@ class _TSignupFormState extends State<TSignupForm> {
                 onPressed: () {
                   setState(() {
                     _obscureText =
-                        !_obscureText; // Change l'état de visibilité du mot de passe
+                    !_obscureText; // Change l'état de visibilité du mot de passe
                   });
                 },
               ),
@@ -322,7 +319,7 @@ class _TSignupFormState extends State<TSignupForm> {
                         color: widget.dark ? TColors.white : TColors.primary,
                         decoration: TextDecoration.underline,
                         decorationColor:
-                            widget.dark ? TColors.white : TColors.primary),
+                        widget.dark ? TColors.white : TColors.primary),
                   ),
                 ]),
               ),
@@ -347,26 +344,34 @@ class _TSignupFormState extends State<TSignupForm> {
                     _emailController.text,
                     _phoneController.text,
                     _shopNameController.text,
+                    null,
+                    userController.UserRole.value,
                   );
+
                   final name = _firstNameController.text + " " + _lastNameController.text;
                   print("Nom complet1:"+name);
-                  print(_phoneController.text);
-                  final reponse =  await ApiService.register(name, _phoneController.text,_emailController.text,_passwordController.text,_passwordController.text);
+                  var  reponse;
+                  if(userController.UserRole.value == "customer"){
+                    reponse =  await ApiService.register_client(name, _phoneController.text,_emailController.text,_passwordController.text,_passwordController.text);
+                  }else{
+                    reponse =  await ApiService.register_salon_owner(name, _phoneController.text,_emailController.text,_passwordController.text,_passwordController.text);
+                  }
+
                   // Afficher un message de confirmation
                   if (reponse.statusCode == 200) {
+
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text('Compte créé avec succès !')),
                     );
 
                     print("Nom complet : $name");
-                    Get.to(() => Resume());
+                    Get.to(() => LoginScreen());
                   } else {
                     var responseBody = jsonDecode(reponse.body); // Décoder la réponse JSON
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(content: Text("Erreur lors de la création : ${responseBody['message']}")),
                     );
                   }
-
 
                   // Aller à la page de profil
 

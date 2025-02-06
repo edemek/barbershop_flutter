@@ -97,7 +97,7 @@ class _TLoginFormState extends State<TLoginForm> {
               keyboardType: TextInputType.phone,
               inputFormatters: [
                 TogolesePhoneNumberFormatter(),
-                //NoSpaceFormatter()
+                NoSpaceFormatter()
               ],
               decoration: const InputDecoration(
                 prefixIcon: Icon(Iconsax.direct_right),
@@ -286,17 +286,16 @@ class _TLoginFormState extends State<TLoginForm> {
                               null,
                               null,
                               null,
-                              //tokenTaker.text,
-                              //Role.text
+                              tokenTaker.text,
+                              Role.text
                           );
                           Navigator.push(
                               context,
                               MaterialPageRoute(
                               builder: (context) =>
                               VerificationPage(
-                                role: "",
                               emailOrPhone: _PhoneController
-                                  .text,isChecked:true ,)),
+                                  .text, role:Role.text)),
                           );
                           print("Contenu : ${response.body.toString()}");
                       }else{

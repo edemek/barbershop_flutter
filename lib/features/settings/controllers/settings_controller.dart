@@ -68,9 +68,6 @@ class SettingsController extends GetxController {
     return MaterialPageRoute(
       builder: (context) =>
           Scaffold(
-            appBar: AppBar(
-              title: Text('Exemple Scaffold'),
-            ),
             body: Center(
               child: Text('Contenu ici'),
             ),
