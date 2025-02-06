@@ -1,6 +1,5 @@
 import 'package:barbershpo_flutter/a/main_layout.dart';
 import 'package:barbershpo_flutter/data/services/api_service.dart';
-import 'package:barbershpo_flutter/navigation_menu.dart';
 import 'package:barbershpo_flutter/utils/theme/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -19,7 +18,7 @@ class App extends StatelessWidget {
     return GetMaterialApp(
       title: 'BarberShop App',
       themeMode: ThemeMode.system, // Le thème change selon le mode du système
-      theme: TAppTheme.lightTheme,  // Thème clair
+      theme: TAppTheme.ligthTheme,  // Thème clair
       darkTheme: TAppTheme.darkTheme, // Thème sombre
       //getPages:[GetPage(name: '/login',page:() => const LoginScreen())],
       //home:  LoginScreen(),

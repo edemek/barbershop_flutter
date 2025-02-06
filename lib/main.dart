@@ -10,7 +10,7 @@ void main() async {
   //await Firebase.initializeApp();
 
   Get.put(UserController());
-  Get.put(ReservationController());//
+  Get.put(ReservationController());
   runApp(App());
   Get.put(UserController()); //
 
