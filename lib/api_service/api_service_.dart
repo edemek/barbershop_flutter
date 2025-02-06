@@ -3,20 +3,21 @@ import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 
 import '../features/Salon/models/salon_model.dart';
+import '../models/salon_model.dart';
 
 class ApiService {
-
-  static const String baseUrl = "https://barber.businesshelpconsulting.com"; // Changez avec votre URL de base
+  static const String baseUrl =
+      "https://barber.businesshelpconsulting.com"; // Changez avec votre URL de base
 
   /// Connexion utilisateur
   static Future<http.Response> login(String phone, String password) async {
-    final url = Uri.parse("$baseUrl/api/login"); // ✅ Vérifie bien que c'est le bon chemin
+    final url = Uri.parse(
+        "$baseUrl/api/login"); // ✅ Vérifie bien que c'est le bon chemin
 
     print("Request URL: $url"); // 🔍 Debug
-    var phone_to_string = phone.toString();
-    print(phone_to_string);
+
     final body = jsonEncode({
-      "phone_number": phone_to_string,// phone seule pour simuler
+      "phone_number": phone, // phone seule pour simuler
       "password": password,
     });
 
@@ -27,58 +28,29 @@ class ApiService {
     print("Response Code: ${response.statusCode}");
     print("Response Body: ${response.body}");
 
-
     return response;
   }
 
-
-  static Future<http.Response> register_client(String name, String phone,String email, String password,String password_confirmation) async {
+  static Future<http.Response> register(String name, String phone, String email,
+      String password, String password_confirmation) async {
     final url = Uri.parse("$baseUrl/api/register");
-    print("Nom complet api:"+name);
-    var phone_to_string = phone.toString();
-    print(phone_to_string);
-    final body =jsonEncode( {
+    print("Nom complet api:" + name);
+    final body = jsonEncode({
       "name": name,
-      "phone_number":phone_to_string,
-      "email":email,
-      "password":password,
+      "phone_number": phone,
+      "email": email,
+      "password": password,
       "password_confirmation": password_confirmation,
     });
     final response = await http.post(url, body: body, headers: {
       "Content-Type": "application/json",
     });
 
-    print("Nom complet api2:"+name);
+    print("Nom complet api2:" + name);
     print("Response Code: ${response.statusCode}");
     print("Response Body: ${response.body}");
     return response;
-
-
   }
-  static Future<http.Response> register_salon_owner(String name, String phone,String email, String password,String password_confirmation) async {
-    final url = Uri.parse("$baseUrl/api/salon_owner/register");
-    print("Nom complet api:"+name);
-    var phone_to_string = phone.toString();
-    print(phone_to_string);
-    final body =jsonEncode( {
-      "name": name,
-      "phone_number":phone_to_string,
-      "email":email,
-      "password":password,
-      "password_confirmation": password_confirmation,
-    });
-    final response = await http.post(url, body: body, headers: {
-      "Content-Type": "application/json",
-    });
-
-    print("Nom complet api2:"+name);
-    print("Response Code: ${response.statusCode}");
-    print("Response Body: ${response.body}");
-    return response;
-
-
-  }
-
 
   /// Demander un lien de réinitialisation
   static Future<http.Response> requestPasswordReset(String email) async {
@@ -92,7 +64,8 @@ class ApiService {
   }
 
   /// Réinitialiser le mot de passe
-  static Future<http.Response> resetPassword(String token, String newPassword) async {
+  static Future<http.Response> resetPassword(
+      String token, String newPassword) async {
     final url = Uri.parse("$baseUrl/password-reset/");
     final body = {
       "token": token,
@@ -108,8 +81,10 @@ class ApiService {
     final url = Uri.parse("$baseUrl/support-info/");
     return await http.get(url);
   }
+
   static Future<List<Salon>> getSalons() async {
-    final url = Uri.parse("$baseUrl/api/salons"); // Vérifiez l'URL exacte de l'API
+    final url =
+        Uri.parse("$baseUrl/api/salons"); // Vérifiez l'URL exacte de l'API
 
     try {
       final response = await http.get(url);
@@ -126,17 +101,16 @@ class ApiService {
       return [];
     }
   }
+
   /// 🔹 Ajouter un salon (POST)
-  static Future<bool> createSalon(Salon salon, String token) async {
+  static Future<bool> createSalon(Salon salon) async {
     final url = Uri.parse("$baseUrl/api/salons");
-    print(url);
 
     try {
       final response = await http.post(
         url,
         headers: {
           "Content-Type": "application/json",
-          "Authorization": "Bearer $token",  // 🔹 Ajout du token dans l'en-tête
         },
         body: jsonEncode(salon.toJson()), // Utilisation directe de toJson()
       );
@@ -145,13 +119,13 @@ class ApiService {
         debugPrint("Salon ajouté avec succès !");
         return true;
       } else {
-        print("Erreur lors de l'ajout du salon: ${response.statusCode} - ${response.body}");
+        debugPrint(
+            "Erreur lors de l'ajout du salon: ${response.statusCode} - ${response.body}");
         return false;
       }
     } catch (e) {
-      print("Erreur lors de POST de  l'ajout du salon: $e");
+      debugPrint("Erreur lors de l'ajout du salon: $e");
       return false;
     }
   }
 }
-

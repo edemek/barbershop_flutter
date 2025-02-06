@@ -11,14 +11,11 @@ import '../../../../../utils/constants/text_strings.dart';
 import 'package:http/http.dart' as http;
 
 import '../../../../../utils/validators/validation_.dart';
-import '../../../../personalization/screens/profile/Resume_page.dart';
 import '../../../../personalization/screens/profile/profile.dart';
-import '../../login/login.dart';
-import '../../login/widgets/login_form.dart';
 import '../verify_email.dart';
 
-class TSignupForm extends StatefulWidget {
-  TSignupForm({
+class TSignupClientForm extends StatefulWidget {
+  TSignupClientForm({
     super.key,
     required this.dark,
   });
@@ -26,10 +23,10 @@ class TSignupForm extends StatefulWidget {
   final bool dark;
 
   @override
-  State<TSignupForm> createState() => _TSignupFormState();
+  State<TSignupClientForm> createState() => _TSignupFormState();
 }
 
-class _TSignupFormState extends State<TSignupForm> {
+class _TSignupFormState extends State<TSignupClientForm> {
   // Clé globale pour accéder au formulaire
   final _formKey = GlobalKey<FormState>();
 
@@ -178,12 +175,11 @@ class _TSignupFormState extends State<TSignupForm> {
               }
 
               // Supprime les espaces pour la validation
-              final cleanedValue =
+              /*final cleanedValue =
                   value.replaceAll(' ', '').replaceAll('+228', '');
 
               // Validation pour s'assurer qu'il contient exactement 8 chiffres
-              /*
-              if (cleanedValue.length != 12 ||
+              if (cleanedValue.length != 8 ||
                   !RegExp(r'^\d{8}$').hasMatch(cleanedValue)) {
                 return 'Numéro de téléphone invalide';
               }*/
@@ -350,7 +346,6 @@ class _TSignupFormState extends State<TSignupForm> {
                   );
                   final name = _firstNameController.text + " " + _lastNameController.text;
                   print("Nom complet1:"+name);
-                  print(_phoneController.text);
                   final reponse =  await ApiService.register(name, _phoneController.text,_emailController.text,_passwordController.text,_passwordController.text);
                   // Afficher un message de confirmation
                   if (reponse.statusCode == 200) {
@@ -359,14 +354,13 @@ class _TSignupFormState extends State<TSignupForm> {
                     );
 
                     print("Nom complet : $name");
-                    Get.to(() => Resume());
+                    Get.to(() => ProfileScreen());
                   } else {
                     var responseBody = jsonDecode(reponse.body); // Décoder la réponse JSON
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(content: Text("Erreur lors de la création : ${responseBody['message']}")),
                     );
                   }
-
 
                   // Aller à la page de profil
 

@@ -79,100 +79,102 @@ class _SalonListPageState extends State<SalonListPage> {
       ),
       body: salons.isEmpty
           ? Center(
-        child: Text(
-          "Aucun salon n'a été créé.",
-          style: TextStyle(fontSize: 18),
-        ),
-      )
+              child: Text(
+                "Aucun salon n'a été créé.Commencer par en créer en cliquant sur le button + en bas de l'écran",
+                style: TextStyle(fontSize: 18),
+              ),
+            )
           : ListView.builder(
-        itemCount: salons.length,
-        itemBuilder: (context, index) {
-          final salon = salons[index];
-          return Card(
-            margin: EdgeInsets.all(10),
-            color: Colors.white,
-            elevation: 4,
-            child: ListTile(
-              leading: salon.images.isNotEmpty
-                  ? Image.file(
-                File(salon.images[0]),
-                width: 50,
-                height: 50,
-                fit: BoxFit.cover,
-              )
-                  : Icon(
-                Icons.store,
-                color: Color(0xFFFFD700),
-                size: 50,
-              ),
-              title: Text(
-                salon.nom,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                ),
-              ),
-              subtitle: Text(
-                salon.description,
-                style: TextStyle(color: Colors.black87),
-              ),
-              trailing: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  // Bouton de modification
-                  IconButton(
-                    icon: Icon(Icons.edit, color: Color(0xFFFFD700)),
-                    onPressed: () async {
-                      final updatedSalon = await Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => SalonFormPage(salon: salon),
-                        ),
-                      );
-                      if (updatedSalon != null) {
-                        setState(() {
-                          salons[index] = updatedSalon;
-                        });
-                      }
-                    },
-                  ),
-                  // Bouton de suppression
-                  IconButton(
-                    icon: Icon(Icons.delete, color: Colors.red),
-                    onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (context) => AlertDialog(
-                          title: Text("Confirmer la suppression"),
-                          content: Text("Voulez-vous supprimer ce salon ?"),
-                          actions: [
-                            TextButton(
-                              onPressed: () => Navigator.pop(context),
-                              child: Text("Annuler"),
-                            ),
-                            TextButton(
-                              onPressed: () {
-                                setState(() {
-                                  salons.removeAt(index);
-                                });
-                                Navigator.pop(context);
-                              },
-                              child: Text(
-                                "Supprimer",
-                                style: TextStyle(color: Colors.red),
+              itemCount: salons.length,
+              itemBuilder: (context, index) {
+                final salon = salons[index];
+                return Card(
+                  margin: EdgeInsets.all(10),
+                  color: Colors.white,
+                  elevation: 4,
+                  child: ListTile(
+                    leading: salon.images!.isNotEmpty
+                        ? Image.file(
+                            File(salon.images![0]),
+                            width: 50,
+                            height: 50,
+                            fit: BoxFit.cover,
+                          )
+                        : Icon(
+                            Icons.store,
+                            color: Color(0xFFFFD700),
+                            size: 50,
+                          ),
+                    title: Text(
+                      salon.nom,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
+                    ),
+                    subtitle: Text(
+                      salon.description ?? "",
+                      style: TextStyle(color: Colors.black87),
+                    ),
+                    trailing: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        // Bouton de modification
+                        IconButton(
+                          icon: Icon(Icons.edit, color: Color(0xFFFFD700)),
+                          onPressed: () async {
+                            final updatedSalon = await Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    SalonFormPage(salon: salon),
                               ),
-                            ),
-                          ],
+                            );
+                            if (updatedSalon != null) {
+                              setState(() {
+                                salons[index] = updatedSalon;
+                              });
+                            }
+                          },
                         ),
-                      );
-                    },
+                        // Bouton de suppression
+                        IconButton(
+                          icon: Icon(Icons.delete, color: Colors.red),
+                          onPressed: () {
+                            showDialog(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                title: Text("Confirmer la suppression"),
+                                content:
+                                    Text("Voulez-vous supprimer ce salon ?"),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () => Navigator.pop(context),
+                                    child: Text("Annuler"),
+                                  ),
+                                  TextButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        salons.removeAt(index);
+                                      });
+                                      Navigator.pop(context);
+                                    },
+                                    child: Text(
+                                      "Supprimer",
+                                      style: TextStyle(color: Colors.red),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                        ),
+                      ],
+                    ),
                   ),
-                ],
-              ),
+                );
+              },
             ),
-          );
-        },
-      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           final newSalon = await Navigator.push(
@@ -198,7 +200,6 @@ class _SalonListPageState extends State<SalonListPage> {
 
 /// Page permettant de créer ou de modifier un salon.
 class SalonFormPage extends StatefulWidget {
-
   final Salon? salon; // Si null, création d'un nouveau salon
 
   SalonFormPage({this.salon});
@@ -266,8 +267,8 @@ class _SalonFormPageState extends State<SalonFormPage> {
   }
 
   /// Permet de sélectionner une heure à l'aide d'un TimePicker.
-  Future<void> _selectTime(
-      BuildContext context, TimeOfDay initialTime, ValueChanged<TimeOfDay> onSelected) async {
+  Future<void> _selectTime(BuildContext context, TimeOfDay initialTime,
+      ValueChanged<TimeOfDay> onSelected) async {
     final TimeOfDay? newTime = await showTimePicker(
       context: context,
       initialTime: initialTime,
@@ -310,7 +311,6 @@ class _SalonFormPageState extends State<SalonFormPage> {
       }
     }
   }
-
 
   @override
   Widget build(BuildContext context) {

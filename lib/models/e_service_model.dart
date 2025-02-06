@@ -1,145 +1,170 @@
-import 'package:barbershpo_flutter/models/parent/model.dart';
+// ignore_for_file: non_nullable_equals_parameter
+
+/*
+ * File name: e_service_model.dart
+ * Last modified: 2025.02.05 at 12:33:38
+ * Author: harrykouevi - https://github.com/harrykouevi
+ * Copyright (c) 2025
+ */
+
+// import '../services/global_service.dart';
+// import 'category_model.dart';
+// import 'media_model.dart';
+// import 'option_group_model.dart';
 import '../features/Salon/models/salon_model.dart';
-import 'category_model.dart';
+import 'parent/model_.dart';
+import 'salon_model.dart';
 
 class EService extends Model {
-  String? _name;
-  String? _description;
-  double? _price;
-  double? _discountPrice;
-  String? _duration;
-  bool? _featured;
-  bool? _enableBooking;
-  bool? _enableAtSalon;
-  bool? _enableAtCustomerAddress;
-  bool? _isFavorite;
-  List<Category>? _categories;
-  List<Category>? _subCategories;
-  Salon? _salon;
-
-  // Getters
-  String? get name => _name;
-  String? get description => _description;
-  double? get price => _price;
-  double? get discountPrice => _discountPrice;
-  String? get duration => _duration;
-  bool? get featured => _featured;
-  bool? get enableBooking => _enableBooking;
-  bool? get enableAtSalon => _enableAtSalon;
-  bool? get enableAtCustomerAddress => _enableAtCustomerAddress;
-  bool? get isFavorite => _isFavorite;
-  List<Category>? get categories => _categories;
-  List<Category>? get subCategories => _subCategories;
-  Salon? get salon => _salon;
-
-  // Setters
-  set name(String? name) => _name = name;
-  set description(String? description) => _description = description;
-  set price(double? price) => _price = price;
-  set discountPrice(double? discountPrice) => _discountPrice = discountPrice;
-  set duration(String? duration) => _duration = duration;
-  set featured(bool? featured) => _featured = featured;
-  set enableBooking(bool? enableBooking) => _enableBooking = enableBooking;
-  set enableAtSalon(bool? enableAtSalon) => _enableAtSalon = enableAtSalon;
-  set enableAtCustomerAddress(bool? enableAtCustomerAddress) =>
-      _enableAtCustomerAddress = enableAtCustomerAddress;
-  set isFavorite(bool? isFavorite) => _isFavorite = isFavorite;
-  set categories(List<Category>? categories) => _categories = categories;
-  set subCategories(List<Category>? subCategories) => _subCategories = subCategories;
-  set salon(Salon? salon) => _salon = salon;
+  String? name;
+  String? description;
+  // List<Media>? images;
+  double? price;
+  double? discountPrice;
+  String? duration;
+  bool? featured;
+  bool? enableBooking;
+  bool? enableAtSalon;
+  bool? enableAtCustomerAddress;
+  bool? isFavorite;
+  // List<Category>? categories;
+  // List<Category>? subCategories;
+  // List<OptionGroup>? optionGroups;
+  Salon? salon;
 
   EService({
     String? id,
-    String? name,
-    String? description,
-    double? price,
-    double? discountPrice,
-    String? duration,
-    bool? featured,
-    bool? enableBooking,
-    bool? enableAtSalon,
-    bool? enableAtCustomerAddress,
-    bool? isFavorite,
-    List<Category>? categories,
-    List<Category>? subCategories,
-    Salon? salon,
+    this.name,
+    this.description,
+    // this.images,
+    this.price,
+    this.discountPrice,
+    this.duration,
+    this.featured,
+    this.enableBooking,
+    this.enableAtSalon,
+    this.enableAtCustomerAddress,
+    this.isFavorite,
+    // this.categories,
+    // this.subCategories,
+    // this.optionGroups,
+    this.salon,
   }) {
     this.id = id;
-    _name = name;
-    _description = description;
-    _price = price;
-    _discountPrice = discountPrice;
-    _duration = duration;
-    _featured = featured;
-    _enableBooking = enableBooking;
-    _enableAtSalon = enableAtSalon;
-    _enableAtCustomerAddress = enableAtCustomerAddress;
-    _isFavorite = isFavorite;
-    _categories = categories;
-    _subCategories = subCategories;
-    _salon = salon;
   }
 
-  EService.fromJson(Map<String, dynamic> json) {
+  EService.fromJson(Map<String, dynamic>? json) {
     super.fromJson(json);
-    _name = json['name'] as String?;
-    _description = json['description'] as String?;
-    _price = double.tryParse(json['price']?.toString() ?? '');
-    _discountPrice = double.tryParse(json['discount_price']?.toString() ?? '');
-    _duration = json['duration'] as String?;
-    _featured = json['featured'] as bool?;
-    _enableBooking = json['enable_booking'] as bool?;
-    _enableAtSalon = json['enable_at_salon'] as bool?;
-    _enableAtCustomerAddress = json['enable_at_customer_address'] as bool?;
-    _isFavorite = json['is_favorite'] as bool?;
+    name = transStringFromJson(json, 'name');
+    description = transStringFromJson(json, 'description');
+    // images = mediaListFromJson(json, 'images');
+    price = doubleFromJson(json, 'price');
+    discountPrice = doubleFromJson(json, 'discount_price');
+    duration = durationFromJson(json, 'duration');
+    featured = boolFromJson(json, 'featured');
+    enableBooking = boolFromJson(json, 'enable_booking');
+    enableAtSalon = boolFromJson(json, 'enable_at_salon');
+    enableAtCustomerAddress = boolFromJson(json, 'enable_at_customer_address');
+    isFavorite = boolFromJson(json, 'is_favorite');
+    // categories = listFromJson<Category>(
+    //     json, 'categories', (value) => Category.fromJson(value));
+    // subCategories = listFromJson<Category>(
+    //     json, 'sub_categories', (value) => Category.fromJson(value));
+    // optionGroups = listFromJson<OptionGroup>(json, 'option_groups',
+    //     (value) => OptionGroup.fromJson(value, eServiceId: id));
+    salon = objectFromJson(json, 'salon', (value) => Salon.fromJson(value!));
+  }
 
-    if (json['categories'] != null) {
-      _categories = <Category>[];
-      json['categories'].forEach((v) {
-        _categories!.add(Category.fromJson(v));
-      });
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    if (this.hasData) data['id'] = this.id;
+    if (name != null) data['name'] = this.name;
+    if (this.description != null) data['description'] = this.description;
+    if (this.price != null) data['price'] = this.price;
+    if (discountPrice != null) data['discount_price'] = this.discountPrice;
+    if (duration != null) data['duration'] = this.duration;
+    if (featured != null) data['featured'] = this.featured;
+    if (enableBooking != null) data['enable_booking'] = this.enableBooking;
+    if (enableAtSalon != null) data['enable_at_salon'] = this.enableAtSalon;
+    if (enableAtCustomerAddress != null)
+      data['enable_at_customer_address'] = this.enableAtCustomerAddress;
+    if (isFavorite != null) data['is_favorite'] = this.isFavorite;
+    // if (this.categories != null) {
+    //   data['categories'] = this.categories!.map((v) => v.id).toList();
+    // }
+    // if (this.images != null) {
+    //   data['image'] = this.images!.map((v) => v.toJson()).toList();
+    // }
+    // if (this.subCategories != null) {
+    //   data['sub_categories'] =
+    //       this.subCategories!.map((v) => v.toJson()).toList();
+    // }
+    // if (this.optionGroups != null) {
+    //   data['option_groups'] =
+    //       this.optionGroups!.map((v) => v.toJson()).toList();
+    // }
+    // if (this.salon != null && this.salon!.hasData) {
+    if (this.salon != null) {
+      data['salon_id'] = this.salon!.id;
     }
+    return data;
+  }
 
-    if (json['sub_categories'] != null) {
-      _subCategories = <Category>[];
-      json['sub_categories'].forEach((v) {
-        _subCategories!.add(Category.fromJson(v));
-      });
-    }
+  // String get firstImageUrl => this.images != null && this.images!.isNotEmpty
+  //     ? this.images!.first.url
+  //     : "${Get.find<GlobalService>().baseUrl}images/image_default.png";
+  // String get firstImageIcon => this.images != null && this.images!.isNotEmpty
+  //     ? this.images!.first.icon
+  //     : "${Get.find<GlobalService>().baseUrl}images/image_default.png";
+  // String get firstImageThumb => this.images != null && this.images!.isNotEmpty
+  //     ? this.images!.first.thumb
+  //     : "${Get.find<GlobalService>().baseUrl}images/image_default.png";
 
-    _salon = json['salon'] != null ? Salon.fromJson(json['salon']) : null;
+  @override
+  bool get hasData {
+    return super.hasData && name != null && description != null;
+  }
+
+  /*
+  * Get the real price of the service
+  * when the discount not set, then it return the price
+  * otherwise it return the discount price instead
+  * */
+  double get getPrice {
+    return (discountPrice ?? 0) > 0 ? discountPrice! : price!;
+  }
+
+  /*
+  * Get discount price
+  * */
+  double get getOldPrice {
+    return (discountPrice ?? 0) > 0 ? price! : 0;
   }
 
   @override
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = {
-      'id': id,  // Explicitly include id in the json
-      'name': _name,
-      'description': _description,
-    };
-    data['name'] = _name;
-    data['description'] = _description;
-    data['price'] = _price;
-    data['discount_price'] = _discountPrice;
-    data['duration'] = _duration;
-    data['featured'] = _featured;
-    data['enable_booking'] = _enableBooking;
-    data['enable_at_salon'] = _enableAtSalon;
-    data['enable_at_customer_address'] = _enableAtCustomerAddress;
-    data['is_favorite'] = _isFavorite;
+  bool operator ==(Object? other) =>
+      identical(this, other) ||
+      super == other &&
+          other is EService &&
+          runtimeType == other.runtimeType &&
+          id == other.id &&
+          name == other.name &&
+          description == other.description &&
+          isFavorite == other.isFavorite &&
+          enableBooking == other.enableBooking &&
+          // categories == other.categories &&
+          // subCategories == other.subCategories &&
+          salon == other.salon;
 
-    if (_categories != null) {
-      data['categories'] = _categories!.map((v) => v.toJson()).toList();
-    }
-
-    if (_subCategories != null) {
-      data['sub_categories'] = _subCategories!.map((v) => v.toJson()).toList();
-    }
-
-    if (_salon != null) {
-      data['salon'] = _salon!.toJson();
-    }
-
-    return data;
-  }
+  @override
+  int get hashCode =>
+      super.hashCode ^
+      id.hashCode ^
+      name.hashCode ^
+      description.hashCode ^
+      salon.hashCode ^
+      // categories.hashCode ^
+      // subCategories.hashCode ^
+      isFavorite.hashCode ^
+      enableBooking.hashCode;
 }

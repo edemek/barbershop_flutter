@@ -5,7 +5,7 @@ import '../../../../account/views/account_view.dart';
 import '../../../../account/views/account_view_customer.dart';
 import '../../../../utils/constants/colors.dart';
 import '../../../../utils/constants/sizes.dart';
-import '../../../../utils/validators/validation.dart';
+import '../../../../utils/validators/validation_.dart';
 
 class Resume extends StatelessWidget {
   const Resume({super.key});

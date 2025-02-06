@@ -1,5 +1,4 @@
-import 'package:get/get.dart';
-
+// import 'package:get/get.dart';
 
 class SalonRepository {
   // Simulated data for salons, reviews, galleries, etc.
@@ -70,44 +69,69 @@ class SalonRepository {
   }
 
   Future<List<Map<String, dynamic>>> getExperiences(String salonId) async {
-    return experiences.where((experience) => experience['salonId'] == salonId).toList();
+    return experiences
+        .where((experience) => experience['salonId'] == salonId)
+        .toList();
   }
 
-  Future<List<Map<String, dynamic>>> getEServices(String salonId, List<String> categories, {int page = 1}) async {
+  Future<List<Map<String, dynamic>>> getEServices(
+      String salonId, List<String> categories,
+      {int page = 1}) async {
     return eServices
-        .where((service) => service['salonId'] == salonId && categories.contains(service['category']))
+        .where((service) =>
+            service['salonId'] == salonId &&
+            categories.contains(service['category']))
         .toList();
   }
 
   Future<List<Map<String, dynamic>>> getEmployees(String salonId) async {
-    return employees.where((employee) => employee['salonId'] == salonId).toList();
-  }
-
-  Future<List<Map<String, dynamic>>> getPopularEServices(String salonId, List<String> categories, {int page = 1}) async {
-    return eServices
-        .where((service) => service['salonId'] == salonId && categories.contains(service['category']))
+    return employees
+        .where((employee) => employee['salonId'] == salonId)
         .toList();
   }
 
-  Future<List<Map<String, dynamic>>> getMostRatedEServices(String salonId, List<String> categories, {int page = 1}) async {
+  Future<List<Map<String, dynamic>>> getPopularEServices(
+      String salonId, List<String> categories,
+      {int page = 1}) async {
     return eServices
-        .where((service) => service['salonId'] == salonId && categories.contains(service['category']))
+        .where((service) =>
+            service['salonId'] == salonId &&
+            categories.contains(service['category']))
         .toList();
   }
 
-  Future<List<Map<String, dynamic>>> getAvailableEServices(String salonId, List<String> categories, {int page = 1}) async {
+  Future<List<Map<String, dynamic>>> getMostRatedEServices(
+      String salonId, List<String> categories,
+      {int page = 1}) async {
     return eServices
-        .where((service) => service['salonId'] == salonId && categories.contains(service['category']))
+        .where((service) =>
+            service['salonId'] == salonId &&
+            categories.contains(service['category']))
         .toList();
   }
 
-  Future<List<Map<String, dynamic>>> getFeaturedEServices(String salonId, List<String> categories, {int page = 1}) async {
+  Future<List<Map<String, dynamic>>> getAvailableEServices(
+      String salonId, List<String> categories,
+      {int page = 1}) async {
     return eServices
-        .where((service) => service['salonId'] == salonId && categories.contains(service['category']))
+        .where((service) =>
+            service['salonId'] == salonId &&
+            categories.contains(service['category']))
         .toList();
   }
 
-  Future<List<Map<String, dynamic>>> getAvailabilityHours(String eProviderId, DateTime date, String employeeId) async {
+  Future<List<Map<String, dynamic>>> getFeaturedEServices(
+      String salonId, List<String> categories,
+      {int page = 1}) async {
+    return eServices
+        .where((service) =>
+            service['salonId'] == salonId &&
+            categories.contains(service['category']))
+        .toList();
+  }
+
+  Future<List<Map<String, dynamic>>> getAvailabilityHours(
+      String eProviderId, DateTime date, String employeeId) async {
     // This can return hardcoded availability, e.g., a fixed set of available hours
     return [
       {'start': '09:00', 'end': '17:00'},

@@ -5,7 +5,7 @@ import '../../../../account/views/account_view.dart';
 import '../../../../account/views/account_view_customer.dart';
 import '../../../../utils/constants/colors.dart';
 import '../../../../utils/constants/sizes.dart';
-import '../../../../utils/validators/validation.dart';
+import '../../../../utils/validators/validation_.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -15,7 +15,7 @@ class ProfileScreen extends StatelessWidget {
       title: Text(
         'Profile',
         style: TextStyle(
-          color: TColors.textPrimary,
+          color: Colors.blue,
           fontSize: TSizes.fontSizeMd,
           fontWeight: FontWeight.normal,
         ),

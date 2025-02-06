@@ -42,8 +42,8 @@ abstract class Model {
     try {
       return Ui.parseColor(json != null
           ? json[attribute] != null
-              ? json[attribute].toString()
-              : defaultHexColor
+          ? json[attribute].toString()
+          : defaultHexColor
           : defaultHexColor);
     } catch (e) {
       throw Exception(
@@ -56,8 +56,8 @@ abstract class Model {
     try {
       return json != null
           ? json[attribute] != null
-              ? json[attribute].toString()
-              : defaultValue
+          ? json[attribute].toString()
+          : defaultValue
           : defaultValue;
     } catch (e) {
       throw Exception(
@@ -71,7 +71,7 @@ abstract class Model {
       if (json != null && json[attribute] != null) {
         if (json[attribute] is Map<String, dynamic>?) {
           var json2 =
-              json[attribute][defaultLocale ?? Get.locale!.languageCode];
+          json[attribute][defaultLocale ?? Get.locale!.languageCode];
           if (json2 == null) {
             var languageCode2 = "en";
             // var languageCode2 = Get.find<TranslationService>().getLocale().languageCode;
@@ -103,8 +103,8 @@ abstract class Model {
     try {
       return json != null
           ? json[attribute] != null
-              ? DateTime.parse(json[attribute]).toLocal()
-              : defaultValue
+          ? DateTime.parse(json[attribute]).toLocal()
+          : defaultValue
           : defaultValue;
     } catch (e) {
       throw Exception(
@@ -114,8 +114,8 @@ abstract class Model {
 
   String durationFromJson(Map<String, dynamic>? json, String attribute,
       {String defaultValue = '00:00',
-      String fromFormat = 'HH:mm',
-      String toFormat = "HH'h' mm'm'"}) {
+        String fromFormat = 'HH:mm',
+        String toFormat = "HH'h' mm'm'"}) {
     try {
       return DateFormat(toFormat).format(DateFormat(fromFormat)
           .parse(stringFromJson(json, attribute, defaultValue: defaultValue)));
@@ -130,8 +130,8 @@ abstract class Model {
     try {
       return json != null
           ? json[attribute] != null
-              ? jsonDecode(json[attribute])
-              : defaultValue
+          ? jsonDecode(json[attribute])
+          : defaultValue
           : defaultValue;
     } catch (e) {
       throw Exception(
@@ -275,3 +275,4 @@ abstract class Model {
     }
   }
 }
+// TODO Implement this library.
