@@ -79,7 +79,7 @@ class NavigationController extends GetxController {
 
   const StoreScreen(),
    //const AppointmentCard(),
-   const SalonListScreen(),
+    SalonListScreen(),
     const AccountViewClient()
 
   ];
