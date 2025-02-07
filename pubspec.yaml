@@ -27,6 +27,7 @@ dependencies:
   url_launcher: ^6.3.1
   flutter_native_splash: ^2.4.4
   smooth_page_indicator: ^1.2.0+3
+  intl_phone_field: 3.2.0
 
 
 

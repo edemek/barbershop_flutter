@@ -44,12 +44,12 @@ class LaravelApiClient extends GetxService with ApiClient {
   //   Uri _uri = getApiBaseUri("slides");
 
   //   var Response = await httpClient.getUri(_uri, options: optionsCache);
-  //   if (jsonResponse.data['success'] == true) {
-  //     return jsonResponse.data['data']
+  //   if (jsonResponse['success'] == true) {
+  //     return jsonResponse['data']
   //         .map<Slide>((obj) => Slide.fromJson(obj))
   //         .toList();
   //   } else {
-  //     throw new Exception(jsonResponse.data['message']);
+  //     throw new Exception(jsonResponse['message']);
   //   }
   // }
 
@@ -74,9 +74,9 @@ class LaravelApiClient extends GetxService with ApiClient {
       var jsonResponse = jsonDecode(Response.body);
 
       if (jsonResponse['success'] == true) {
-        return User.fromJson(jsonResponse.data['data']);
+        return User.fromJson(jsonResponse['data']);
       } else {
-        throw new Exception(jsonResponse.data['message']);
+        throw new Exception(jsonResponse['message']);
       }
     } else {
       throw Exception(
@@ -104,10 +104,10 @@ class LaravelApiClient extends GetxService with ApiClient {
       var jsonResponse = jsonDecode(Response.body);
 
       if (jsonResponse['success'] == true) {
-        jsonResponse.data['data']['auth'] = true;
-        return User.fromJson(jsonResponse.data['data']);
+        jsonResponse['data']['auth'] = true;
+        return User.fromJson(jsonResponse['data']);
       } else {
-        throw new Exception(jsonResponse.data['message']);
+        throw new Exception(jsonResponse['message']);
       }
     } else {
       throw Exception(
@@ -132,10 +132,10 @@ class LaravelApiClient extends GetxService with ApiClient {
       var jsonResponse = jsonDecode(Response.body);
 
       if (jsonResponse['success'] == true) {
-        jsonResponse.data['data']['auth'] = true;
-        return User.fromJson(jsonResponse.data['data']);
+        jsonResponse['data']['auth'] = true;
+        return User.fromJson(jsonResponse['data']);
       } else {
-        throw new Exception(jsonResponse.data['message']);
+        throw new Exception(jsonResponse['message']);
       }
     } else {
       throw Exception(
@@ -160,7 +160,7 @@ class LaravelApiClient extends GetxService with ApiClient {
       if (jsonResponse['success'] == true) {
         return true;
       } else {
-        throw new Exception(jsonResponse.data['message']);
+        throw new Exception(jsonResponse['message']);
       }
     } else {
       throw Exception(
@@ -195,10 +195,10 @@ class LaravelApiClient extends GetxService with ApiClient {
       var jsonResponse = jsonDecode(Response.body);
 
       if (jsonResponse['success'] == true) {
-        jsonResponse.data['data']['auth'] = true;
-        return User.fromJson(jsonResponse.data['data']);
+        jsonResponse['data']['auth'] = true;
+        return User.fromJson(jsonResponse['data']);
       } else {
-        throw new Exception(jsonResponse.data['message']);
+        throw new Exception(jsonResponse['message']);
       }
     } else {
       throw Exception(
@@ -228,9 +228,9 @@ class LaravelApiClient extends GetxService with ApiClient {
       var jsonResponse = jsonDecode(Response.body);
 
       if (jsonResponse['success'] == true) {
-        return jsonResponse.data['data'];
+        return jsonResponse['data'];
       } else {
-        throw new Exception(jsonResponse.data['message']);
+        throw new Exception(jsonResponse['message']);
       }
     } else {
       throw Exception(
@@ -265,11 +265,11 @@ class LaravelApiClient extends GetxService with ApiClient {
       var jsonResponse = jsonDecode(Response.body);
 
       if (jsonResponse['success'] == true) {
-        return jsonResponse.data['data']
+        return jsonResponse['data']
             .map<Address>((obj) => Address.fromJson(obj))
             .toList();
       } else {
-        throw new Exception(jsonResponse.data['message']);
+        throw new Exception(jsonResponse['message']);
       }
     } else {
       throw Exception(
@@ -294,12 +294,12 @@ class LaravelApiClient extends GetxService with ApiClient {
   //       getApiBaseUri("salons").replace(queryParameters: _queryParameters);
 
   //   var Response = await httpClient.getUri(_uri, options: optionsCache);
-  //   if (jsonResponse.data['success'] == true) {
-  //     return jsonResponse.data['data']
+  //   if (jsonResponse['success'] == true) {
+  //     return jsonResponse['data']
   //         .map<Salon>((obj) => Salon.fromJson(obj))
   //         .toList();
   //   } else {
-  //     throw new Exception(jsonResponse.data['message']);
+  //     throw new Exception(jsonResponse['message']);
   //   }
   // }
 
@@ -319,12 +319,12 @@ class LaravelApiClient extends GetxService with ApiClient {
   //       getApiBaseUri("salons").replace(queryParameters: _queryParameters);
 
   //   var Response = await httpClient.getUri(_uri, options: optionsCache);
-  //   if (jsonResponse.data['success'] == true) {
-  //     return jsonResponse.data['data']
+  //   if (jsonResponse['success'] == true) {
+  //     return jsonResponse['data']
   //         .map<Salon>((obj) => Salon.fromJson(obj))
   //         .toList();
   //   } else {
-  //     throw new Exception(jsonResponse.data['message']);
+  //     throw new Exception(jsonResponse['message']);
   //   }
   // }
 
@@ -383,12 +383,12 @@ class LaravelApiClient extends GetxService with ApiClient {
   //         .replace(queryParameters: _queryParameters);
 
   //     var Response = await httpClient.getUri(_uri, options: optionsNetwork);
-  //     if (jsonResponse.data['success'] == true) {
-  //       return jsonResponse.data['data']
+  //     if (jsonResponse['success'] == true) {
+  //       return jsonResponse['data']
   //           .map<EService>((obj) => EService.fromJson(obj))
   //           .toList();
   //     } else {
-  //       throw new Exception(jsonResponse.data['message']);
+  //       throw new Exception(jsonResponse['message']);
   //     }
   //   }
   // }
@@ -411,12 +411,12 @@ class LaravelApiClient extends GetxService with ApiClient {
   //       getApiBaseUri("e_services").replace(queryParameters: _queryParameters);
 
   //   var Response = await httpClient.getUri(_uri, options: optionsNetwork);
-  //   if (jsonResponse.data['success'] == true) {
-  //     return jsonResponse.data['data']
+  //   if (jsonResponse['success'] == true) {
+  //     return jsonResponse['data']
   //         .map<EService>((obj) => EService.fromJson(obj))
   //         .toList();
   //   } else {
-  //     throw new Exception(jsonResponse.data['message']);
+  //     throw new Exception(jsonResponse['message']);
   //   }
   // }
 
@@ -438,12 +438,12 @@ class LaravelApiClient extends GetxService with ApiClient {
   //       getApiBaseUri("favorites").replace(queryParameters: _queryParameters);
 
   //   var Response = await httpClient.getUri(_uri, options: optionsNetwork);
-  //   if (jsonResponse.data['success'] == true) {
-  //     return jsonResponse.data['data']
+  //   if (jsonResponse['success'] == true) {
+  //     return jsonResponse['data']
   //         .map<Favorite>((obj) => Favorite.fromJson(obj))
   //         .toList();
   //   } else {
-  //     throw new Exception(jsonResponse.data['message']);
+  //     throw new Exception(jsonResponse['message']);
   //   }
   // }
 
@@ -467,11 +467,11 @@ class LaravelApiClient extends GetxService with ApiClient {
   // body: json.encode(favorite.toJson()),
   //     options: optionsNetwork,
   //   );
-  //   if (jsonResponse.data['success'] == true) {
-  //     jsonResponse.data['data']['auth'] = true;
-  //     return Favorite.fromJson(jsonResponse.data['data']);
+  //   if (jsonResponse['success'] == true) {
+  //     jsonResponse['data']['auth'] = true;
+  //     return Favorite.fromJson(jsonResponse['data']);
   //   } else {
-  //     throw new Exception(jsonResponse.data['message']);
+  //     throw new Exception(jsonResponse['message']);
   //   }
   // }
 
@@ -495,10 +495,10 @@ class LaravelApiClient extends GetxService with ApiClient {
   // body: json.encode(favorite.toJson()),
   //     options: optionsNetwork,
   //   );
-  //   if (jsonResponse.data['success'] == true) {
-  //     return jsonResponse.data['data'];
+  //   if (jsonResponse['success'] == true) {
+  //     return jsonResponse['data'];
   //   } else {
-  //     throw new Exception(jsonResponse.data['message']);
+  //     throw new Exception(jsonResponse['message']);
   //   }
   // }
 
@@ -513,10 +513,10 @@ class LaravelApiClient extends GetxService with ApiClient {
   //       .replace(queryParameters: _queryParameters);
 
   //   var Response = await httpClient.getUri(_uri, options: optionsNetwork);
-  //   if (jsonResponse.data['success'] == true) {
-  //     return EService.fromJson(jsonResponse.data['data']);
+  //   if (jsonResponse['success'] == true) {
+  //     return EService.fromJson(jsonResponse['data']);
   //   } else {
-  //     throw new Exception(jsonResponse.data['message']);
+  //     throw new Exception(jsonResponse['message']);
   //   }
   // }
 
@@ -528,10 +528,10 @@ class LaravelApiClient extends GetxService with ApiClient {
   //       .replace(queryParameters: _queryParameters);
 
   //   var Response = await httpClient.getUri(_uri, options: optionsNetwork);
-  //   if (jsonResponse.data['success'] == true) {
-  //     return Salon.fromJson(jsonResponse.data['data']);
+  //   if (jsonResponse['success'] == true) {
+  //     return Salon.fromJson(jsonResponse['data']);
   //   } else {
-  //     throw new Exception(jsonResponse.data['message']);
+  //     throw new Exception(jsonResponse['message']);
   //   }
   // }
 
@@ -545,10 +545,10 @@ class LaravelApiClient extends GetxService with ApiClient {
   //       .replace(queryParameters: _queryParameters);
 
   //   var Response = await httpClient.getUri(_uri, options: optionsNetwork);
-  //   if (jsonResponse.data['success'] == true) {
-  //     return jsonResponse.data['data'];
+  //   if (jsonResponse['success'] == true) {
+  //     return jsonResponse['data'];
   //   } else {
-  //     throw new Exception(jsonResponse.data['message']);
+  //     throw new Exception(jsonResponse['message']);
   //   }
   // }
 
@@ -561,12 +561,12 @@ class LaravelApiClient extends GetxService with ApiClient {
   //       .replace(queryParameters: _queryParameters);
 
   //   var Response = await httpClient.getUri(_uri, options: optionsCache);
-  //   if (jsonResponse.data['success'] == true) {
-  //     return jsonResponse.data['data']['salon_reviews']
+  //   if (jsonResponse['success'] == true) {
+  //     return jsonResponse['data']['salon_reviews']
   //         .map<Review>((obj) => Review.fromJson(obj))
   //         .toList();
   //   } else {
-  //     throw new Exception(jsonResponse.data['message']);
+  //     throw new Exception(jsonResponse['message']);
   //   }
   // }
 
@@ -582,12 +582,12 @@ class LaravelApiClient extends GetxService with ApiClient {
   //       getApiBaseUri("galleries").replace(queryParameters: _queryParameters);
 
   //   var Response = await httpClient.getUri(_uri, options: optionsCache);
-  //   if (jsonResponse.data['success'] == true) {
-  //     return jsonResponse.data['data']
+  //   if (jsonResponse['success'] == true) {
+  //     return jsonResponse['data']
   //         .map<Gallery>((obj) => Gallery.fromJson(obj))
   //         .toList();
   //   } else {
-  //     throw new Exception(jsonResponse.data['message']);
+  //     throw new Exception(jsonResponse['message']);
   //   }
   // }
 
@@ -602,12 +602,12 @@ class LaravelApiClient extends GetxService with ApiClient {
   //       getApiBaseUri("awards").replace(queryParameters: _queryParameters);
 
   //   var Response = await httpClient.getUri(_uri, options: optionsNetwork);
-  //   if (jsonResponse.data['success'] == true) {
-  //     return jsonResponse.data['data']
+  //   if (jsonResponse['success'] == true) {
+  //     return jsonResponse['data']
   //         .map<Award>((obj) => Award.fromJson(obj))
   //         .toList();
   //   } else {
-  //     throw new Exception(jsonResponse.data['message']);
+  //     throw new Exception(jsonResponse['message']);
   //   }
   // }
 
@@ -622,12 +622,12 @@ class LaravelApiClient extends GetxService with ApiClient {
   //       getApiBaseUri("experiences").replace(queryParameters: _queryParameters);
 
   //   var Response = await httpClient.getUri(_uri, options: optionsNetwork);
-  //   if (jsonResponse.data['success'] == true) {
-  //     return jsonResponse.data['data']
+  //   if (jsonResponse['success'] == true) {
+  //     return jsonResponse['data']
   //         .map<Experience>((obj) => Experience.fromJson(obj))
   //         .toList();
   //   } else {
-  //     throw new Exception(jsonResponse.data['message']);
+  //     throw new Exception(jsonResponse['message']);
   //   }
   // }
 
@@ -647,12 +647,12 @@ class LaravelApiClient extends GetxService with ApiClient {
   //       getApiBaseUri("e_services").replace(queryParameters: _queryParameters);
 
   //   var Response = await httpClient.getUri(_uri, options: optionsCache);
-  //   if (jsonResponse.data['success'] == true) {
-  //     return jsonResponse.data['data']
+  //   if (jsonResponse['success'] == true) {
+  //     return jsonResponse['data']
   //         .map<EService>((obj) => EService.fromJson(obj))
   //         .toList();
   //   } else {
-  //     throw new Exception(jsonResponse.data['message']);
+  //     throw new Exception(jsonResponse['message']);
   //   }
   // }
 
@@ -673,12 +673,12 @@ class LaravelApiClient extends GetxService with ApiClient {
   //       getApiBaseUri("e_services").replace(queryParameters: _queryParameters);
 
   //   var Response = await httpClient.getUri(_uri, options: optionsCache);
-  //   if (jsonResponse.data['success'] == true) {
-  //     return jsonResponse.data['data']
+  //   if (jsonResponse['success'] == true) {
+  //     return jsonResponse['data']
   //         .map<EService>((obj) => EService.fromJson(obj))
   //         .toList();
   //   } else {
-  //     throw new Exception(jsonResponse.data['message']);
+  //     throw new Exception(jsonResponse['message']);
   //   }
   // }
 
@@ -698,12 +698,12 @@ class LaravelApiClient extends GetxService with ApiClient {
   //       getApiBaseUri("e_services").replace(queryParameters: _queryParameters);
 
   //   var Response = await httpClient.getUri(_uri, options: optionsNetwork);
-  //   if (jsonResponse.data['success'] == true) {
-  //     return jsonResponse.data['data']
+  //   if (jsonResponse['success'] == true) {
+  //     return jsonResponse['data']
   //         .map<EService>((obj) => EService.fromJson(obj))
   //         .toList();
   //   } else {
-  //     throw new Exception(jsonResponse.data['message']);
+  //     throw new Exception(jsonResponse['message']);
   //   }
   // }
 
@@ -724,12 +724,12 @@ class LaravelApiClient extends GetxService with ApiClient {
   //       getApiBaseUri("e_services").replace(queryParameters: _queryParameters);
 
   //   var Response = await httpClient.getUri(_uri, options: optionsCache);
-  //   if (jsonResponse.data['success'] == true) {
-  //     return jsonResponse.data['data']
+  //   if (jsonResponse['success'] == true) {
+  //     return jsonResponse['data']
   //         .map<EService>((obj) => EService.fromJson(obj))
   //         .toList();
   //   } else {
-  //     throw new Exception(jsonResponse.data['message']);
+  //     throw new Exception(jsonResponse['message']);
   //   }
   // }
 
@@ -743,12 +743,12 @@ class LaravelApiClient extends GetxService with ApiClient {
   //       .replace(queryParameters: _queryParameters);
   //   printUri(StackTrace.current, _uri);
   //   var Response = await httpClient.getUri(_uri, options: optionsNetwork);
-  //   if (jsonResponse.data['success'] == true) {
-  //     return jsonResponse.data['data']['users']
+  //   if (jsonResponse['success'] == true) {
+  //     return jsonResponse['data']['users']
   //         .map<User>((obj) => User.fromJson(obj))
   //         .toList();
   //   } else {
-  //     throw new Exception(jsonResponse.data['message']);
+  //     throw new Exception(jsonResponse['message']);
   //   }
   // }
 
@@ -767,12 +767,12 @@ class LaravelApiClient extends GetxService with ApiClient {
   //       getApiBaseUri("e_services").replace(queryParameters: _queryParameters);
 
   //   var Response = await httpClient.getUri(_uri, options: optionsCache);
-  //   if (jsonResponse.data['success'] == true) {
-  //     return jsonResponse.data['data']
+  //   if (jsonResponse['success'] == true) {
+  //     return jsonResponse['data']
   //         .map<EService>((obj) => EService.fromJson(obj))
   //         .toList();
   //   } else {
-  //     throw new Exception(jsonResponse.data['message']);
+  //     throw new Exception(jsonResponse['message']);
   //   }
   // }
 
@@ -789,12 +789,12 @@ class LaravelApiClient extends GetxService with ApiClient {
   //       .replace(queryParameters: _queryParameters);
 
   //   var Response = await httpClient.getUri(_uri, options: optionsCache);
-  //   if (jsonResponse.data['success'] == true) {
-  //     return jsonResponse.data['data']
+  //   if (jsonResponse['success'] == true) {
+  //     return jsonResponse['data']
   //         .map<Review>((obj) => Review.fromJson(obj))
   //         .toList();
   //   } else {
-  //     throw new Exception(jsonResponse.data['message']);
+  //     throw new Exception(jsonResponse['message']);
   //   }
   // }
 
@@ -813,12 +813,12 @@ class LaravelApiClient extends GetxService with ApiClient {
   //       .replace(queryParameters: _queryParameters);
 
   //   var Response = await httpClient.getUri(_uri, options: optionsCache);
-  //   if (jsonResponse.data['success'] == true) {
-  //     return jsonResponse.data['data']
+  //   if (jsonResponse['success'] == true) {
+  //     return jsonResponse['data']
   //         .map<OptionGroup>((obj) => OptionGroup.fromJson(obj))
   //         .toList();
   //   } else {
-  //     throw new Exception(jsonResponse.data['message']);
+  //     throw new Exception(jsonResponse['message']);
   //   }
   // }
 
@@ -842,12 +842,12 @@ class LaravelApiClient extends GetxService with ApiClient {
   //       getApiBaseUri("e_services").replace(queryParameters: _queryParameters);
 
   //   var Response = await httpClient.getUri(_uri, options: optionsCache);
-  //   if (jsonResponse.data['success'] == true) {
-  //     return jsonResponse.data['data']
+  //   if (jsonResponse['success'] == true) {
+  //     return jsonResponse['data']
   //         .map<EService>((obj) => EService.fromJson(obj))
   //         .toList();
   //   } else {
-  //     throw new Exception(jsonResponse.data['message']);
+  //     throw new Exception(jsonResponse['message']);
   //   }
   // }
 
@@ -871,12 +871,12 @@ class LaravelApiClient extends GetxService with ApiClient {
   //       getApiBaseUri("e_services").replace(queryParameters: _queryParameters);
 
   //   var Response = await httpClient.getUri(_uri, options: optionsCache);
-  //   if (jsonResponse.data['success'] == true) {
-  //     return jsonResponse.data['data']
+  //   if (jsonResponse['success'] == true) {
+  //     return jsonResponse['data']
   //         .map<EService>((obj) => EService.fromJson(obj))
   //         .toList();
   //   } else {
-  //     throw new Exception(jsonResponse.data['message']);
+  //     throw new Exception(jsonResponse['message']);
   //   }
   // }
 
@@ -900,12 +900,12 @@ class LaravelApiClient extends GetxService with ApiClient {
   //       getApiBaseUri("e_services").replace(queryParameters: _queryParameters);
 
   //   var Response = await httpClient.getUri(_uri, options: optionsCache);
-  //   if (jsonResponse.data['success'] == true) {
-  //     return jsonResponse.data['data']
+  //   if (jsonResponse['success'] == true) {
+  //     return jsonResponse['data']
   //         .map<EService>((obj) => EService.fromJson(obj))
   //         .toList();
   //   } else {
-  //     throw new Exception(jsonResponse.data['message']);
+  //     throw new Exception(jsonResponse['message']);
   //   }
   // }
 
@@ -928,12 +928,12 @@ class LaravelApiClient extends GetxService with ApiClient {
   //       getApiBaseUri("e_services").replace(queryParameters: _queryParameters);
 
   //   var Response = await httpClient.getUri(_uri, options: optionsNetwork);
-  //   if (jsonResponse.data['success'] == true) {
-  //     return jsonResponse.data['data']
+  //   if (jsonResponse['success'] == true) {
+  //     return jsonResponse['data']
   //         .map<EService>((obj) => EService.fromJson(obj))
   //         .toList();
   //   } else {
-  //     throw new Exception(jsonResponse.data['message']);
+  //     throw new Exception(jsonResponse['message']);
   //   }
   // }
 
@@ -946,12 +946,12 @@ class LaravelApiClient extends GetxService with ApiClient {
   //       getApiBaseUri("categories").replace(queryParameters: _queryParameters);
 
   //   var Response = await httpClient.getUri(_uri, options: optionsCache);
-  //   if (jsonResponse.data['success'] == true) {
-  //     return jsonResponse.data['data']
+  //   if (jsonResponse['success'] == true) {
+  //     return jsonResponse['data']
   //         .map<Category>((obj) => Category.fromJson(obj))
   //         .toList();
   //   } else {
-  //     throw new Exception(jsonResponse.data['message']);
+  //     throw new Exception(jsonResponse['message']);
   //   }
   // }
 
@@ -965,12 +965,12 @@ class LaravelApiClient extends GetxService with ApiClient {
   //       getApiBaseUri("categories").replace(queryParameters: _queryParameters);
 
   //   var Response = await httpClient.getUri(_uri, options: optionsCache);
-  //   if (jsonResponse.data['success'] == true) {
-  //     return jsonResponse.data['data']
+  //   if (jsonResponse['success'] == true) {
+  //     return jsonResponse['data']
   //         .map<Category>((obj) => Category.fromJson(obj))
   //         .toList();
   //   } else {
-  //     throw new Exception(jsonResponse.data['message']);
+  //     throw new Exception(jsonResponse['message']);
   //   }
   // }
 
@@ -985,12 +985,12 @@ class LaravelApiClient extends GetxService with ApiClient {
   //       getApiBaseUri("categories").replace(queryParameters: _queryParameters);
 
   //   var Response = await httpClient.getUri(_uri, options: optionsCache);
-  //   if (jsonResponse.data['success'] == true) {
-  //     return jsonResponse.data['data']
+  //   if (jsonResponse['success'] == true) {
+  //     return jsonResponse['data']
   //         .map<Category>((obj) => Category.fromJson(obj))
   //         .toList();
   //   } else {
-  //     throw new Exception(jsonResponse.data['message']);
+  //     throw new Exception(jsonResponse['message']);
   //   }
   // }
 
@@ -1005,12 +1005,12 @@ class LaravelApiClient extends GetxService with ApiClient {
   //       getApiBaseUri("categories").replace(queryParameters: _queryParameters);
 
   //   var Response = await httpClient.getUri(_uri, options: optionsCache);
-  //   if (jsonResponse.data['success'] == true) {
-  //     return jsonResponse.data['data']
+  //   if (jsonResponse['success'] == true) {
+  //     return jsonResponse['data']
   //         .map<Category>((obj) => Category.fromJson(obj))
   //         .toList();
   //   } else {
-  //     throw new Exception(jsonResponse.data['message']);
+  //     throw new Exception(jsonResponse['message']);
   //   }
   // }
 
@@ -1032,12 +1032,12 @@ class LaravelApiClient extends GetxService with ApiClient {
   //       getApiBaseUri("categories").replace(queryParameters: _queryParameters);
 
   //   var Response = await httpClient.getUri(_uri, options: optionsCache);
-  //   if (jsonResponse.data['success'] == true) {
-  //     return jsonResponse.data['data']
+  //   if (jsonResponse['success'] == true) {
+  //     return jsonResponse['data']
   //         .map<Category>((obj) => Category.fromJson(obj))
   //         .toList();
   //   } else {
-  //     throw new Exception(jsonResponse.data['message']);
+  //     throw new Exception(jsonResponse['message']);
   //   }
   // }
 
@@ -1055,12 +1055,12 @@ class LaravelApiClient extends GetxService with ApiClient {
   //       getApiBaseUri("bookings").replace(queryParameters: _queryParameters);
 
   //   var Response = await httpClient.getUri(_uri, options: optionsNetwork);
-  //   if (jsonResponse.data['success'] == true) {
-  //     return jsonResponse.data['data']
+  //   if (jsonResponse['success'] == true) {
+  //     return jsonResponse['data']
   //         .map<Booking>((obj) => Booking.fromJson(obj))
   //         .toList();
   //   } else {
-  //     throw new Exception(jsonResponse.data['message']);
+  //     throw new Exception(jsonResponse['message']);
   //   }
   // }
 
@@ -1074,12 +1074,12 @@ class LaravelApiClient extends GetxService with ApiClient {
   //       .replace(queryParameters: _queryParameters);
 
   //   var Response = await httpClient.getUri(_uri, options: optionsCache);
-  //   if (jsonResponse.data['success'] == true) {
-  //     return jsonResponse.data['data']
+  //   if (jsonResponse['success'] == true) {
+  //     return jsonResponse['data']
   //         .map<BookingStatus>((obj) => BookingStatus.fromJson(obj))
   //         .toList();
   //   } else {
-  //     throw new Exception(jsonResponse.data['message']);
+  //     throw new Exception(jsonResponse['message']);
   //   }
   // }
 
@@ -1093,10 +1093,10 @@ class LaravelApiClient extends GetxService with ApiClient {
   //       .replace(queryParameters: _queryParameters);
 
   //   var Response = await httpClient.getUri(_uri, options: optionsNetwork);
-  //   if (jsonResponse.data['success'] == true) {
-  //     return Booking.fromJson(jsonResponse.data['data']);
+  //   if (jsonResponse['success'] == true) {
+  //     return Booking.fromJson(jsonResponse['data']);
   //   } else {
-  //     throw new Exception(jsonResponse.data['message']);
+  //     throw new Exception(jsonResponse['message']);
   //   }
   // }
 
@@ -1115,10 +1115,10 @@ class LaravelApiClient extends GetxService with ApiClient {
   //       getApiBaseUri("coupons").replace(queryParameters: _queryParameters);
 
   //   var Response = await httpClient.getUri(_uri, options: optionsNetwork);
-  //   if (jsonResponse.data['success'] == true) {
-  //     return Coupon.fromJson(jsonResponse.data['data']);
+  //   if (jsonResponse['success'] == true) {
+  //     return Coupon.fromJson(jsonResponse['data']);
   //   } else {
-  //     throw new Exception(jsonResponse.data['message']);
+  //     throw new Exception(jsonResponse['message']);
   //   }
   // }
 
@@ -1136,10 +1136,10 @@ class LaravelApiClient extends GetxService with ApiClient {
 
   //   var Response = await httpClient.putUri(_uri,
   //       data: booking.toJson(), options: optionsNetwork);
-  //   if (jsonResponse.data['success'] == true) {
-  //     return Booking.fromJson(jsonResponse.data['data']);
+  //   if (jsonResponse['success'] == true) {
+  //     return Booking.fromJson(jsonResponse['data']);
   //   } else {
-  //     throw new Exception(jsonResponse.data['message']);
+  //     throw new Exception(jsonResponse['message']);
   //   }
   // }
 
@@ -1156,10 +1156,10 @@ class LaravelApiClient extends GetxService with ApiClient {
   //       getApiBaseUri("bookings").replace(queryParameters: _queryParameters);
   //   var Response = await httpClient.post(_uri,
   //       data: booking.toJson(), options: optionsNetwork);
-  //   if (jsonResponse.data['success'] == true) {
-  //     return Booking.fromJson(jsonResponse.data['data']);
+  //   if (jsonResponse['success'] == true) {
+  //     return Booking.fromJson(jsonResponse['data']);
   //   } else {
-  //     throw new Exception(jsonResponse.data['message']);
+  //     throw new Exception(jsonResponse['message']);
   //   }
   // }
 
@@ -1178,10 +1178,10 @@ class LaravelApiClient extends GetxService with ApiClient {
   //   Get.log(review.toJson().toString());
   //   var Response = await httpClient.post(_uri,
   //       data: review.toJson(), options: optionsNetwork);
-  //   if (jsonResponse.data['success'] == true) {
-  //     return Review.fromJson(jsonResponse.data['data']);
+  //   if (jsonResponse['success'] == true) {
+  //     return Review.fromJson(jsonResponse['data']);
   //   } else {
-  //     throw new Exception(jsonResponse.data['message']);
+  //     throw new Exception(jsonResponse['message']);
   //   }
   // }
 
@@ -1203,12 +1203,12 @@ class LaravelApiClient extends GetxService with ApiClient {
   //       .replace(queryParameters: _queryParameters);
 
   //   var Response = await httpClient.getUri(_uri, options: optionsCache);
-  //   if (jsonResponse.data['success'] == true) {
-  //     return jsonResponse.data['data']
+  //   if (jsonResponse['success'] == true) {
+  //     return jsonResponse['data']
   //         .map<PaymentMethod>((obj) => PaymentMethod.fromJson(obj))
   //         .toList();
   //   } else {
-  //     throw new Exception(jsonResponse.data['message']);
+  //     throw new Exception(jsonResponse['message']);
   //   }
   // }
 
@@ -1225,12 +1225,12 @@ class LaravelApiClient extends GetxService with ApiClient {
   //       getApiBaseUri("wallets").replace(queryParameters: _queryParameters);
 
   //   var Response = await httpClient.getUri(_uri, options: optionsCache);
-  //   if (jsonResponse.data['success'] == true) {
-  //     return jsonResponse.data['data']
+  //   if (jsonResponse['success'] == true) {
+  //     return jsonResponse['data']
   //         .map<Wallet>((obj) => Wallet.fromJson(obj))
   //         .toList();
   //   } else {
-  //     throw new Exception(jsonResponse.data['message']);
+  //     throw new Exception(jsonResponse['message']);
   //   }
   // }
 
@@ -1248,10 +1248,10 @@ class LaravelApiClient extends GetxService with ApiClient {
 
   //   var Response = await httpClient.post(_uri,
   //       data: _wallet.toJson(), options: optionsNetwork);
-  //   if (jsonResponse.data['success'] == true) {
-  //     return Wallet.fromJson(jsonResponse.data['data']);
+  //   if (jsonResponse['success'] == true) {
+  //     return Wallet.fromJson(jsonResponse['data']);
   //   } else {
-  //     throw new Exception(jsonResponse.data['message']);
+  //     throw new Exception(jsonResponse['message']);
   //   }
   // }
 
@@ -1269,10 +1269,10 @@ class LaravelApiClient extends GetxService with ApiClient {
 
   //   var Response = await httpClient.putUri(_uri,
   //       data: _wallet.toJson(), options: optionsNetwork);
-  //   if (jsonResponse.data['success'] == true) {
-  //     return Wallet.fromJson(jsonResponse.data['data']);
+  //   if (jsonResponse['success'] == true) {
+  //     return Wallet.fromJson(jsonResponse['data']);
   //   } else {
-  //     throw new Exception(jsonResponse.data['message']);
+  //     throw new Exception(jsonResponse['message']);
   //   }
   // }
 
@@ -1289,10 +1289,10 @@ class LaravelApiClient extends GetxService with ApiClient {
   //       .replace(queryParameters: _queryParameters);
 
   //   var Response = await httpClient.deleteUri(_uri, options: optionsNetwork);
-  //   if (jsonResponse.data['success'] == true) {
-  //     return jsonResponse.data['data'];
+  //   if (jsonResponse['success'] == true) {
+  //     return jsonResponse['data'];
   //   } else {
-  //     throw new Exception(jsonResponse.data['message']);
+  //     throw new Exception(jsonResponse['message']);
   //   }
   // }
 
@@ -1312,12 +1312,12 @@ class LaravelApiClient extends GetxService with ApiClient {
   //       .replace(queryParameters: _queryParameters);
 
   //   var Response = await httpClient.getUri(_uri, options: optionsNetwork);
-  //   if (jsonResponse.data['success'] == true) {
-  //     return jsonResponse.data['data']
+  //   if (jsonResponse['success'] == true) {
+  //     return jsonResponse['data']
   //         .map<WalletTransaction>((obj) => WalletTransaction.fromJson(obj))
   //         .toList();
   //   } else {
-  //     throw new Exception(jsonResponse.data['message']);
+  //     throw new Exception(jsonResponse['message']);
   //   }
   // }
 
@@ -1335,10 +1335,10 @@ class LaravelApiClient extends GetxService with ApiClient {
 
   //   var Response = await httpClient.post(_uri,
   //       data: _booking.toJson(), options: optionsNetwork);
-  //   if (jsonResponse.data['success'] == true) {
-  //     return Payment.fromJson(jsonResponse.data['data']);
+  //   if (jsonResponse['success'] == true) {
+  //     return Payment.fromJson(jsonResponse['data']);
   //   } else {
-  //     throw new Exception(jsonResponse.data['message']);
+  //     throw new Exception(jsonResponse['message']);
   //   }
   // }
 
@@ -1356,10 +1356,10 @@ class LaravelApiClient extends GetxService with ApiClient {
 
   //   var Response = await httpClient.post(_uri,
   //       data: _booking.toJson(), options: optionsNetwork);
-  //   if (jsonResponse.data['success'] == true) {
-  //     return Payment.fromJson(jsonResponse.data['data']);
+  //   if (jsonResponse['success'] == true) {
+  //     return Payment.fromJson(jsonResponse['data']);
   //   } else {
-  //     throw new Exception(jsonResponse.data['message']);
+  //     throw new Exception(jsonResponse['message']);
   //   }
   // }
 
@@ -1488,12 +1488,12 @@ class LaravelApiClient extends GetxService with ApiClient {
   //       .replace(queryParameters: _queryParameters);
 
   //   var Response = await httpClient.getUri(_uri, options: optionsNetwork);
-  //   if (jsonResponse.data['success'] == true) {
-  //     return jsonResponse.data['data']
+  //   if (jsonResponse['success'] == true) {
+  //     return jsonResponse['data']
   //         .map<Notification>((obj) => Notification.fromJson(obj))
   //         .toList();
   //   } else {
-  //     throw new Exception(jsonResponse.data['message']);
+  //     throw new Exception(jsonResponse['message']);
   //   }
   // }
 
@@ -1511,10 +1511,10 @@ class LaravelApiClient extends GetxService with ApiClient {
 
   //   var Response = await httpClient.putUri(_uri,
   //       data: notification.markReadMap(), options: optionsNetwork);
-  //   if (jsonResponse.data['success'] == true) {
-  //     return Notification.fromJson(jsonResponse.data['data']);
+  //   if (jsonResponse['success'] == true) {
+  //     return Notification.fromJson(jsonResponse['data']);
   //   } else {
-  //     throw new Exception(jsonResponse.data['message']);
+  //     throw new Exception(jsonResponse['message']);
   //   }
   // }
 
@@ -1541,10 +1541,10 @@ class LaravelApiClient extends GetxService with ApiClient {
   //   Get.log(data.toString());
   //   var jsonResponse =
   //       await httpClient.post(_uri, data: data, options: optionsNetwork);
-  //   if (jsonResponse.data['success'] == true) {
+  //   if (jsonResponse['success'] == true) {
   //     return true;
   //   } else {
-  //     throw new Exception(jsonResponse.data['message']);
+  //     throw new Exception(jsonResponse['message']);
   //   }
   // }
 
@@ -1561,10 +1561,10 @@ class LaravelApiClient extends GetxService with ApiClient {
   //       .replace(queryParameters: _queryParameters);
 
   //   var Response = await httpClient.deleteUri(_uri, options: optionsNetwork);
-  //   if (jsonResponse.data['success'] == true) {
-  //     return Notification.fromJson(jsonResponse.data['data']);
+  //   if (jsonResponse['success'] == true) {
+  //     return Notification.fromJson(jsonResponse['data']);
   //   } else {
-  //     throw new Exception(jsonResponse.data['message']);
+  //     throw new Exception(jsonResponse['message']);
   //   }
   // }
 
@@ -1583,10 +1583,10 @@ class LaravelApiClient extends GetxService with ApiClient {
   //       .replace(queryParameters: _queryParameters);
 
   //   var Response = await httpClient.getUri(_uri, options: optionsNetwork);
-  //   if (jsonResponse.data['success'] == true) {
-  //     return jsonResponse.data['data'];
+  //   if (jsonResponse['success'] == true) {
+  //     return jsonResponse['data'];
   //   } else {
-  //     throw new Exception(jsonResponse.data['message']);
+  //     throw new Exception(jsonResponse['message']);
   //   }
   // }
 
@@ -1599,12 +1599,12 @@ class LaravelApiClient extends GetxService with ApiClient {
   //       .replace(queryParameters: _queryParameters);
 
   //   var Response = await httpClient.getUri(_uri, options: optionsCache);
-  //   if (jsonResponse.data['success'] == true) {
-  //     return jsonResponse.data['data']
+  //   if (jsonResponse['success'] == true) {
+  //     return jsonResponse['data']
   //         .map<FaqCategory>((obj) => FaqCategory.fromJson(obj))
   //         .toList();
   //   } else {
-  //     throw new Exception(jsonResponse.data['message']);
+  //     throw new Exception(jsonResponse['message']);
   //   }
   // }
 
@@ -1619,12 +1619,12 @@ class LaravelApiClient extends GetxService with ApiClient {
   //   Uri _uri = getApiBaseUri("faqs").replace(queryParameters: _queryParameters);
 
   //   var Response = await httpClient.getUri(_uri, options: optionsCache);
-  //   if (jsonResponse.data['success'] == true) {
-  //     return jsonResponse.data['data']
+  //   if (jsonResponse['success'] == true) {
+  //     return jsonResponse['data']
   //         .map<Faq>((obj) => Faq.fromJson(obj))
   //         .toList();
   //   } else {
-  //     throw new Exception(jsonResponse.data['message']);
+  //     throw new Exception(jsonResponse['message']);
   //   }
   // }
 
@@ -1640,11 +1640,10 @@ class LaravelApiClient extends GetxService with ApiClient {
     if (Response.statusCode == 200) {
       // Decode the JSON jsonResponse
       var jsonResponse = jsonDecode(Response.body);
-
       if (jsonResponse['success'] == true) {
-        return Setting.fromJson(jsonResponse.data['data']);
+        return Setting.fromJson(jsonResponse['data']);
       } else {
-        throw new Exception(jsonResponse.data['message']);
+        throw new Exception(jsonResponse['message']);
       }
     } else {
       throw Exception(
@@ -1664,9 +1663,9 @@ class LaravelApiClient extends GetxService with ApiClient {
       var jsonResponse = jsonDecode(Response.body);
 
       if (jsonResponse['success'] == true) {
-        return jsonResponse.data['data'];
+        return jsonResponse['data'];
       } else {
-        throw new Exception(jsonResponse.data['message']);
+        throw new Exception(jsonResponse['message']);
       }
     } else {
       throw Exception(
@@ -1687,9 +1686,9 @@ class LaravelApiClient extends GetxService with ApiClient {
       var jsonResponse = jsonDecode(Response.body);
 
       if (jsonResponse['success'] == true) {
-        return Map<String, String>.from(jsonResponse.data['data']);
+        return Map<String, String>.from(jsonResponse['data']);
       } else {
-        throw new Exception(jsonResponse.data['message']);
+        throw new Exception(jsonResponse['message']);
       }
     } else {
       throw Exception(
@@ -1706,9 +1705,9 @@ class LaravelApiClient extends GetxService with ApiClient {
       var jsonResponse = jsonDecode(Response.body);
 
       if (jsonResponse['success'] == true) {
-        return List.from(jsonResponse.data['data']);
+        return List.from(jsonResponse['data']);
       } else {
-        throw new Exception(jsonResponse.data['message']);
+        throw new Exception(jsonResponse['message']);
       }
     } else {
       throw Exception(
@@ -1733,11 +1732,11 @@ class LaravelApiClient extends GetxService with ApiClient {
       var jsonResponse = jsonDecode(Response.body);
 
       if (jsonResponse['success'] == true) {
-        return jsonResponse.data['data']
+        return jsonResponse['data']
             .map<CustomPage>((obj) => CustomPage.fromJson(obj))
             .toList();
       } else {
-        throw new Exception(jsonResponse.data['message']);
+        throw new Exception(jsonResponse['message']);
       }
     } else {
       throw Exception(
@@ -1755,9 +1754,9 @@ class LaravelApiClient extends GetxService with ApiClient {
       var jsonResponse = jsonDecode(Response.body);
 
       if (jsonResponse['success'] == true) {
-        return CustomPage.fromJson(jsonResponse.data['data']);
+        return CustomPage.fromJson(jsonResponse['data']);
       } else {
-        throw new Exception(jsonResponse.data['message']);
+        throw new Exception(jsonResponse['message']);
       }
     } else {
       throw Exception(
@@ -1783,11 +1782,11 @@ class LaravelApiClient extends GetxService with ApiClient {
   //     "field": field,
   //   });
   //   var Response = await httpClient.post(_uri, data: formData);
-  //   print(jsonResponse.data);
-  //   if (jsonResponse.data['data'] != false) {
-  //     return jsonResponse.data['data'];
+  //   print(jsonResponse);
+  //   if (jsonResponse['data'] != false) {
+  //     return jsonResponse['data'];
   //   } else {
-  //     throw new Exception(jsonResponse.data['message']);
+  //     throw new Exception(jsonResponse['message']);
   //   }
   // }
 
@@ -1803,11 +1802,11 @@ class LaravelApiClient extends GetxService with ApiClient {
   //   Uri _uri = getApiBaseUri("uploads/clear")
   //       .replace(queryParameters: _queryParameters);
   //   var Response = await httpClient.post(_uri, data: {'uuid': uuid});
-  //   print(jsonResponse.data);
-  //   if (jsonResponse.data['data'] != false) {
+  //   print(jsonResponse);
+  //   if (jsonResponse['data'] != false) {
   //     return true;
   //   } else {
-  //     throw new Exception(jsonResponse.data['message']);
+  //     throw new Exception(jsonResponse['message']);
   //   }
   // }
 
@@ -1823,11 +1822,11 @@ class LaravelApiClient extends GetxService with ApiClient {
   //   Uri _uri = getApiBaseUri("uploads/clear")
   //       .replace(queryParameters: _queryParameters);
   //   var Response = await httpClient.post(_uri, data: {'uuid': uuids});
-  //   print(jsonResponse.data);
-  //   if (jsonResponse.data['data'] != false) {
+  //   print(jsonResponse);
+  //   if (jsonResponse['data'] != false) {
   //     return true;
   //   } else {
-  //     throw new Exception(jsonResponse.data['message']);
+  //     throw new Exception(jsonResponse['message']);
   //   }
   // }
 }
