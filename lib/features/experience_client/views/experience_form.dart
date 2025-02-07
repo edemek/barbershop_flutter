@@ -39,7 +39,7 @@ class _ExperienceHomeScreenState extends State<ExperienceHomeScreen> {
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.calendar_today), label: "Partager votre expérience"),
           BottomNavigationBarItem(icon: Icon(Icons.list), label: 'Voir les experiences des autres'),
-          BottomNavigationBarItem(icon: Icon(Icons.list), label: 'Donner vos avis '),
+          //BottomNavigationBarItem(icon: Icon(Icons.list), label: 'Donner vos avis '),
         ],
       ),
     );

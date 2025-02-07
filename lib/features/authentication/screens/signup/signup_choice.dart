@@ -52,7 +52,9 @@ class AccountTypeSelection extends StatelessWidget {
                   onTap: () {
                     // Navigation vers l'inscription coiffeur
 
-                    userController.updateUser(null, null, null, null, null);
+                    // userController.updateUser(null, null, null, null, null);
+                    userController.updateUser(
+                        null, null, null, null, null, null, "salon_owner");
                     Get.to(() => SignupScreen());
                     print("Navigation vers inscription en tant que coiffeur");
                   },
@@ -66,13 +68,9 @@ class AccountTypeSelection extends StatelessWidget {
                     onTap: () {
                       // Navigation vers l'inscription client
 
+                      // userController.updateUser(null, null, null, null, null);
                       userController.updateUser(
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                      );
+                          null, null, null, null, null, null, "customer");
                       Get.to(() => SignupScreen());
                       print("Navigation vers inscription en tant que client");
                     }),

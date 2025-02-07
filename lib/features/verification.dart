@@ -8,7 +8,7 @@ class VerificationPage extends StatefulWidget {
   final String emailOrPhone;
   //final bool isChecked;
   final String role;
-  const VerificationPage({required this.emailOrPhone, required this.role, super.key, required bool isChecked});
+  const VerificationPage({required this.emailOrPhone, required this.role, super.key});
 
   @override
   State<VerificationPage> createState() => _VerificationPageState();
@@ -32,9 +32,10 @@ class _VerificationPageState extends State<VerificationPage> {
         );
       } else if (codeController.text == "789123" && widget.role == "customer") {
         // Redirection vers la page du client
-        Navigator.push(
+        Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(builder: (context) => NavigationMenu()),
+              (route) => false,
         );
       } else {
         // Afficher une erreur
