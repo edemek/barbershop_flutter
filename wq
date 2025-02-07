@@ -1,0 +1,80 @@
+[33mb0c3870[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32msprint_time[m[33m, [m[1;31morigin/sprint_time[m[33m)[m HEAD@{0}: commit: dernière modification ajout de deconnexion et redirection directe vers la la page d'accueil après connexion
+[33m574fdaa[m HEAD@{1}: merge assistance: Merge made by the 'ort' strategy.
+[33mdc70435[m HEAD@{2}: checkout: moving from assistance to sprint_time
+[33m8c0a439[m[33m ([m[1;32massistance[m[33m)[m HEAD@{3}: commit: recorrection du code
+[33mbff43b2[m HEAD@{4}: checkout: moving from sprint_time to assistance
+[33mdc70435[m HEAD@{5}: commit: commit standart
+[33m37bcec9[m HEAD@{6}: checkout: moving from assistance to sprint_time
+[33mbff43b2[m HEAD@{7}: commit: maj3
+[33m94ddc81[m[33m ([m[1;31morigin/assistance[m[33m)[m HEAD@{8}: checkout: moving from branche_intermediare to assistance
+[33m94ddc81[m[33m ([m[1;31morigin/assistance[m[33m)[m HEAD@{9}: checkout: moving from assistance to branche_intermediare
+[33m94ddc81[m[33m ([m[1;31morigin/assistance[m[33m)[m HEAD@{10}: merge branche_intermediare: Fast-forward
+[33m8a37214[m HEAD@{11}: checkout: moving from branche_intermediare to assistance
+[33m94ddc81[m[33m ([m[1;31morigin/assistance[m[33m)[m HEAD@{12}: commit: resolution conflit2
+[33mf7091d7[m HEAD@{13}: commit (merge): resolution conflit
+[33mbedd53d[m HEAD@{14}: reset: moving to HEAD
+[33mbedd53d[m HEAD@{15}: checkout: moving from sprint_time to branche_intermediare
+[33m37bcec9[m HEAD@{16}: commit: maj2
+[33mb309a24[m HEAD@{17}: reset: moving to origin/sprint_time
+[33mbedd53d[m HEAD@{18}: checkout: moving from branche_intermediare to sprint_time
+[33mbedd53d[m HEAD@{19}: checkout: moving from sprint_time to branche_intermediare
+[33mbedd53d[m HEAD@{20}: checkout: moving from assistance to sprint_time
+[33m8a37214[m HEAD@{21}: commit: maj
+[33me2bf317[m HEAD@{22}: checkout: moving from sprint_time to assistance
+[33mbedd53d[m HEAD@{23}: commit: maj
+[33ma521561[m HEAD@{24}: checkout: moving from assistance to sprint_time
+[33me2bf317[m HEAD@{25}: commit: maj
+[33ma9b083f[m HEAD@{26}: reset: moving to origin/assistance
+[33ma9b083f[m HEAD@{27}: checkout: moving from sprint_time to assistance
+[33ma521561[m HEAD@{28}: commit: maj
+[33mb309a24[m HEAD@{29}: checkout: moving from origin/assistance to sprint_time
+[33mb309a24[m HEAD@{30}: checkout: moving from sprint_time to origin/assistance
+[33mb309a24[m HEAD@{31}: commit (merge): maj
+[33m393ad4b[m HEAD@{32}: checkout: moving from main to sprint_time
+[33m8c2b2a4[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmain[m[33m)[m HEAD@{33}: pull: Fast-forward
+[33m5ae05c2[m HEAD@{34}: checkout: moving from sprint_time to main
+[33m393ad4b[m HEAD@{35}: commit: maj
+[33m3ff0c8a[m HEAD@{36}: checkout: moving from main to sprint_time
+[33m5ae05c2[m HEAD@{37}: checkout: moving from sprint_time to main
+[33m3ff0c8a[m HEAD@{38}: checkout: moving from main to sprint_time
+[33m5ae05c2[m HEAD@{39}: checkout: moving from sprint_time to main
+[33m3ff0c8a[m HEAD@{40}: commit: last commit
+[33m55d8578[m HEAD@{41}: commit: restructuration du projet
+[33mc578510[m HEAD@{42}: checkout: moving from main to sprint_time
+[33m5ae05c2[m HEAD@{43}: checkout: moving from sprint_time to main
+[33mc578510[m HEAD@{44}: commit: mise en place du widget de barre et renvoie vers la MainScreen lors de l'authentification
+[33m93c5438[m HEAD@{45}: checkout: moving from main to sprint_time
+[33m5ae05c2[m HEAD@{46}: checkout: moving from sprint_time to main
+[33m93c5438[m HEAD@{47}: commit (merge): merge effectué avec le main et resolution des conflits
+[33m5ae05c2[m HEAD@{48}: checkout: moving from main to sprint_time
+[33m5ae05c2[m HEAD@{49}: checkout: moving from tache_semainex1+ to main
+[33m9431037[m[33m ([m[1;32mtache_semainex1+[m[33m)[m HEAD@{50}: checkout: moving from sprint_branch to tache_semainex1+
+[33mbd72dbc[m HEAD@{51}: commit (merge): ok
+[33m5ae05c2[m HEAD@{52}: checkout: moving from main to sprint_branch
+[33m5ae05c2[m HEAD@{53}: pull: Fast-forward
+[33m0f07a09[m HEAD@{54}: checkout: moving from tache_semainex1+ to main
+[33m9431037[m[33m ([m[1;32mtache_semainex1+[m[33m)[m HEAD@{55}: commit: reservation_mis_en_place
+[33m88bb3cb[m[33m ([m[1;31morigin/tache_semainex1+[m[33m)[m HEAD@{56}: commit: dernier commit
+[33m5654302[m HEAD@{57}: commit: test_api_login_inscription
+[33ma5d371a[m HEAD@{58}: commit: mise en place du choix de compte et redirection
+[33m17c0f97[m HEAD@{59}: commit: amélioration coté visu salon et reservation
+[33m5006a29[m HEAD@{60}: commit: ajout du de l'icone et du splash screen
+[33m6fcb7f5[m HEAD@{61}: commit: reservation_client
+[33m5cba6e6[m HEAD@{62}: commit: Mise en place structure client avec fonctionnalité reservation et salon
+[33m9b6ef6e[m HEAD@{63}: commit: Mise en place structure client avec fonctionnalité reservation et salon
+[33m6b4351f[m[33m ([m[1;31morigin/tache_semainex1[m[33m, [m[1;32mtache_semainex1[m[33m)[m HEAD@{64}: checkout: moving from tache_semainex1 to tache_semainex1+
+[33m6b4351f[m[33m ([m[1;31morigin/tache_semainex1[m[33m, [m[1;32mtache_semainex1[m[33m)[m HEAD@{65}: reset: moving to HEAD
+[33m6b4351f[m[33m ([m[1;31morigin/tache_semainex1[m[33m, [m[1;32mtache_semainex1[m[33m)[m HEAD@{66}: checkout: moving from main to tache_semainex1
+[33m0f07a09[m HEAD@{67}: checkout: moving from tache_semainex1+ to main
+[33m6b4351f[m[33m ([m[1;31morigin/tache_semainex1[m[33m, [m[1;32mtache_semainex1[m[33m)[m HEAD@{68}: checkout: moving from tache_semainex1 to tache_semainex1+
+[33m6b4351f[m[33m ([m[1;31morigin/tache_semainex1[m[33m, [m[1;32mtache_semainex1[m[33m)[m HEAD@{69}: commit: changement du design selon le logo et rajout des fonctionnalités de semaineX1
+[33meab6c0f[m HEAD@{70}: checkout: moving from main to tache_semainex1
+[33m0f07a09[m HEAD@{71}: reset: moving to 0f07a096ebb0a059fdbb4fa492b56ea48af2bc59
+[33m0f07a09[m HEAD@{72}: pull: Fast-forward
+[33mcb86d85[m HEAD@{73}: checkout: moving from tache_semainex1 to main
+[33meab6c0f[m HEAD@{74}: commit: maj
+[33mfce317e[m HEAD@{75}: commit: demande de code verification ok
+[33m7b513ec[m HEAD@{76}: commit: fonction de reinitialisation ok
+[33m6a0029d[m HEAD@{77}: commit: systeme d'authentification et supportclient ok
+[33mcb86d85[m HEAD@{78}: checkout: moving from main to tache_semainex1
+[33mcb86d85[m HEAD@{79}: clone: from https://github.com/edemek/barbershop_flutter.git
