@@ -11,6 +11,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../common/widgets/custom_shapes/containers/primary_hearder_container.dart';
+import '../../../../navigation_menu.dart';
 import '../../../Salon/screen/salon_liste.dart';
 import '../../../home/custom_drawer.dart';
 
@@ -50,7 +51,8 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: const ElegantMenu(), // Intégration du menu élégant // Intégration du CustomDrawer
+      drawer:
+          const ElegantMenu(), // Intégration du menu élégant // Intégration du CustomDrawer
       backgroundColor: Colors.green.withOpacity(0.02),
       body: SingleChildScrollView(
         child: Column(
@@ -68,6 +70,7 @@ class HomeScreen extends StatelessWidget {
                       TImages.promoBanner3,
                     ],
                   ),
+
                 ],
               ),
             ),
@@ -186,7 +189,7 @@ class HomeScreen extends StatelessWidget {
                       TextButton(
                         onPressed: () {
                           // Action pour voir tout
-                          Get.to(()=>SalonListScreen());
+                          Get.to(() => SalonListScreen());
                         },
                         style: TextButton.styleFrom(
                           backgroundColor: Colors.blue.shade50,

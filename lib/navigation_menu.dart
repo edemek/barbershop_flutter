@@ -92,10 +92,86 @@ class NavigationController extends GetxController {
   final List<Widget> screens = [
     const HomeScreen(),
 
-  const StoreScreen(),
+  //const StoreScreen(),
    //const AppointmentCard(),
     SalonListScreen(),
     const AccountViewClient()
 
   ];
+}
+
+
+
+
+class CustomAppBar extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [Colors.green.shade700, Colors.green.shade300],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+      ),
+      child: SafeArea(
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16.0),
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+              // Menu icon
+              Align(
+                alignment: Alignment.centerLeft,
+                child: IconButton(
+                  icon: Icon(Icons.menu, color: Colors.black),
+                  onPressed: () {},
+                ),
+              ),
+              // Title
+              Text(
+                "Beauty Salons",
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ),
+              ),
+              // Notification icon with badge
+              Align(
+                alignment: Alignment.centerRight,
+                child: Stack(
+                  children: [
+                    IconButton(
+                      icon: Icon(Icons.notifications, color: Colors.black),
+                      onPressed: () {},
+                    ),
+                    Positioned(
+                      right: 10,
+                      top: 10,
+                      child: Container(
+                        padding: EdgeInsets.all(4),
+                        decoration: BoxDecoration(
+                          color: Colors.green.shade900,
+                          shape: BoxShape.circle,
+                        ),
+                        child: Text(
+                          "0",
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 }
