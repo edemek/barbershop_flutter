@@ -15,6 +15,7 @@ import '../../../../support.dart';
 import '../../../../verification.dart';
 import '../../signup/signup.dart';
 import '../../signup/signup_choice.dart';
+import '../../../../../controllers/auth_controller.dart';
 import '../../signup/verify_email.dart';
 
 class TLoginForm extends StatefulWidget {
@@ -30,14 +31,16 @@ class _TLoginFormState extends State<TLoginForm> {
   final TextEditingController tokenTaker = TextEditingController();
   final TextEditingController Role = TextEditingController();
   // Champs de saisie
-  final TextEditingController _PhoneController  = TextEditingController();
-  final TextEditingController _NomController  = TextEditingController();
+  final TextEditingController _PhoneController = TextEditingController();
+  final TextEditingController _NomController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final FocusNode _emailFocusNode = FocusNode(); // création d'une instance focus sur _email
+  final FocusNode _emailFocusNode =
+      FocusNode(); // création d'une instance focus sur _email
   bool _obscureText = true; // Contrôle l'état du texte masqué
 
   //compteur d'erruer
   int nbError = 0;
+
   /// Fonction pour envoyer un OTP
   void sendOtp(BuildContext context) async {
     try {
@@ -61,12 +64,12 @@ class _TLoginFormState extends State<TLoginForm> {
             builder: (context) =>
                 VerifyEmailScreen(PhoneNumber: _PhoneController.text),
           ),
-
         );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Erreur lors de l\'envoi du code OTP : ${response.body}'),
+            content:
+                Text('Erreur lors de l\'envoi du code OTP : ${response.body}'),
             backgroundColor: Colors.red,
             duration: const Duration(seconds: 50),
           ),
@@ -85,6 +88,7 @@ class _TLoginFormState extends State<TLoginForm> {
 
   @override
   Widget build(BuildContext context) {
+    // controller.loginFormKey = new GlobalKey<FormState>();
     final userController = Get.find<UserController>();
     return Form(
       key: _formKey,
@@ -106,18 +110,17 @@ class _TLoginFormState extends State<TLoginForm> {
                 labelText: "Numéro de téléphone",
                 hintText: "+228 90 90 90 90",
               ),
-              onChanged: (value) {
-                // Optionnel : vous pouvez ajouter une logique supplémentaire ici
-                print('Valeur actuelle: $value');
-              },
+              onChanged: (value) {},
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'Veuillez entrer votre numéro de téléphone';
                 }
 
-                final cleanedValue = value.replaceAll(' ', '').replaceAll('+228', '');
+                final cleanedValue =
+                    value.replaceAll(' ', '').replaceAll('+228', '');
 
-                if (cleanedValue.length != 8 || !RegExp(r'^\d{8}$').hasMatch(cleanedValue)) {
+                if (cleanedValue.length != 8 ||
+                    !RegExp(r'^\d{8}$').hasMatch(cleanedValue)) {
                   return 'Numéro de téléphone invalide';
                 }
 
@@ -145,26 +148,26 @@ class _TLoginFormState extends State<TLoginForm> {
                   },
                 ),
               ),
-             //code pour valider le mot de passe
-             // //validator: (value) {
-             //   if (value == null || value.isEmpty) {
-             //     return 'Veuillez entrer un mot de passe';
-             //   } else if (value.length < 6) {
-             //     return 'Le mot de passe doit contenir au moins 6 caractères';
-             //   } else if (!RegExp(r'[A-Z]').hasMatch(value)) {
-             //     return 'Le mot de passe doit contenir au moins une lettre majuscule';
-             //   } else if (!RegExp(r'[0-9]').hasMatch(value)) {
-             //     return 'Le mot de passe doit contenir au moins un chiffre';
-             //   } else if (!RegExp(r'[!@#$%^&*(),.?":{}|<>]').hasMatch(value)) {
-             //     return 'Le mot de passe doit contenir au moins un caractère spécial';
-             //   }
-             //   return null;
-             // },
+              //code pour valider le mot de passe
+              // //validator: (value) {
+              //   if (value == null || value.isEmpty) {
+              //     return 'Veuillez entrer un mot de passe';
+              //   } else if (value.length < 6) {
+              //     return 'Le mot de passe doit contenir au moins 6 caractères';
+              //   } else if (!RegExp(r'[A-Z]').hasMatch(value)) {
+              //     return 'Le mot de passe doit contenir au moins une lettre majuscule';
+              //   } else if (!RegExp(r'[0-9]').hasMatch(value)) {
+              //     return 'Le mot de passe doit contenir au moins un chiffre';
+              //   } else if (!RegExp(r'[!@#$%^&*(),.?":{}|<>]').hasMatch(value)) {
+              //     return 'Le mot de passe doit contenir au moins un caractère spécial';
+              //   }
+              //   return null;
+              // },
             ),
 
             const SizedBox(height: TSizes.spaceBtwInputFields / 2),
             //
-          /*
+            /*
             Align(
               alignment: Alignment.centerLeft, // Aligne le contenu à gauche
               child: Row(
@@ -195,17 +198,13 @@ class _TLoginFormState extends State<TLoginForm> {
                         Checkbox(value: true, onChanged: (value) {}),
                         const Text(TTexts.remenderMe),
                       ],
-
                     ),
-
                     TextButton(
                       onPressed: () {
-                        Navigator.push(context,
-                           MaterialPageRoute(builder: (context)=>ForgotPasswordPage())
-                            );
-
-
-
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ForgotPasswordPage()));
                       },
                       child: const Text(TTexts.forgotPassword),
                     ),
@@ -218,29 +217,23 @@ class _TLoginFormState extends State<TLoginForm> {
                   child: TextButton(
                     onPressed: () {
                       Navigator.push(
-                      context, MaterialPageRoute(builder: (context)=>SupportClientPage()));
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => SupportClientPage()));
 
                       ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text("Bouton de support client cliqué"),
-                            elevation: 6,
-                            duration: Duration(seconds: 2), // Durée d'affichage
-                          ),
+                        SnackBar(
+                          content: Text("Bouton de support client cliqué"),
+                          elevation: 6,
+                          duration: Duration(seconds: 2), // Durée d'affichage
+                        ),
                       );
                     },
                     child: const Text(TTexts.clientSupport),
-
                   ),
-
                 ),
-
               ],
             ),
-
-
-
-
-
 
             const SizedBox(height: TSizes.spacetBtwSections),
 
@@ -248,8 +241,10 @@ class _TLoginFormState extends State<TLoginForm> {
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
-                //child: Text("data"),
-                onPressed: () async {
+                child: const Text(TTexts.signIn),
+                onPressed: () {
+                  AuthController.to
+                      .login(_PhoneController.text, _passwordController.text);
                   /*if (_formKey.currentState!.validate()) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
@@ -267,70 +262,69 @@ class _TLoginFormState extends State<TLoginForm> {
                   final String usernameOremail_clt = "client";
                   final String password_clt = "client";*/
 
-                  if (_PhoneController.text.isNotEmpty && _passwordController.text.isNotEmpty){
-                      Get.put(UserController());
-                      final response = await ApiService.login(_PhoneController.text, _passwordController.text);
-                      final Map<String, dynamic> responseData = jsonDecode(response.body);
+                  // if (_PhoneController.text.isNotEmpty &&
+                  //     _passwordController.text.isNotEmpty) {
+                  //   Get.put(UserController());
+                  //   final response = await ApiService.login(
+                  //       _PhoneController.text, _passwordController.text);
+                  //   final Map<String, dynamic> responseData =
+                  //       jsonDecode(response.body);
 
-                      if (responseData.containsKey("data")) {
-                          String name = responseData["data"]["name"];
-                          String token = responseData["data"]["api_token"];
-                          String role = responseData["data"]["roles"][0]["name"];
-                          print("Role de l'utilisateur $role");
-                          print("token de l'utilisateur:$token");
-                          _NomController.text = name; // ✅ Mise à jour du TextEditingController
-                          tokenTaker.text = token;
-                          Role.text = role;
-                          print("token de l'utilisateur recuperé:$token");
-                          userController.updateUser(
-                              _NomController.text,
-                              null,
-                              null,
-                              null,
-                              null,
-                              tokenTaker.text,
-                              Role.text
-                          );
-                          if(Role.text == "customer"){ Get.to(()=>NavigationMenu());}else{Get.to(()=>AccountView());};
+                  //   if (responseData.containsKey("data")) {
+                  //     String name = responseData["data"]["name"];
+                  //     String token = responseData["data"]["api_token"];
+                  //     String role = responseData["data"]["roles"][0]["name"];
+                  //     print("Role de l'utilisateur $role");
+                  //     print("token de l'utilisateur:$token");
+                  //     _NomController.text =
+                  //         name; // ✅ Mise à jour du TextEditingController
+                  //     tokenTaker.text = token;
+                  //     Role.text = role;
+                  //     print("token de l'utilisateur recuperé:$token");
+                  //     userController.updateUser(_NomController.text, null, null,
+                  //         null, null, tokenTaker.text, Role.text);
+                  //     if (Role.text == "customer") {
+                  //       Get.to(() => NavigationMenu());
+                  //     } else {
+                  //       Get.to(() => AccountView());
+                  //     }
+                  //     ;
 
-                          print("Contenu : ${response.body.toString()}");
-                      }else{
-                        var responseBody = jsonDecode(response.body); // Décoder la réponse JSON
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                          content: Text(
-                          "Erreur de connexion : ${responseBody['message']}",
+                  //     print("Contenu : ${response.body.toString()}");
+                  //   } else {
+                  //     var responseBody =
+                  //         jsonDecode(response.body); // Décoder la réponse JSON
+                  //     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  //       content: Text(
+                  //         "Erreur de connexion : ${responseBody['message']}",
+                  //       ),
+                  //     ));
+                  //     //print("UserController token: ${userController.UToken}");
+                  //     // print("UserController token value: ${userController.UToken.value}");
+                  //     print(
+                  //         "Nom de l'utilisateur mis à jour : ${_NomController.text}");
 
-                          ),
-                        ));
-                        //print("UserController token: ${userController.UToken}");
-                       // print("UserController token value: ${userController.UToken.value}");
-                        print("Nom de l'utilisateur mis à jour : ${_NomController.text}");
+                  //     print("nombre d'erreur:" + nbError.toString());
 
-                        print("nombre d'erreur:" + nbError.toString());
+                  //     _PhoneController.clear();
+                  //     _passwordController.clear();
 
-                        _PhoneController.clear();
-                        _passwordController.clear();
-
-                        if(nbError == 5){
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text("Vous avez essayer à plus de 5 tentaives, votre compte est momentanément suspendu! contacter le service client pour reinitialisation"),
-                            )
-                        );
-                      }
-                      //mettre le focus sur l'email
-                      FocusScope.of(context).requestFocus(_emailFocusNode);
-
-                    }
-                    // Simulation de connexion réussie
-
-                  }else{
-                    return ;
-                  };
-
+                  //     if (nbError == 5) {
+                  //       ScaffoldMessenger.of(context)
+                  //           .showSnackBar(const SnackBar(
+                  //         content: Text(
+                  //             "Vous avez essayer à plus de 5 tentaives, votre compte est momentanément suspendu! contacter le service client pour reinitialisation"),
+                  //       ));
+                  //     }
+                  //     //mettre le focus sur l'email
+                  //     FocusScope.of(context).requestFocus(_emailFocusNode);
+                  //   }
+                  //   // Simulation de connexion réussie
+                  // } else {
+                  //   return;
+                  // }
+                  ;
                 },
-                child: const Text(TTexts.signIn),
               ),
             ),
 
@@ -340,7 +334,8 @@ class _TLoginFormState extends State<TLoginForm> {
             SizedBox(
               width: double.infinity,
               child: OutlinedButton(
-                onPressed: () => Get.to(() =>  AccountTypeSelection()),//defiler entre les pages en utilisant la classe Get.to
+                onPressed: () => Get.to(() =>
+                    AccountTypeSelection()), //defiler entre les pages en utilisant la classe Get.to
                 child: const Text(TTexts.createAccount),
               ),
             ),

@@ -12,13 +12,14 @@ class OnBoardingController extends GetxController {
 
   /// Update Current Index when Page Scroll
   void updatePageIndicator(int index) {
-    currentPageIndex.value = index;  // Mise à jour de la valeur correcte
+    currentPageIndex.value = index; // Mise à jour de la valeur correcte
   }
 
   /// Jump to the specific dot selected page.
   void dotNavigationClick(int index) {
     currentPageIndex.value = index;
-    pageController.jumpToPage(index);  // Utilisation de jumpToPage pour le défilement
+    pageController
+        .jumpToPage(index); // Utilisation de jumpToPage pour le défilement
   }
 
   /// Update Current Index & jump to next page
@@ -27,15 +28,17 @@ class OnBoardingController extends GetxController {
       Get.offAll(() => LoginScreen());
       //getPages:[GetPage(name: '/login',page:() => const LoginScreen())];
     } else {
-      int page = currentPageIndex.value + 1;  // Passer à la page suivante
+      int page = currentPageIndex.value + 1; // Passer à la page suivante
       pageController.jumpToPage(page);
-      currentPageIndex.value = page;  // Mise à jour de l'index après la navigation
+      currentPageIndex.value =
+          page; // Mise à jour de l'index après la navigation
     }
   }
 
   /// Update Current Index & jump to the Login Page
   void skipPage() {
-    currentPageIndex.value = 2; // Option de saut pour aller directement à la dernière page
+    currentPageIndex.value =
+        2; // Option de saut pour aller directement à la dernière page
     pageController.jumpToPage(2);
     Get.offAll(() => LoginScreen());
   }

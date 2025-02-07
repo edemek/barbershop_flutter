@@ -1,19 +1,37 @@
 // AuthController: Contrôle les opérations d'authentification dans l'application Flutter.import 'package:get/get.dart';
+import 'dart:async';
+import 'package:flutter/material.dart';
 
 import 'package:barbershpo_flutter/data/repositories/user.dart';
 import 'package:barbershpo_flutter/data/services/api_service.dart';
 import 'package:barbershpo_flutter/features/personalization/screens/profile/profile.dart';
+import '../features/services/auth_service.dart';
+
+import '../../../../common/ui.dart';
+// import '../../../models/user_model.dart';
+import '../../features/repositories/user_repository.dart';
+import '../../../routes/app_routes.dart';
+import '../../../features/services/auth_service.dart';
+import '../features/root/controllers/root_controller.dart';
+
 import 'package:get/get.dart';
 
 class AuthController extends GetxController {
-  // Instance du service API pour communiquer avec le backend.
-  final ApiService _apiService = ApiService();
+  late UserRepository _userRepository;
+  AuthController() {
+    _userRepository = UserRepository();
+  }
 
   // Stocke l'utilisateur actuel sous forme de variable réactive.
-  final Rx<User?> currentUser = Rx<User?>(null);
+  final Rx<User> currentUser = Get.find<AuthService>().user;
+  // final Rx<User?> currentUser = Rx<User?>(null);
+  late GlobalKey<FormState> loginFormKey;
+
+  static AuthController get to => Get.find(); // Access the
 
   // Indique si une opération est en cours (chargement).
   final RxBool isLoading = false.obs;
+  final loading = false.obs;
 
   // Contient les messages d'erreur pour les afficher à l'utilisateur.
   final RxString error = "".obs;
@@ -52,6 +70,27 @@ class AuthController extends GetxController {
 
   // Méthode pour connecter un utilisateur.
   Future<void> login(String email, String password) async {
+    print('nous etions dans le controleur');
+    //------------------------------
+    Get.focusScope?.unfocus();
+    if (loginFormKey.currentState!.validate()) {
+      loginFormKey.currentState!.save();
+      loading.value = true;
+      try {
+        // await Get.find<FireBaseMessagingService>().setDeviceToken();
+        currentUser.value = await _userRepository.login(currentUser.value);
+        await _userRepository.signInWithEmailAndPassword(
+            currentUser.value.email!, currentUser.value.apiToken!);
+        await Get.find<RootController>().changePage(0);
+      } catch (e) {
+        Get.showSnackbar(Ui.ErrorSnackBar(message: e.toString()));
+      } finally {
+        loading.value = false;
+      }
+    }
+
+    //''''''''''''''''''''''''''''''''
+
     try {
       isLoading.value = true; // Début du chargement.
       error.value = ""; // Réinitialisation des erreurs.

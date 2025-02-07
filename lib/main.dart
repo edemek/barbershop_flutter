@@ -9,7 +9,7 @@ import 'features/providers/laravel_provider.dart';
 import 'features/settings/controllers/settings_controller.dart';
 import 'features/settings/controllers/address_controller.dart';
 import 'package:get_storage/get_storage.dart';
-
+import '../../../../../controllers/auth_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -34,6 +34,7 @@ void main() async {
   //await Firebase.initializeApp();
   await initServices();
   Get.put(() => GlobalService());
+  Get.lazyPut(() => AuthController());
   Get.put<SettingsController>(SettingsController());
   Get.put(UserController());
   Get.put(AddressController());

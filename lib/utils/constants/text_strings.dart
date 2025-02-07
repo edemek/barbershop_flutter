@@ -10,7 +10,6 @@ class TTexts {
       "Une belle journée pour se faire coiffer.";
   static const String homeAppbarSubTitle = "Business Help Consultings";
 
-
   // -- OnBoarding Texts
   static const String onBoardingTitle1 = "Bienvenue dans BarberShop!";
   static const String onBoardingTitle2 =
@@ -51,8 +50,7 @@ class TTexts {
 
   // -- Authentication Heading Text
   static const String loginTitle = "Bon retour";
-  static const String loginSubTitle =
-      "Découvrez des Illimités et une commedité inégalée.";
+  static const String loginSubTitle = "Découvrez des commodité en illimité.";
   static const String signupTitle = "Créons votre compte";
   static const String forgotPasswordTitle = "Mot de passe Oublié?";
   static const String clientSupport = "Support client";

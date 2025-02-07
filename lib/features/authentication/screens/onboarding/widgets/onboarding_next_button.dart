@@ -3,7 +3,7 @@ import '../../../../../utils/constants/colors.dart';
 import '../../../../../utils/constants/sizes.dart';
 import '../../../../../utils/device/device_utility.dart';
 import '../../../../../utils/helpers/helper_functions.dart';
-import '../../../controllers.onboarding/onboard_controller.dart';
+import '../../../controllers/onboard_controller.dart';
 
 class OnboardingNextButton extends StatelessWidget {
   const OnboardingNextButton({
@@ -22,7 +22,10 @@ class OnboardingNextButton extends StatelessWidget {
         style: ElevatedButton.styleFrom(
             shape: const CircleBorder(),
             backgroundColor: dark ? TColors.primary : TColors.primary),
-        child: const Icon(Icons.arrow_forward_ios, color: Colors.white, ),
+        child: const Icon(
+          Icons.arrow_forward_ios,
+          color: Colors.white,
+        ),
       ),
     );
   }
