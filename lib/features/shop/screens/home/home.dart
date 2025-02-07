@@ -12,6 +12,7 @@ import 'package:intl/intl.dart';
 
 import '../../../../common/widgets/custom_shapes/containers/primary_hearder_container.dart';
 import '../../../Salon/screen/salon_liste.dart';
+import '../../../home/custom_drawer.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -49,6 +50,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: const ElegantMenu(), // Intégration du menu élégant // Intégration du CustomDrawer
       backgroundColor: Colors.green.withOpacity(0.02),
       body: SingleChildScrollView(
         child: Column(

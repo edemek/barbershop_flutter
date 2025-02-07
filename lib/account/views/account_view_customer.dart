@@ -8,6 +8,7 @@ import '../../features/Reservation/reservationPage.dart';
 import '../../features/Reservation_client/views/reservation_form.dart';
 import '../../features/Reservation_client/views/reservation_page.dart';
 import '../../features/Salon/screen/salon_liste.dart';
+import '../../features/authentication/screens/login/login.dart';
 import '../../features/authentication/screens/login/widgets/login_form.dart';
 import '../../features/experience_client/views/experience_form.dart';
 import '../../features/experience_client/views/share_experience.dart';
@@ -25,71 +26,7 @@ class AccountViewClient extends StatelessWidget {
     };
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          "Votre compte",
-         // style: TextStyle(color: Theme.of(context).primaryColor),
-        ),
-        centerTitle: true,
-        backgroundColor: Color(0xFFDAA520),
-        leading: PopupMenuButton<String>(
-          icon: Icon(Icons.sort),
-          onSelected: (String value) {
-            if (value == 'Salons') {
-              Navigator.push(
-                context,
-                  MaterialPageRoute(builder: (context) =>  SalonListScreen())
-              ); // Remplacez '/services' par la route de votre page des services
-            } else if (value == 'Reservations') {
-             Navigator.push(
-               context,
-               MaterialPageRoute(builder: (context) => ReservationHomeScreen())
-             ); // Remplacez '/reservations' par la route de votre page des réservations
-            }
-            else if (value == 'experience') {
-               Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => ExperienceHomeScreen())
-                ); // Remplacez '/reservations' par la route de votre page des réservations
-            }
 
-          },
-          itemBuilder: (BuildContext context) {
-            return [
-              PopupMenuItem<String>(
-                value: 'Salons',
-                child: Row(
-                  children: [
-                    Icon(Icons.design_services, color: Theme.of(context).hintColor),
-                    SizedBox(width: 8),
-                    Text('Voir les salons'),
-                  ],
-                ),
-              ),
-              PopupMenuItem<String>(
-                value: 'Reservations',
-                child: Row(
-                  children: [
-                    Icon(Icons.calendar_today, color: Theme.of(context).hintColor),
-                    SizedBox(width: 8),
-                    Text('Reservations'),
-                  ],
-                ),
-              ),
-              PopupMenuItem<String>(
-                value: 'experience',
-                child: Row(
-                  children: [
-                    Icon(Icons.calendar_today, color: Theme.of(context).hintColor),
-                    SizedBox(width: 8),
-                    Text('Partagez vos expériences'),
-                  ],
-                ),
-              ),
-            ];
-          },
-        ),
-      ),
       body: ListView(
         children: [
           // Header with user info
@@ -153,11 +90,11 @@ class AccountViewClient extends StatelessWidget {
                 _buildMenuItem(context, Icons.settings_outlined, "Settings", () {
                   // Handle navigation
                   Get.to(() => SettingsView());
-                }),/*
-                _buildMenuItem(context, Icons.logout, "Logout", () {
+                }),
+                _buildMenuItem(context, Icons.logout, "Deconnexion", () {
                   // Handle logout
-                  Get.to(() => TLoginForm());
-                }),*/
+                  Get.to(() => LoginScreen());
+                }),
               ],
             ),
           ),

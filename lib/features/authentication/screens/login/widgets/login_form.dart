@@ -1,10 +1,12 @@
 import 'dart:convert';
 
+import 'package:barbershpo_flutter/account/views/account_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:http/http.dart' as http;
 import '../../../../../api_service/api_service_.dart';
+import '../../../../../navigation_menu.dart';
 import '../../../../../utils/constants/sizes.dart';
 import '../../../../../utils/constants/text_strings.dart';
 import '../../../../../utils/validators/validation_.dart';
@@ -289,14 +291,8 @@ class _TLoginFormState extends State<TLoginForm> {
                               tokenTaker.text,
                               Role.text
                           );
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                              builder: (context) =>
-                              VerificationPage(
-                              emailOrPhone: _PhoneController
-                                  .text, role:Role.text)),
-                          );
+                          if(Role.text == "customer"){ Get.to(()=>NavigationMenu());}else{Get.to(()=>AccountView());};
+
                           print("Contenu : ${response.body.toString()}");
                       }else{
                         var responseBody = jsonDecode(response.body); // Décoder la réponse JSON

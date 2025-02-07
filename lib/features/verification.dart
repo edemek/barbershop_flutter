@@ -32,9 +32,10 @@ class _VerificationPageState extends State<VerificationPage> {
         );
       } else if (codeController.text == "789123" && widget.role == "customer") {
         // Redirection vers la page du client
-        Navigator.push(
+        Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(builder: (context) => NavigationMenu()),
+              (route) => false,
         );
       } else {
         // Afficher une erreur

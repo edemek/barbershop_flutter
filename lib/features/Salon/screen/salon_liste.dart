@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../home/custom_drawer.dart';
 import 'salon_details.dart';
 
 class SalonListScreen extends StatelessWidget {
@@ -32,7 +33,7 @@ class SalonListScreen extends StatelessWidget {
   static const Color accentBlue = Color(0xFF1E3799);
 
 
-  
+
 
 
 
@@ -41,23 +42,6 @@ class SalonListScreen extends StatelessWidget {
     return Scaffold(
 
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Colors.white,
-        title: Text(
-          "Liste des salons",
-          style: TextStyle(
-            color: lightBlack,
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-
-        centerTitle: true,
-    leading:
-         Icon(Icons.sort),
-        iconTheme: IconThemeData(color: lightBlack),
-      ),
       body: ListView.builder(
         padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         itemCount: salonsList.length,
