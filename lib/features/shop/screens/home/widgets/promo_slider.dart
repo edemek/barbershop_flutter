@@ -19,39 +19,40 @@ class TPromoSlider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(HomeController());
+    final double screenHeight = MediaQuery.of(context).size.height;
+    final double screenWidth = MediaQuery.of(context).size.width;
+    final double sliderHeight = screenHeight * 0.2; // 20% de la hauteur
 
     return Column(
       children: [
-        /*CarouselSlider(
-          options: CarouselOptions(
-            viewportFraction: 1,
-            onPageChanged: (index, _) => controller.updatePageIndicator(index),
-          ),
-          items: banners.map((url) => TRoundedImage(imageUrl: url)).toList(),
-        ),*/
         CarouselSlider(
-            items: banners.map((url) => TRoundedImage(imageUrl: url)).toList(),
-            options: CarouselOptions(
-              height: 200,
-              aspectRatio: 16/9,
-              viewportFraction: 1,
-              initialPage: 0,
-              enableInfiniteScroll: true,
-              reverse: false,
-              autoPlay: true,
-              autoPlayInterval: Duration(seconds: 7),
-              autoPlayAnimationDuration: Duration(milliseconds: 800),
-              autoPlayCurve: Curves.fastOutSlowIn,
-              enlargeCenterPage: true,
-              enlargeFactor: 0.3,
-              onPageChanged: (index, _) => controller.updatePageIndicator(index),
-              scrollDirection: Axis.horizontal,
-            )
+          items: banners.map((url) =>
+              SizedBox(
+                width: screenWidth, // 100% de la largeur
+                height: sliderHeight, // 20% de la hauteur
+                child: TRoundedImage(
+                  imageUrl: url,
+                  applyImageRadius: false, // S'assurer que l'image prend tout l'espace
+                  fit: BoxFit.cover, // Ajustement pour occuper tout l'espace
+                ),
+              )
+          ).toList(),
+          options: CarouselOptions(
+            height: sliderHeight,
+            viewportFraction: 1,
+            autoPlay: true,
+            autoPlayInterval: Duration(seconds: 7),
+            autoPlayAnimationDuration: Duration(milliseconds: 800),
+            autoPlayCurve: Curves.fastOutSlowIn,
+            enlargeCenterPage: false,
+            onPageChanged: (index, _) => controller.updatePageIndicator(index),
+            scrollDirection: Axis.horizontal,
+          ),
         ),
         const SizedBox(height: TSizes.spacetBtwItems),
         Center(
           child: Obx(
-            () => Row(
+                () => Row(
               mainAxisSize: MainAxisSize.min,
               children: [
                 for (int i = 0; i < banners.length; i++)
