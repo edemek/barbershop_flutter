@@ -1,16 +1,24 @@
-import 'package:barbershpo_flutter/controllers/auth_controller.dart';
-import 'package:barbershpo_flutter/features/authentication/screens/password_configuration/forget_password.dart';
-import 'package:barbershpo_flutter/navigation_menu.dart';
+import 'dart:convert';
+
+import 'package:barbershpo_flutter/account/views/account_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:http/http.dart' as http;
+import '../../../../../api_service/api_service_.dart';
+import '../../../../../navigation_menu.dart';
 import '../../../../../utils/constants/sizes.dart';
 import '../../../../../utils/constants/text_strings.dart';
-import '../../../../../utils/validators/validation.dart';
+import '../../../../../utils/validators/validation_.dart';
+import '../../../../forgot_password_page.dart';
+import '../../../../support.dart';
+import '../../../../verification.dart';
 import '../../signup/signup.dart';
+import '../../signup/signup_choice.dart';
+import '../../signup/verify_email.dart';
 
 class TLoginForm extends StatefulWidget {
-  const TLoginForm({super.key});
+  TLoginForm({super.key});
 
   @override
   _TLoginFormState createState() => _TLoginFormState();
@@ -19,45 +27,97 @@ class TLoginForm extends StatefulWidget {
 class _TLoginFormState extends State<TLoginForm> {
   // Clé globale pour accéder au formulaire
   final _formKey = GlobalKey<FormState>();
-
+  final TextEditingController tokenTaker = TextEditingController();
+  final TextEditingController Role = TextEditingController();
   // Champs de saisie
-  final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _PhoneController  = TextEditingController();
+  final TextEditingController _NomController  = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-
-  final AuthController _authController = Get.find<AuthController>();
-
+  final FocusNode _emailFocusNode = FocusNode(); // création d'une instance focus sur _email
   bool _obscureText = true; // Contrôle l'état du texte masqué
+
+  //compteur d'erruer
+  int nbError = 0;
+  /// Fonction pour envoyer un OTP
+  void sendOtp(BuildContext context) async {
+    try {
+      final response = await http.post(
+        Uri.parse('http://127.0.0.1:8000/send-otp'),
+        body: {'phone_number': _PhoneController.text},
+      );
+
+      if (response.statusCode == 200) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Code OTP envoyé avec succès !'),
+            duration: Duration(seconds: 3),
+          ),
+        );
+
+        // Aller à l'écran de saisie de l'OTP
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) =>
+                VerifyEmailScreen(PhoneNumber: _PhoneController.text),
+          ),
+
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Erreur lors de l\'envoi du code OTP : ${response.body}'),
+            backgroundColor: Colors.red,
+            duration: const Duration(seconds: 50),
+          ),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Une erreur est survenue : $e'),
+          backgroundColor: Colors.red,
+          duration: const Duration(seconds: 50),
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    final userController = Get.find<UserController>();
     return Form(
       key: _formKey,
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: TSizes.spacetBtwSections),
         child: Column(
           children: [
-            /// -- Numéro de Téléphone
+            /// -- Numéro de Téléphone/email
             TextFormField(
-              controller: _phoneController,
+              focusNode: _emailFocusNode,
+              controller: _PhoneController,
               keyboardType: TextInputType.phone,
               inputFormatters: [
-                TogolesePhoneNumberFormatter(), // Formatter personnalisé
+                TogolesePhoneNumberFormatter(),
+                NoSpaceFormatter()
               ],
               decoration: const InputDecoration(
-                prefixIcon: Icon(Iconsax.call),
+                prefixIcon: Icon(Iconsax.direct_right),
                 labelText: "Numéro de téléphone",
                 hintText: "+228 90 90 90 90",
               ),
+              onChanged: (value) {
+                // Optionnel : vous pouvez ajouter une logique supplémentaire ici
+                print('Valeur actuelle: $value');
+              },
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'Veuillez entrer votre numéro de téléphone';
                 }
 
-                final cleanedValue =
-                    value.replaceAll(' ', '').replaceAll('+228', '');
+                final cleanedValue = value.replaceAll(' ', '').replaceAll('+228', '');
 
-                if (cleanedValue.length != 8 ||
-                    !RegExp(r'^\d{8}$').hasMatch(cleanedValue)) {
+                if (cleanedValue.length != 8 || !RegExp(r'^\d{8}$').hasMatch(cleanedValue)) {
                   return 'Numéro de téléphone invalide';
                 }
 
@@ -85,90 +145,193 @@ class _TLoginFormState extends State<TLoginForm> {
                   },
                 ),
               ),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Veuillez entrer un mot de passe';
-                } else if (value.length < 6) {
-                  return 'Le mot de passe doit contenir au moins 6 caractères';
-                } else if (!RegExp(r'[A-Z]').hasMatch(value)) {
-                  return 'Le mot de passe doit contenir au moins une lettre majuscule';
-                } else if (!RegExp(r'[0-9]').hasMatch(value)) {
-                  return 'Le mot de passe doit contenir au moins un chiffre';
-                } else if (!RegExp(r'[!@#$%^&*(),.?":{}|<>]').hasMatch(value)) {
-                  return 'Le mot de passe doit contenir au moins un caractère spécial';
-                }
-                return null;
-              },
+             //code pour valider le mot de passe
+             // //validator: (value) {
+             //   if (value == null || value.isEmpty) {
+             //     return 'Veuillez entrer un mot de passe';
+             //   } else if (value.length < 6) {
+             //     return 'Le mot de passe doit contenir au moins 6 caractères';
+             //   } else if (!RegExp(r'[A-Z]').hasMatch(value)) {
+             //     return 'Le mot de passe doit contenir au moins une lettre majuscule';
+             //   } else if (!RegExp(r'[0-9]').hasMatch(value)) {
+             //     return 'Le mot de passe doit contenir au moins un chiffre';
+             //   } else if (!RegExp(r'[!@#$%^&*(),.?":{}|<>]').hasMatch(value)) {
+             //     return 'Le mot de passe doit contenir au moins un caractère spécial';
+             //   }
+             //   return null;
+             // },
             ),
 
             const SizedBox(height: TSizes.spaceBtwInputFields / 2),
-
+            //
+          /*
+            Align(
+              alignment: Alignment.centerLeft, // Aligne le contenu à gauche
+              child: Row(
+                children: [
+                  Checkbox(
+                    value: isChecked,
+                    onChanged: (value) {
+                      // Gestion du changement de l'état de la checkbox
+                      setState(() {
+                        isChecked = value!;
+                      });
+                    },
+                  ),
+                  const Text(TTexts.ConnectAsBarber),
+                ],
+              ),
+            ),*/
             /// -- Remember Me & Forget Password
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            ///
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                /// Remenber Me
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Checkbox(value: true, onChanged: (value) {}),
-                    const Text(TTexts.remenderMe),
+                    Row(
+                      children: [
+                        Checkbox(value: true, onChanged: (value) {}),
+                        const Text(TTexts.remenderMe),
+                      ],
+
+                    ),
+
+                    TextButton(
+                      onPressed: () {
+                        Navigator.push(context,
+                           MaterialPageRoute(builder: (context)=>ForgotPasswordPage())
+                            );
+
+
+
+                      },
+                      child: const Text(TTexts.forgotPassword),
+                    ),
                   ],
                 ),
 
-                /// Forget Password
-                TextButton(
-                  onPressed: () => Get.to(() => ForgetPassword()),
-                  child: const Text(TTexts.forgetPassword,
-                      style: TextStyle(
-                        color: Colors.blue,
-                      )),
+                const SizedBox(height: 2), // Espacement entre les widgets
+                Align(
+                  alignment: Alignment.centerLeft, // Aligne le bouton à gauche
+                  child: TextButton(
+                    onPressed: () {
+                      Navigator.push(
+                      context, MaterialPageRoute(builder: (context)=>SupportClientPage()));
+
+                      ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text("Bouton de support client cliqué"),
+                            elevation: 6,
+                            duration: Duration(seconds: 2), // Durée d'affichage
+                          ),
+                      );
+                    },
+                    child: const Text(TTexts.clientSupport),
+
+                  ),
+
                 ),
+
               ],
             ),
 
-            const SizedBox(height: TSizes.spaceBtwInputFields),
 
-            Obx(() {
-              if (_authController.error.isNotEmpty) {
-                return Text(
-                  _authController.error.value,
-                  style: TextStyle(color: Colors.red),
-                );
-              } else {
-                return const SizedBox.shrink();
-              }
-            }),
+
+
+
 
             const SizedBox(height: TSizes.spacetBtwSections),
 
             /// -- Sign In Button
             SizedBox(
               width: double.infinity,
-              child: Obx(() {
-                if (_authController.isLoading.value) {
-                  return const Center(child: CircularProgressIndicator());
-                } else {}
-                return ElevatedButton(
-                  onPressed: () {
-                    Get.offAll(NavigationMenu());
-                    //Navigator.of(context).pushNamed('main');
-                    /*if (_formKey.currentState!.validate()) {
-                      _authController.login(
-                        _phoneController.text,
-                        _passwordController.text,
-                      );
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('OTP Envoié !'),
-                          duration: Duration(seconds: 3),
-                        ),
-                      );
-                      sendOtp(context);
-                    }*/
-                  },
-                  child: const Text(TTexts.signIn),
-                );
-              }),
+              child: ElevatedButton(
+                //child: Text("data"),
+                onPressed: () async {
+                  /*if (_formKey.currentState!.validate()) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('OTP Envoié !'),
+                        duration: Duration(seconds: 3),
+                      ),
+                    );
+                    sendOtp(context);
+
+                  }
+
+                  //simulation d'identifiant
+                  final String usernameOremail = "test";
+                  final String password = "test";
+                  final String usernameOremail_clt = "client";
+                  final String password_clt = "client";*/
+
+                  if (_PhoneController.text.isNotEmpty && _passwordController.text.isNotEmpty){
+                      Get.put(UserController());
+                      final response = await ApiService.login(_PhoneController.text, _passwordController.text);
+                      final Map<String, dynamic> responseData = jsonDecode(response.body);
+
+                      if (responseData.containsKey("data")) {
+                          String name = responseData["data"]["name"];
+                          String token = responseData["data"]["api_token"];
+                          String role = responseData["data"]["roles"][0]["name"];
+                          print("Role de l'utilisateur $role");
+                          print("token de l'utilisateur:$token");
+                          _NomController.text = name; // ✅ Mise à jour du TextEditingController
+                          tokenTaker.text = token;
+                          Role.text = role;
+                          print("token de l'utilisateur recuperé:$token");
+                          userController.updateUser(
+                              _NomController.text,
+                              null,
+                              null,
+                              null,
+                              null,
+                              tokenTaker.text,
+                              Role.text
+                          );
+                          if(Role.text == "customer"){ Get.to(()=>NavigationMenu());}else{Get.to(()=>AccountView());};
+
+                          print("Contenu : ${response.body.toString()}");
+                      }else{
+                        var responseBody = jsonDecode(response.body); // Décoder la réponse JSON
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                          content: Text(
+                          "Erreur de connexion : ${responseBody['message']}",
+
+                          ),
+                        ));
+                        //print("UserController token: ${userController.UToken}");
+                       // print("UserController token value: ${userController.UToken.value}");
+                        print("Nom de l'utilisateur mis à jour : ${_NomController.text}");
+
+                        print("nombre d'erreur:" + nbError.toString());
+
+                        _PhoneController.clear();
+                        _passwordController.clear();
+
+                        if(nbError == 5){
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text("Vous avez essayer à plus de 5 tentaives, votre compte est momentanément suspendu! contacter le service client pour reinitialisation"),
+                            )
+                        );
+                      }
+                      //mettre le focus sur l'email
+                      FocusScope.of(context).requestFocus(_emailFocusNode);
+
+                    }
+                    // Simulation de connexion réussie
+
+                  }else{
+                    return ;
+                  };
+
+                },
+                child: const Text(TTexts.signIn),
+              ),
             ),
 
             const SizedBox(height: TSizes.spacetBtwItems),
@@ -177,7 +340,7 @@ class _TLoginFormState extends State<TLoginForm> {
             SizedBox(
               width: double.infinity,
               child: OutlinedButton(
-                onPressed: () => Get.to(() => const SignupScreen()),
+                onPressed: () => Get.to(() =>  AccountTypeSelection()),//defiler entre les pages en utilisant la classe Get.to
                 child: const Text(TTexts.createAccount),
               ),
             ),
@@ -189,8 +352,6 @@ class _TLoginFormState extends State<TLoginForm> {
     );
   }
 }
-
-
 
 /*
 import 'package:flutter/material.dart';
@@ -234,7 +395,7 @@ class _TLoginFormState extends State<TLoginForm> {
         context,
         MaterialPageRoute(
           builder: (context) =>
-              VerifyEmailScreen(phoneNumber: _phoneController.text),
+              VerifyEmailScreen(emailOrPhoneNumber: _phoneController.text),
         ),
       );
     } else {
@@ -256,7 +417,7 @@ class _TLoginFormState extends State<TLoginForm> {
               controller: _phoneController,
               keyboardType: TextInputType.phone,
               inputFormatters: [
-                TogolesePhoneNumberFormatter(), // Formatter personnalisé
+                TogoleseemailOrPhoneNumberFormatter(), // Formatter personnalisé
               ],
               decoration: const InputDecoration(
                 prefixIcon: Icon(Iconsax.direct_right),

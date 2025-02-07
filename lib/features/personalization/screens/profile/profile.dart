@@ -1,8 +1,11 @@
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../../../account/views/account_view.dart';
+import '../../../../account/views/account_view_customer.dart';
 import '../../../../utils/constants/colors.dart';
 import '../../../../utils/constants/sizes.dart';
-import '../../../../utils/validators/validation.dart';
+import '../../../../utils/validators/validation_.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -12,7 +15,7 @@ class ProfileScreen extends StatelessWidget {
       title: Text(
         'Profile',
         style: TextStyle(
-          color: TColors.textPrimary,
+          color: Colors.blue,
           fontSize: TSizes.fontSizeMd,
           fontWeight: FontWeight.normal,
         ),
@@ -93,14 +96,13 @@ class ProfileScreen extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
-              'Terminer',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: TColors.textWhite,
-                fontSize: TSizes.fontSizeMd,
-                fontWeight: FontWeight.normal,
-              ),
+
+            TextButton(
+              child: (Text("Terminer")),
+              onPressed: (){
+                Get.back();
+              },
+
             ),
           ],
         ),
@@ -157,6 +159,7 @@ class ProfileScreen extends StatelessWidget {
               child: Container(
                 child: Column(
                   children: [
+
                     /// -- User Profile Picture
                     _buildProfilePhoto(),
 
@@ -173,8 +176,7 @@ class ProfileScreen extends StatelessWidget {
 
                           const SizedBox(height: TSizes.spaceBtwInputFields),
 
-                          Text(
-                              'Gérer Par: ${userController.firstName.value} ${userController.lastName.value}'),
+                          Text('Gérer Par: ${userController.firstName.value} ${userController.lastName.value}'),
 
                           //const SizedBox(height: TSizes.spaceBtwInputFields),
 
@@ -186,8 +188,8 @@ class ProfileScreen extends StatelessWidget {
 
                           const SizedBox(height: TSizes.spaceBtwInputFields),
 
-                          Text(
-                              'Numéro de téléphone: ${userController.phoneNumber.value}'),
+                          Text('Numéro de téléphone: ${userController.phoneNumber.value}'),
+
                         ],
                       ),
                     ),

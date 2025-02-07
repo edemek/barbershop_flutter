@@ -14,14 +14,23 @@ dependencies:
   flutter:
     sdk: flutter
 
-
+  image_picker: ^1.0.7
+  permission_handler: ^11.0.1
+  flutter_html: ^3.0.0-beta.2
+  #flutter_local_notifications: ^16.3.2
+  flutter_calendar_carousel: ^2.4.4
+  cached_network_image: ^3.3.0 #mettre en cache les images provenant d'internet pour economiser les données et prioriser les performances
   # Utility packages
   http: ^1.2.2
-  intl: ^0.20.1
+  intl: ^0.19.0
   logger: ^2.5.0
   url_launcher: ^6.3.1
   flutter_native_splash: ^2.4.4
   smooth_page_indicator: ^1.2.0+3
+  intl_phone_field: 3.2.0
+
+
+
 
 
   # Icons
@@ -44,6 +53,21 @@ dependencies:
   font_awesome_flutter: ^10.7.0
 
 
+  # FONT
+  google_fonts: 6.2.1
+
+    # GOOGLE MAPS
+    #google_maps_flutter: 2.6.0
+    #map_launcher: 3.3.0
+    #google_maps_place_picker_mb:
+    # git:
+    #   url: https://github.com/SmarterVision/google_maps_place_picker_mb.git
+  #  ref: 3.1.3
+
+  flutter_localizations:
+    sdk: flutter
+  collection: ^1.18.0
+
 # Product Specific
 
 
@@ -53,8 +77,21 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_launcher_icons: 0.14.3
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/images/icon/icon.ico"
 
   flutter_lints: ^5.0.0
+
+flutter_native_splash:
+  color: "#ffffff"  # Couleur de fond (blanc)
+  image: assets/images/splash_screen/logo.png # Chemin vers ton logo
+  android_12:
+    image: assets/images/splash_screen/logo.png
+    icon_background_color: "#ffffff"
 
 
 flutter:
@@ -63,6 +100,15 @@ flutter:
 
   #------------- LOCAL ASSETS -------------#:
   assets:
+    #- assets/icons/
+    - assets/images/photo_salon/s (1).jpg
+    - assets/images/photo_salon/s (4).jpg
+    - assets/images/photo_salon/s (5).jpg
+    - assets/images/photo_salon/s (6).jpg
+    - assets/images/photo_salon/s (7).jpg
+    - assets/images/img2.jpg
+    - assets/images/on_boarding_images/
+    - assets/images/on_boarding_images/onboard.jpg
     - assets/logos/
     - assets/icons/brands/
     - assets/icons/categories/
@@ -72,7 +118,6 @@ flutter:
     - assets/images/content/
     - assets/images/reviews/
     - assets/images/animations/
-    - assets/images/on_boarding_images/
 
 
   #------------- LOCAL FONTS -------------#

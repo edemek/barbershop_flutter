@@ -1,87 +1,113 @@
 import 'package:barbershpo_flutter/common/widgets/layouts/grid_layout.dart';
-import 'package:barbershpo_flutter/common/widgets/products/product_card_vertical.dart';
 import 'package:barbershpo_flutter/features/shop/screens/home/widgets/home_appbar.dart';
 import 'package:barbershpo_flutter/features/shop/screens/home/widgets/home_categories.dart';
 import 'package:barbershpo_flutter/features/shop/screens/home/widgets/promo_slider.dart';
 import 'package:barbershpo_flutter/utils/constants/image_strings.dart';
+import 'package:barbershpo_flutter/utils/constants/sizes.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:intl/intl.dart';
 
 import '../../../../common/widgets/custom_shapes/containers/primary_hearder_container.dart';
-import '../../../../common/widgets/custom_shapes/containers/search_container.dart';
-import '../../../../common/widgets/texts/section_heading.dart';
-import '../../../../utils/constants/sizes.dart';
+import '../../../Salon/screen/salon_liste.dart';
+import '../../../home/custom_drawer.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
+  // Ta liste de salons
+  final List<Map<String, dynamic>> salonsList = const [
+    {
+      "name": "Salon Prestige",
+      "address": "123 Avenue des Coiffeurs, Lomé",
+      "openingHours": "08:00 - 20:00",
+      "imageUrls": [
+        "assets/images/photo_salon/s (7).jpg",
+        "assets/images/photo_salon/s (6).jpg"
+      ],
+      "phone": "+228 90 00 00 01",
+      "email": "contact@salonprestige.com",
+      "latitude": 6.1319,
+      "longitude": 1.2228,
+    },
+    {
+      "name": "Barber King",
+      "address": "456 Rue Royale, Lomé",
+      "openingHours": "09:00 - 21:00",
+      "imageUrls": [
+        "assets/images/photo_salon/s (1).jpg",
+        "assets/images/photo_salon/s (4).jpg"
+      ],
+      "phone": "+228 90 00 00 02",
+      "email": "info@barberking.com",
+      "latitude": 6.1724,
+      "longitude": 1.2085,
+    }
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: const ElegantMenu(), // Intégration du menu élégant // Intégration du CustomDrawer
       backgroundColor: Colors.green.withOpacity(0.02),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            /// -- Tutorial [Section # 5, video # 2]
+            /// En-tête et promo
             TPrimaryHeaderContainer(
-              child: Column(children: [
-                /// -- Appbar
-                THomeAppBar(),
-                const SizedBox(
-                  height: TSizes.spacetBtwSections,
-                ),
-
-                /// -- Promo Slider
-                const TPromoSlider(
-                  banners: [
-                    TImages.promoBanner1,
-                    TImages.promoBanner2,
-                    TImages.promoBanner3,
-                  ],
-                ),
-              ]
+              child: Column(
+                children: [
+                  THomeAppBar(),
+                  const SizedBox(height: TSizes.spacetBtwSections),
+                  const TPromoSlider(
+                    banners: [
+                      TImages.promoBanner1,
+                      TImages.promoBanner2,
+                      TImages.promoBanner3,
+                    ],
+                  ),
+                ],
               ),
             ),
-
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  /// -- Bar de recherche
+                  /// Bar de recherche
                   TextFormField(
                     decoration: InputDecoration(
                       prefixIcon: const Icon(Iconsax.search_normal),
                       labelText: 'Rechercher un service',
                       suffixIcon: PopupMenuButton<String>(
-                        icon: Icon(Icons.filter_list), // Icône de filtre
+                        icon: const Icon(Icons.filter_list), // Icône de filtre
                         onSelected: (String value) {
-                          //setState(() {
-                          // _selectedFilter = value; // Met à jour le filtre sélectionné
-                          //});
+                          // Action de filtre
                         },
                         itemBuilder: (BuildContext context) => [
-                          PopupMenuItem(
+                          const PopupMenuItem(
                               value: "Tous", child: Text("Tous les services")),
-                          PopupMenuItem(value: "Coupes", child: Text("Coupes")),
-                          PopupMenuItem(
+                          const PopupMenuItem(
+                              value: "Coupes", child: Text("Coupes")),
+                          const PopupMenuItem(
                               value: "Tresses", child: Text("Tresses")),
-                          PopupMenuItem(
+                          const PopupMenuItem(
                               value: "Massage", child: Text("Massage")),
-                          PopupMenuItem(value: "Makeup", child: Text("Makeup")),
+                          const PopupMenuItem(
+                              value: "Makeup", child: Text("Makeup")),
                         ],
                       ),
                     ),
                   ),
-                  SizedBox(
-                    height: TSizes.spacetBtwSections,
-                  ),
+                  const SizedBox(height: TSizes.spacetBtwSections),
 
-                  /// -- Titre et bouton "Tous voir"
+                  /// Titre et bouton "Voir tout" pour les catégories
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
+                      const Text(
                         "Vos Categories",
                         style: TextStyle(
                           fontSize: 16,
@@ -99,14 +125,14 @@ class HomeScreen extends StatelessWidget {
                             borderRadius: BorderRadius.circular(10),
                           ),
                         ),
-                        child: Text(
+                        child: const Text(
                           "Voir tout",
                           style: TextStyle(color: Colors.black54),
                         ),
                       ),
                     ],
                   ),
-                  SizedBox(height: 5),
+                  const SizedBox(height: 5),
                   // Liste des catégories
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -141,72 +167,51 @@ class HomeScreen extends StatelessWidget {
               ),
             ),
 
-            /// -- Body
+            /// -- Section recommandée : Intégration de la liste de salons dans un carousel
             Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "Recommandé pour vous",
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black87,
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        "Recommandé pour vous",
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black87,
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          // Action pour voir tout
+                          Get.to(()=>SalonListScreen());
+                        },
+                        style: TextButton.styleFrom(
+                          backgroundColor: Colors.blue.shade50,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
                           ),
                         ),
-                        TextButton(
-                          onPressed: () {
-                            // Action pour voir toutes les catégories
-                          },
-                          style: TextButton.styleFrom(
-                            backgroundColor: Colors.blue.shade50,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                          ),
-                          child: Text(
-                            "Voir tout",
-                            style: TextStyle(color: Colors.black54),
-                          ),
+                        child: const Text(
+                          "Voir tout",
+                          style: TextStyle(color: Colors.black54),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: TSizes.spacetBtwItems / 4),
 
-                    const SizedBox(height: TSizes.spacetBtwItems / 4),
-
-                    /// -- Heading
-                    /*TSectionHeading(
-                      title: 'Services Populaire',
-                      onPressed: () {},
-                    ),
-
-                    const SizedBox(height: TSizes.spacetBtwItems),
-
-                     */
-
-                    /// -- Popular Products
-
-                    TCarouselLayout(
-                      itemCount: 8,
-                      itemBuilder: (_, index) => const TProductCardVertical(),
-                    ),
-                    /*
-                    GridView.builder(
-                      itemCount: 8,
-                        shrinkWrap: true,
-                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 2,
-                          mainAxisSpacing: TSizes.gridViewSpacing,
-                          crossAxisSpacing:  TSizes.gridViewSpacing,
-                          mainAxisExtent: 288,
-                        ),
-                      itemBuilder: (_, index) => const TProductCardVertical(),)
-                      */
-                  ],
-                )
+                  // Utilisation du carousel pour afficher les salons de la liste
+                  TCarouselLayout(
+                    itemCount: salonsList.length,
+                    itemBuilder: (_, index) {
+                      return SalonCard(salon: salonsList[index]);
+                    },
+                  ),
+                ],
+              ),
             ),
           ],
         ),
@@ -215,7 +220,56 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
-// Widget pour une carte de catégorie
+/// Widget pour afficher une carte salon
+class SalonCard extends StatelessWidget {
+  final Map<String, dynamic> salon;
+
+  const SalonCard({Key? key, required this.salon}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      elevation: 2,
+      margin: const EdgeInsets.symmetric(horizontal: 8),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Affiche la première image du salon
+          ClipRRect(
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
+            child: Image.asset(
+              salon["imageUrls"][0],
+              height: 120,
+              width: double.infinity,
+              fit: BoxFit.cover,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8),
+            child: Text(
+              salon["name"],
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            child: Text(
+              salon["address"],
+              style: const TextStyle(fontSize: 12, color: Colors.grey),
+            ),
+          ),
+          const SizedBox(height: 8)
+        ],
+      ),
+    );
+  }
+}
+
+/// Widget pour une carte de catégorie
 Widget categoryCard({
   required IconData icon,
   required String text,
@@ -228,7 +282,7 @@ Widget categoryCard({
     decoration: BoxDecoration(
       color: bgColor,
       borderRadius: BorderRadius.circular(10),
-      boxShadow: [
+      boxShadow: const [
         BoxShadow(
           color: Colors.black12,
           blurRadius: 5,
@@ -240,10 +294,10 @@ Widget categoryCard({
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Icon(icon, color: color, size: 40),
-        SizedBox(height: 10),
+        const SizedBox(height: 10),
         Text(
           text,
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 12,
             fontWeight: FontWeight.bold,
             color: Colors.black87,
@@ -253,25 +307,3 @@ Widget categoryCard({
     ),
   );
 }
-
-/// -- Catégories peti rond avec icon
-/*Padding(
-                  padding: const EdgeInsets.only(
-                    left: TSizes.defaultSpace,
-                  ),
-                  child: Column(
-                    children: [
-                      /// -- Heading
-                      const TSectionHeading(
-                        title: 'Catégories Populaire',
-                        showActionButton: false,
-                        textColor: Colors.white,
-                      ),
-
-                      const SizedBox(height: TSizes.spacetBtwItems),
-
-                      /// -- Categories
-                      THomeCategories(),
-                    ],
-                  ),
-                ),*/
