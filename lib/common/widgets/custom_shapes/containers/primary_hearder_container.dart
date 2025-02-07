@@ -20,7 +20,7 @@ class TPrimaryHeaderContainer extends StatelessWidget {
     return TCurvedEdgesWidget(
       // Ce widget enveloppe le contenu pour ajouter des bords incurvés.
       child: Container(
-        color: TColors.blue, // Définit la couleur d'arrière-plan principale.
+        //color: TColors.blue, // Définit la couleur d'arrière-plan principale.
         padding: const EdgeInsets.all(0), // Aucun espacement interne.
         child: SizedBox(
           height: 400, // Définit la hauteur fixe du conteneur.
@@ -29,13 +29,16 @@ class TPrimaryHeaderContainer extends StatelessWidget {
             children: [
               /// Cercle décoratif situé en haut à droite, en dehors des limites visibles.
               Positioned(
-                top: -150, // Positionne le cercle au-dessus de la limite visible.
-                right: -250, // Positionne le cercle à droite en dehors de l'écran.
+                top:
+                    -150, // Positionne le cercle au-dessus de la limite visible.
+                right:
+                    -250, // Positionne le cercle à droite en dehors de l'écran.
                 child: TCircularContainer(
                   // Conteneur circulaire avec une opacité réduite.
                   backgroundColor: TColors.textWhite.withOpacity(0.1),
                 ),
               ),
+
               /// Cercle décoratif situé légèrement plus bas à droite.
               Positioned(
                 top: 100, // Positionne le cercle plus bas que le premier.
@@ -44,6 +47,7 @@ class TPrimaryHeaderContainer extends StatelessWidget {
                   backgroundColor: TColors.textWhite.withOpacity(0.1),
                 ),
               ),
+
               /// Contenu principal du conteneur.
               child,
             ],

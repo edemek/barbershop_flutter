@@ -21,22 +21,24 @@ class TPromoSlider extends StatelessWidget {
     final controller = Get.put(HomeController());
     final double screenHeight = MediaQuery.of(context).size.height;
     final double screenWidth = MediaQuery.of(context).size.width;
-    final double sliderHeight = screenHeight * 0.2; // 20% de la hauteur
+    final double sliderHeight = screenHeight * 0.4; // 20% de la hauteur
 
     return Column(
       children: [
         CarouselSlider(
-          items: banners.map((url) =>
-              SizedBox(
-                width: screenWidth, // 100% de la largeur
-                height: sliderHeight, // 20% de la hauteur
-                child: TRoundedImage(
-                  imageUrl: url,
-                  applyImageRadius: false, // S'assurer que l'image prend tout l'espace
-                  fit: BoxFit.cover, // Ajustement pour occuper tout l'espace
-                ),
-              )
-          ).toList(),
+          items: banners
+              .map((url) => SizedBox(
+                    width: screenWidth, // 100% de la largeur
+                    height: sliderHeight, // 20% de la hauteur
+                    child: TRoundedImage(
+                      imageUrl: url,
+                      applyImageRadius:
+                          false, // S'assurer que l'image prend tout l'espace
+                      fit:
+                          BoxFit.cover, // Ajustement pour occuper tout l'espace
+                    ),
+                  ))
+              .toList(),
           options: CarouselOptions(
             height: sliderHeight,
             viewportFraction: 1,
@@ -52,7 +54,7 @@ class TPromoSlider extends StatelessWidget {
         const SizedBox(height: TSizes.spacetBtwItems),
         Center(
           child: Obx(
-                () => Row(
+            () => Row(
               mainAxisSize: MainAxisSize.min,
               children: [
                 for (int i = 0; i < banners.length; i++)
