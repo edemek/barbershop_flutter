@@ -61,8 +61,8 @@ class HomeScreen extends StatelessWidget {
             TPrimaryHeaderContainer(
               child: Column(
                 children: [
-                  THomeAppBar(),
-                  const SizedBox(height: TSizes.spacetBtwSections),
+                  // THomeAppBar(),
+                  // const SizedBox(height: TSizes.spacetBtwSections),
                   const TPromoSlider(
                     banners: [
                       TImages.promoBanner1,
@@ -70,7 +70,6 @@ class HomeScreen extends StatelessWidget {
                       TImages.promoBanner3,
                     ],
                   ),
-
                 ],
               ),
             ),
