@@ -5,6 +5,8 @@ import '../features/settings/views/settings_view.dart';
 import '../features/settings/views/addresses_view.dart';
 import '../features/settings/views/theme_mode_view.dart';
 import '../features/settings/bindings/settings_binding.dart';
+import '../features/authentication/screens/phoneverificationview.dart'; // Import PhoneVerificationView
+import '../features/root/bindings/root_binding.dart';
 import 'app_routes.dart';
 
 class Theme1AppPages {
@@ -16,6 +18,7 @@ class Theme1AppPages {
   // };
 
   static final routes = [
+    GetPage(name: Routes.ROOT, page: () => RootView(), binding: RootBinding()),
     GetPage(
         name: Routes.SETTINGS,
         page: () => SettingsView(),
@@ -29,6 +32,8 @@ class Theme1AppPages {
         name: Routes.SETTINGS_THEME_MODE,
         page: () => ThemeModeView(),
         binding: SettingsBinding()),
+    GetPage(name: Routes.PHONE_VERIFICATION, page: () => const  PhoneVerificationView()), //, binding: AuthBinding()
+    
     // GetPage(
     //     name: Routes.SETTINGS_LANGUAGE,
     //     page: () => LanguageView(),

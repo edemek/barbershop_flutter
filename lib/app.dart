@@ -16,6 +16,7 @@ class App extends StatelessWidget {
         theme: TApptheme.lightTheme,
         darkTheme: TApptheme.darkTheme,
         // home: SettingsView());
+        getPages: Theme1AppPages.routes,
         home: const OnBoardingScreen());
   }
 }

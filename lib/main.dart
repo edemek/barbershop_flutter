@@ -10,6 +10,7 @@ import 'features/settings/controllers/settings_controller.dart';
 import 'features/settings/controllers/address_controller.dart';
 import 'package:get_storage/get_storage.dart';
 import '../../../../../controllers/auth_controller.dart';
+import 'features/authentication/controllers/onboard_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -25,6 +26,7 @@ Future<void> initServices() async {
   // await Get.putAsync(() => FirebaseProvider().init());
   await Get.putAsync(() => SettingsService().init());
   // await Get.putAsync(() => TranslationService().init());
+
   Get.log('All services started...');
 }
 
@@ -35,6 +37,7 @@ void main() async {
   await initServices();
   Get.put(() => GlobalService());
   Get.lazyPut(() => AuthController());
+  Get.put(() => OnBoardingController());
   Get.put<SettingsController>(SettingsController());
   Get.put(UserController());
   Get.put(AddressController());

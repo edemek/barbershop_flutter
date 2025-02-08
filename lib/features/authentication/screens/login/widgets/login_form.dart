@@ -32,8 +32,8 @@ class _TLoginFormState extends State<TLoginForm> {
   final TextEditingController Role = TextEditingController();
   // Champs de saisie
   final TextEditingController _PhoneController = TextEditingController();
-  final TextEditingController _NomController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
+  // final TextEditingController _NomController = TextEditingController();
+  // final TextEditingController _passwordController = TextEditingController();
   final FocusNode _emailFocusNode =
       FocusNode(); // création d'une instance focus sur _email
   bool _obscureText = true; // Contrôle l'état du texte masqué
@@ -99,7 +99,7 @@ class _TLoginFormState extends State<TLoginForm> {
             /// -- Numéro de Téléphone/email
             TextFormField(
               focusNode: _emailFocusNode,
-              controller: _PhoneController,
+              // controller: _PhoneController,
               keyboardType: TextInputType.phone,
               inputFormatters: [
                 TogolesePhoneNumberFormatter(),
@@ -110,7 +110,10 @@ class _TLoginFormState extends State<TLoginForm> {
                 labelText: "Numéro de téléphone",
                 hintText: "+228 90 90 90 90",
               ),
-              onChanged: (value) {},
+              // onChanged: (value) {},
+              initialValue: controller.currentUser.value.email,
+              onSaved: (value) => controller.currentUser.value.phoneNumber = value,
+                        
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'Veuillez entrer votre numéro de téléphone';
@@ -132,8 +135,9 @@ class _TLoginFormState extends State<TLoginForm> {
 
             /// -- Mot de passe
             TextFormField(
-              controller: _passwordController,
+              // controller: _passwordController,
               obscureText: _obscureText,
+              onSaved: (value) => controller.currentUser.value.password = value,
               decoration: InputDecoration(
                 prefixIcon: const Icon(Iconsax.password_check),
                 labelText: TTexts.password,
@@ -243,88 +247,8 @@ class _TLoginFormState extends State<TLoginForm> {
               child: ElevatedButton(
                 child: const Text(TTexts.signIn),
                 onPressed: () {
-                  controller.login(
-                      _PhoneController.text, _passwordController.text);
-                  /*
-                  if (_formKey.currentState!.validate()) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('OTP Envoié !'),
-                        duration: Duration(seconds: 3),
-                      ),
-                    );
-                    sendOtp(context);
-
-                  }
-
-                  //simulation d'identifiant
-                  final String usernameOremail = "test";
-                  final String password = "test";
-                  final String usernameOremail_clt = "client";
-                  final String password_clt = "client";*/
-
-                  // if (_PhoneController.text.isNotEmpty &&
-                  //     _passwordController.text.isNotEmpty) {
-                  //   Get.put(UserController());
-                  //   final response = await ApiService.login(
-                  //       _PhoneController.text, _passwordController.text);
-                  //   final Map<String, dynamic> responseData =
-                  //       jsonDecode(response.body);
-
-                  //   if (responseData.containsKey("data")) {
-                  //     String name = responseData["data"]["name"];
-                  //     String token = responseData["data"]["api_token"];
-                  //     String role = responseData["data"]["roles"][0]["name"];
-                  //     print("Role de l'utilisateur $role");
-                  //     print("token de l'utilisateur:$token");
-                  //     _NomController.text =
-                  //         name; // ✅ Mise à jour du TextEditingController
-                  //     tokenTaker.text = token;
-                  //     Role.text = role;
-                  //     print("token de l'utilisateur recuperé:$token");
-                  //     userController.updateUser(_NomController.text, null, null,
-                  //         null, null, tokenTaker.text, Role.text);
-                  //     if (Role.text == "customer") {
-                  //       Get.to(() => NavigationMenu());
-                  //     } else {
-                  //       Get.to(() => AccountView());
-                  //     }
-                  //     ;
-
-                  //     print("Contenu : ${response.body.toString()}");
-                  //   } else {
-                  //     var responseBody =
-                  //         jsonDecode(response.body); // Décoder la réponse JSON
-                  //     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                  //       content: Text(
-                  //         "Erreur de connexion : ${responseBody['message']}",
-                  //       ),
-                  //     ));
-                  //     //print("UserController token: ${userController.UToken}");
-                  //     // print("UserController token value: ${userController.UToken.value}");
-                  //     print(
-                  //         "Nom de l'utilisateur mis à jour : ${_NomController.text}");
-
-                  //     print("nombre d'erreur:" + nbError.toString());
-
-                  //     _PhoneController.clear();
-                  //     _passwordController.clear();
-
-                  //     if (nbError == 5) {
-                  //       ScaffoldMessenger.of(context)
-                  //           .showSnackBar(const SnackBar(
-                  //         content: Text(
-                  //             "Vous avez essayer à plus de 5 tentaives, votre compte est momentanément suspendu! contacter le service client pour reinitialisation"),
-                  //       ));
-                  //     }
-                  //     //mettre le focus sur l'email
-                  //     FocusScope.of(context).requestFocus(_emailFocusNode);
-                  //   }
-                  //   // Simulation de connexion réussie
-                  // } else {
-                  //   return;
-                  // }
-                  ;
+                  controller.login();
+                 
                 },
               ),
             ),

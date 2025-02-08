@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:barbershpo_flutter/data/services/api_service.dart';
 import 'package:barbershpo_flutter/features/personalization/screens/profile/profile.dart';
 import '../features/services/auth_service.dart';
-
+import '../features/root/controllers/root_controller.dart';
 import '../../../../common/ui.dart';
 import '../../../models/user_model.dart';
 import '../../features/repositories/user_repository.dart';
@@ -26,6 +26,8 @@ class AuthController extends GetxController {
   // final Rx<User?> currentUser = Rx<User?>(null);
   // late GlobalKey<FormState> loginFormKey;
   final loginFormKey = GlobalKey<FormState>();
+  final registerFormKey = GlobalKey<FormState>();
+  final smsSent = ''.obs;
 
   static AuthController get to => Get.find(); // Access the
 
@@ -40,7 +42,7 @@ class AuthController extends GetxController {
   // bool get isLoggedIn => currentUser.value != null;
 
   // Méthode pour enregistrer un nouvel utilisateur.
-  Future<void> register(String name, String email, String password,
+  Future<void> register_(String name, String email, String password,
       String passwordConfirmation) async {
     loading.value = true; // Début du chargement.
     try {
@@ -57,8 +59,34 @@ class AuthController extends GetxController {
     }
   }
 
+  void register() async {
+    Get.focusScope?.unfocus();
+    if (registerFormKey.currentState!.validate()) {
+      registerFormKey.currentState!.save();
+      loading.value = true;
+      try {
+        // await _userRepository.sendCodeToPhone();
+        loading.value = false;
+        currentUser.value = await _userRepository.register(currentUser.value);
+
+        // this.verifyPhone();
+        // await Get.toNamed(Routes.PHONE_VERIFICATION ,  arguments: {
+        // 'emailOrPhone': 'user@example.com',
+        // 'role': 'customer',
+        // });
+      } catch (e) {
+        Get.showSnackbar(Ui.ErrorSnackBar(message: e.toString()));
+      } finally {
+        loading.value = false;
+      }
+    }
+  }
+
   // Méthode pour connecter un utilisateur.
-  Future<void> login(String phonenumber, String password) async {
+  Future<void> login_(
+      {required String phone_number,
+      required String password,
+      required BuildContext context}) async {
     print('nous etions dans le controleur');
     //------------------------------
     print(loginFormKey.currentState);
@@ -70,7 +98,7 @@ class AuthController extends GetxController {
       try {
         print(currentUser.value);
         // await Get.find<FireBaseMessagingService>().setDeviceToken();
-        currentUser.value = await _userRepository.login(currentUser.value);
+        // currentUser.value = await _userRepository.login(currentUser.value.phoneNumber ,currentUser.value.password );
         //await _userRepository.signInWithEmailAndPassword(currentUser.value.email!, currentUser.value.apiToken!);
         await Get.find<RootController>().changePage(0);
       } catch (e) {
@@ -79,32 +107,45 @@ class AuthController extends GetxController {
         loading.value = false;
       }
     }
+  }
 
-    // //''''''''''''''''''''''''''''''''
+  void login() async {
+    Get.focusScope?.unfocus();
+   
+    if (loginFormKey.currentState!.validate()) {
+      loginFormKey.currentState!.save();
+      loading.value = true;
+      try {
+        // await Get.find<FireBaseMessagingService>().setDeviceToken();
+        currentUser.value = await _userRepository.login(currentUser.value);
+        // await _userRepository.signInWithEmailAndPassword(currentUser.value.email!, currentUser.value.apiToken!);
+        await Get.find<RootController>().changePage(0);
+      } catch (e) {
+        Get.showSnackbar(Ui.ErrorSnackBar(message: e.toString()));
+      } finally {
+        loading.value = false;
+      }
+    }
+  }
 
-    // try {
-    //   isLoading.value = true; // Début du chargement.
-    //   error.value = ""; // Réinitialisation des erreurs.
+  Future<void> verifyPhone() async {
+    try {
+      loading.value = true;
+      await _userRepository.verifyPhone(smsSent.value);
+      // await Get.find<FireBaseMessagingService>().setDeviceToken();
+      // currentUser.value = await _userRepository.register(currentUser.value);
+      // await _userRepository.signUpWithEmailAndPassword(currentUser.value.email!, currentUser.value.apiToken!);
+      await Get.find<RootController>().changePage(0);
+    } catch (e) {
+      Get.back();
+      Get.showSnackbar(Ui.ErrorSnackBar(message: e.toString()));
+    } finally {
+      loading.value = false;
+    }
+  }
 
-    //   // Appel de l'API pour authentifier l'utilisateur.
-    //   final user = await _apiService.login(email, password);
-
-    //   // Mise à jour de l'utilisateur actuel.
-    //   currentUser.value = user;
-
-    //   // Récupération des tâches de l'utilisateur.
-    //   //await Get.find<TodoController>().fetchTodos();
-
-    //   // Navigation vers la page des tâches.
-    //   //Get.offAllNamed('/todos');
-    //   Get.offAll(ProfileScreen());
-    // } catch (e) {
-    //   // Capture et affichage des erreurs.
-    //   error.value = e.toString();
-    // } finally {
-    //   // Fin du chargement.
-    //   isLoading.value = false;
-    // }
+  Future<void> resendOTPCode() async {
+    await _userRepository.sendCodeToPhone(currentUser.value);
   }
 
 /*

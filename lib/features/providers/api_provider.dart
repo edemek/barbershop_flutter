@@ -16,19 +16,19 @@ import '../services/global_service.dart';
 
 mixin ApiClient {
   final globalService = Get.find<GlobalService>();
-  final authService = Get.find<AuthService>();
+  final AuthService authService = Get.find<AuthService>();
   String baseUrl = '';
   late Map<String, String> _headers; // Store headers
   final _httpClient = http.Client();
 
   Map<String, String> get optionsNetwork => _headers;
-
   ApiClient get httpClient => this;
 
-  Future<ApiClient> init() async {
+  Future <ApiClient> init() async {
     // Initialize any necessary components here if needed
     _headers = {
       "Content-Type": "application/json",
+      "Authorization": "Bearer ${authService.apiToken}",
     };
     return this;
   }
@@ -109,6 +109,17 @@ mixin ApiClient {
         headers: combinedHeaders, body: jsonEncode(body));
   }
 
+  Future<http.Response> put(Uri path,
+      {Map<String, String>? headers, Object? body}) async {
+    final uri = path;
+    final combinedHeaders = {
+      ..._headers,
+      if (headers != null) ...headers
+    }; // Combine default and provided headers
+    return await http.put(uri,
+        headers: combinedHeaders, body: jsonEncode(body));
+  }
+
   // Define the delete method
   Future<http.Response> deleteUri(Uri path,
       {Map<String, String>? headers}) async {
@@ -122,4 +133,6 @@ mixin ApiClient {
       headers: combinedHeaders,
     );
   }
+
+
 }

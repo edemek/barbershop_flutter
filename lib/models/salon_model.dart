@@ -27,7 +27,7 @@ class Salon extends Model {
   }
 
   // Factory constructor pour convertir un JSON en objet Salon
-  factory Salon.fromJson(Map<String, dynamic> json) {
+  factory Salon.fromJson_(Map<String, dynamic> json) {
     return Salon(
       // id: json['id'] ?? 0, // Si la clé 'id' est absente, on met 0 par défaut
       nom: json['nom'] ?? '', // Nom du salon, chaîne vide par défaut si null
@@ -45,7 +45,7 @@ class Salon extends Model {
     );
   }
 
-  Salon.fromJson_(Map<String, dynamic>? json) {
+  Salon.fromJson(Map<String, dynamic>? json) {
     super.fromJson(json);
     nom = transStringFromJson(json, 'nom');
     description = transStringFromJson(json, 'description');
