@@ -19,7 +19,7 @@ mixin ApiClient {
   final authService = Get.find<AuthService>();
   String baseUrl = '';
   late Map<String, String> _headers; // Store headers
-  final _httpClient = http.Client();
+  late http.Client _httpClient;
 
   Map<String, String> get optionsNetwork => _headers;
 

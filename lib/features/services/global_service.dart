@@ -14,20 +14,7 @@ class GlobalService extends GetxService {
   final global = Global().obs;
 
   Future<GlobalService> init() async {
-    // var response = await Helper.getJsonFile('config/global.json')
-    // Dummy JSON data
-    final response = {
-      "laravel_base_url": "http://127.0.0.1:8000",
-      "api_path": "api/",
-      "received": 1,
-      "accepted": 10,
-      "on_the_way": 20,
-      "ready": 30,
-      "in_progress": 40,
-      "done": 50,
-      "failed": 60
-    };
-
+    var response = await Helper.getJsonFile('config/global.json');
     global.value = Global.fromJson(response);
     return this;
   }

@@ -23,10 +23,11 @@ class NavigationMenu extends StatelessWidget {
     return Scaffold(
       drawer: const ElegantMenu(),
       appBar: AppBar(
-        title: Text("Barber Shop ",style: TextStyle(color: Colors.blue),),
+        title: Text("Barber Shop ",style: TextStyle(color: Color(0xFFDFAC1B)),),
         leading: Builder(
           builder: (context) {
             return IconButton(
+              color: darkMode ? Colors.white : Colors.black,
               icon: const Icon(Icons.menu),
               onPressed: () {
                 Scaffold.of(context).openDrawer();
@@ -44,9 +45,7 @@ class NavigationMenu extends StatelessWidget {
             controller.selectedIndex.value = index;
           },
           backgroundColor: darkMode ? Colors.black : Colors.white,
-          indicatorColor: darkMode
-              ? Colors.white.withOpacity(0.1)
-              : Colors.black.withOpacity(0.1),
+          indicatorColor: Color(0xFFDFAC1B),
           surfaceTintColor:
               Colors.transparent, // Supprimer tout effet de teinte par défaut
           destinations: [
@@ -90,88 +89,12 @@ class NavigationController extends GetxController {
   final Rx<int> selectedIndex = 0.obs;
 
   final List<Widget> screens = [
-    const HomeScreen(),
-
-  //const StoreScreen(),
-   //const AppointmentCard(),
+    HomeScreen(),
     SalonListScreen(),
     const AccountViewClient()
 
+    //const StoreScreen(),
+   //const AppointmentCard(),
+
   ];
-}
-
-
-
-
-class CustomAppBar extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [Colors.green.shade700, Colors.green.shade300],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-      ),
-      child: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.0),
-          child: Stack(
-            alignment: Alignment.center,
-            children: [
-              // Menu icon
-              Align(
-                alignment: Alignment.centerLeft,
-                child: IconButton(
-                  icon: Icon(Icons.menu, color: Colors.black),
-                  onPressed: () {},
-                ),
-              ),
-              // Title
-              Text(
-                "Beauty Salons",
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                ),
-              ),
-              // Notification icon with badge
-              Align(
-                alignment: Alignment.centerRight,
-                child: Stack(
-                  children: [
-                    IconButton(
-                      icon: Icon(Icons.notifications, color: Colors.black),
-                      onPressed: () {},
-                    ),
-                    Positioned(
-                      right: 10,
-                      top: 10,
-                      child: Container(
-                        padding: EdgeInsets.all(4),
-                        decoration: BoxDecoration(
-                          color: Colors.green.shade900,
-                          shape: BoxShape.circle,
-                        ),
-                        child: Text(
-                          "0",
-                          style: TextStyle(
-                            fontSize: 12,
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
 }
