@@ -20,7 +20,7 @@ class TPrimaryHeaderContainer extends StatelessWidget {
     return TCurvedEdgesWidget(
       // Ce widget enveloppe le contenu pour ajouter des bords incurvés.
       child: Container(
-        color: TColors.blue, // Définit la couleur d'arrière-plan principale.
+        color: Colors.transparent, // Définit la couleur d'arrière-plan principale.
         padding: const EdgeInsets.all(0), // Aucun espacement interne.
         child: SizedBox(
           height: 400, // Définit la hauteur fixe du conteneur.

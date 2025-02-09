@@ -13,9 +13,10 @@ import 'package:intl/intl.dart';
 import '../../../../common/widgets/custom_shapes/containers/primary_hearder_container.dart';
 import '../../../Salon/screen/salon_liste.dart';
 import '../../../home/custom_drawer.dart';
+import '../categorie/categories_screen.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+  HomeScreen({super.key});
 
   // Ta liste de salons
   final List<Map<String, dynamic>> salonsList = const [
@@ -44,32 +45,65 @@ class HomeScreen extends StatelessWidget {
       "email": "info@barberking.com",
       "latitude": 6.1724,
       "longitude": 1.2085,
+    },
+    {
+      "name": "Miabe Barber",
+      "address": "456 Rue Royale, Lomé",
+      "openingHours": "09:00 - 21:00",
+      "imageUrls": [
+        "assets/images/photo_salon/s (1).jpg",
+        "assets/images/photo_salon/s (4).jpg"
+      ],
+      "phone": "+228 90 00 00 02",
+      "email": "info@barberking.com",
+      "latitude": 6.1724,
+      "longitude": 1.2085,
     }
+  ];
+
+  final List<Map<String, dynamic>> categories = [
+    {
+      "icon": Iconsax.scissor,
+      "text": "Coupes",
+      "color": Colors.red.shade300,
+      "bgColor": Colors.red.shade50
+    },
+    {
+      "icon": Icons.woman_rounded,
+      "text": "Tresse",
+      "color": Colors.blue.shade300,
+      "bgColor": Colors.blue.shade50
+    },
+    {
+      "icon": Icons.spa,
+      "text": "Massage",
+      "color": Colors.purple.shade500,
+      "bgColor": Colors.purple.shade50
+    },
+    {
+      "icon": Icons.brush,
+      "text": "Makeup",
+      "color": Colors.orange.shade500,
+      "bgColor": Colors.orange.shade50
+    },
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: const ElegantMenu(), // Intégration du menu élégant // Intégration du CustomDrawer
+      drawer:
+          const ElegantMenu(), // Intégration du menu élégant // Intégration du CustomDrawer
       backgroundColor: Colors.green.withOpacity(0.02),
       body: SingleChildScrollView(
         child: Column(
           children: [
             /// En-tête et promo
-            TPrimaryHeaderContainer(
-              child: Column(
-                children: [
-                  THomeAppBar(),
-                  const SizedBox(height: TSizes.spacetBtwSections),
-                  const TPromoSlider(
-                    banners: [
-                      TImages.promoBanner1,
-                      TImages.promoBanner2,
-                      TImages.promoBanner3,
-                    ],
-                  ),
-                ],
-              ),
+            TPromoSlider(
+              banners: [
+                TImages.promoBanner1,
+                TImages.promoBanner2,
+                TImages.promoBanner3,
+              ],
             ),
             Padding(
               padding: const EdgeInsets.all(16.0),
@@ -81,6 +115,7 @@ class HomeScreen extends StatelessWidget {
                     decoration: InputDecoration(
                       prefixIcon: const Icon(Iconsax.search_normal),
                       labelText: 'Rechercher un service',
+                      suffixIconColor: Color(0xFFDFAC1B),
                       suffixIcon: PopupMenuButton<String>(
                         icon: const Icon(Icons.filter_list), // Icône de filtre
                         onSelected: (String value) {
@@ -101,7 +136,7 @@ class HomeScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                  const SizedBox(height: TSizes.spacetBtwSections),
+                  const SizedBox(height: TSizes.spacetBtwItems),
 
                   /// Titre et bouton "Voir tout" pour les catégories
                   Row(
@@ -112,12 +147,15 @@ class HomeScreen extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
-                          color: Colors.black87,
+                          color: Color(0xFFDFAC1B),
                         ),
                       ),
                       TextButton(
                         onPressed: () {
-                          // Action pour voir toutes les catégories
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => CategoriesScreen()),
+                          );
                         },
                         style: TextButton.styleFrom(
                           backgroundColor: Colors.green.shade50,
@@ -126,43 +164,30 @@ class HomeScreen extends StatelessWidget {
                           ),
                         ),
                         child: const Text(
-                          "Voir tout",
+                          "Tout afficher",
                           style: TextStyle(color: Colors.black54),
                         ),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 5),
-                  // Liste des catégories
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      categoryCard(
-                        icon: Iconsax.scissor,
-                        text: "Coupes",
-                        color: Colors.red.shade300,
-                        bgColor: Colors.red.shade50,
-                      ),
-                      categoryCard(
-                        icon: Icons.woman_rounded,
-                        text: "Tresse",
-                        color: Colors.blue.shade300,
-                        bgColor: Colors.blue.shade50,
-                      ),
-                      categoryCard(
-                        icon: Icons.spa,
-                        text: "Massage",
-                        color: Colors.purple.shade500,
-                        bgColor: Colors.purple.shade50,
-                      ),
-                      categoryCard(
-                        icon: Icons.brush,
-                        text: "Makeup",
-                        color: Colors.orange.shade500,
-                        bgColor: Colors.orange.shade50,
-                      ),
-                    ],
-                  ),
+
+                  const SizedBox(height: 10),
+
+                  // Lister les catégories
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: categories
+                          .map((category) => categoryCard(
+                                icon: category["icon"],
+                                text: category["text"],
+                                color: category["color"],
+                                bgColor: category["bgColor"],
+                              ),
+                      )
+                          .toList(),
+                    ),
+                  )
                 ],
               ),
             ),
@@ -180,13 +205,13 @@ class HomeScreen extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
-                          color: Colors.black87,
+                          color: Color(0xFFDFAC1B),
                         ),
                       ),
                       TextButton(
                         onPressed: () {
                           // Action pour voir tout
-                          Get.to(()=>SalonListScreen());
+                          Get.to(() => SalonListScreen());
                         },
                         style: TextButton.styleFrom(
                           backgroundColor: Colors.blue.shade50,
@@ -195,13 +220,13 @@ class HomeScreen extends StatelessWidget {
                           ),
                         ),
                         child: const Text(
-                          "Voir tout",
+                          "Tout afficher",
                           style: TextStyle(color: Colors.black54),
                         ),
                       ),
                     ],
                   ),
-                  const SizedBox(height: TSizes.spacetBtwItems / 4),
+                  const SizedBox(height: 10),
 
                   // Utilisation du carousel pour afficher les salons de la liste
                   TCarouselLayout(
@@ -270,40 +295,50 @@ class SalonCard extends StatelessWidget {
 }
 
 /// Widget pour une carte de catégorie
-Widget categoryCard({
-  required IconData icon,
-  required String text,
-  required Color color,
-  required Color bgColor,
-}) {
-  return Container(
-    width: 90,
-    height: 100,
-    decoration: BoxDecoration(
-      color: bgColor,
-      borderRadius: BorderRadius.circular(10),
-      boxShadow: const [
-        BoxShadow(
-          color: Colors.black12,
-          blurRadius: 5,
-          offset: Offset(2, 2),
-        ),
-      ],
-    ),
-    child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Icon(icon, color: color, size: 40),
-        const SizedBox(height: 10),
-        Text(
-          text,
-          style: const TextStyle(
-            fontSize: 12,
-            fontWeight: FontWeight.bold,
-            color: Colors.black87,
+class categoryCard extends StatelessWidget {
+  final IconData icon;
+  final String text;
+  final Color color;
+  final Color bgColor;
+
+  const categoryCard({
+    Key? key,
+    required this.icon,
+    required this.text,
+    required this.color,
+    required this.bgColor,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 8.0), // Marges autour de chaque carte
+      width: 120, // Largeur fixe pour chaque carte
+      child: AspectRatio(
+        aspectRatio: 1.0, // Assurer que la carte est carrée
+        child: Container(
+          decoration: BoxDecoration(
+            color: bgColor,
+            borderRadius: BorderRadius.circular(15),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center, // Centrer le contenu
+            children: [
+              Icon(
+                icon,
+                color: color,
+                size: 30,
+              ),
+              SizedBox(height: 5),
+              Text(
+                text,
+                style: TextStyle(color: color, fontWeight: FontWeight.bold),
+                textAlign: TextAlign.center,
+              ),
+            ],
           ),
         ),
-      ],
-    ),
-  );
+      ),
+    );
+  }
 }

@@ -202,7 +202,7 @@ class TBrandCard extends StatelessWidget {
   const TBrandCard({
     super.key, required this.showBorder, this.onTap,
   });
-  
+
   final bool showBorder;
   final void Function()? onTap;
 
@@ -253,3 +253,213 @@ class TBrandCard extends StatelessWidget {
     );
   }
 }
+
+
+
+/*class StoreScreen1 extends StatelessWidget {
+  const StoreScreen1({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return DefaultTabController(
+      length: 5,
+      child: Scaffold(
+        appBar: TAppBar(
+          title: Text(
+            'Boutique',
+            style: Theme.of(context).textTheme.headlineMedium,
+          ),
+          actions: [
+            TCartCounterIcon(onPressed: () {}),
+          ],
+        ),
+        body: NestedScrollView(
+          /// -- Header
+          headerSliverBuilder: (_, innerBoxIsScrolled) {
+            return [
+              SliverAppBar(
+                automaticallyImplyLeading: false,
+                pinned: true,
+                floating: true,
+                backgroundColor: Colors.transparent,
+                expandedHeight: 400,
+                flexibleSpace: Padding(
+                  padding: const EdgeInsets.all(TSizes.defaultSpace),
+                  child: ListView(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    children: [
+                      /// -- Promo Slider
+                      const TPromoSlider(
+                        banners: [
+                          TImages.promoBanner1,
+                          TImages.promoBanner2,
+                          TImages.promoBanner3,
+                        ],
+                      ),
+/*
+                      /// -- Bar de recherche
+                      SizedBox(
+                        height: TSizes.spacetBtwItems,
+                      ),
+
+                      /// -- Bar de recherche
+
+                      TextFormField(
+                        decoration: InputDecoration(
+                          prefixIcon: const Icon(Iconsax.search_normal),
+                          labelText: 'Rechercher un service',
+                          suffixIcon: PopupMenuButton<String>(
+                            icon: Icon(Icons.filter_list), // Icône de filtre
+                            onSelected: (String value) {
+                              //setState(() {
+                              // _selectedFilter = value; // Met à jour le filtre sélectionné
+                              //});
+                            },
+                            itemBuilder: (BuildContext context) => [
+                              PopupMenuItem(value: "Tous", child: Text("Tous les services")),
+                              PopupMenuItem(value: "Skin", child: Text("Skin")),
+                              PopupMenuItem(value: "Massage", child: Text("Massage")),
+                              PopupMenuItem(value: "Makeup", child: Text("Makeup")),
+                            ],
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: TSizes.spacetBtwSections,
+                      ),
+
+
+                      /// -- Featured Brands
+                      TSectionHeading(
+                        title: 'Featured Brands',
+                        onPressed: () {},
+                      ),
+                      const SizedBox(height: TSizes.spacetBtwItems / 1.5),
+
+                      /// -- Brand GRID
+                      TGridLayout(
+                          itemCount: 4,
+                          mainAxisExtent: 80,
+                          itemBuilder: (_, index) {
+                            return TBrandCard(
+                              showBorder: false,
+                            );
+                          }
+                          ),
+                      */
+                    ],
+                  ),
+                ),
+
+                /// -- Tabs
+                bottom: TTabBar(
+                  tabs: [
+                    Tab(
+                      child: Text('Coupes'),
+                    ),
+                    Tab(
+                      child: Text('Tresses'),
+                    ),
+                    Tab(
+                      child: Text('Meche'),
+                    ),
+                    Tab(
+                      child: Text('Tissage'),
+                    ),
+                    Tab(
+                      child: Text('Teinte'),
+                    ),
+                  ],
+                ),
+              ),
+            ];
+          },
+
+          /// -- Boby
+          body: TabBarView(children: [
+            Padding(
+              padding: const EdgeInsets.all(TSizes.defaultSpace),
+              child: Column(
+                children: [
+                  /// -- Brands
+                  TRoundedContainer(
+                    shadowBorder: true,
+                    borderColor: TColors.darkGrey,
+                    backgroundColor: Colors.transparent,
+                    padding: const EdgeInsets.all(TSizes.md),
+                    margin:
+                    const EdgeInsets.only(bottom: TSizes.spacetBtwItems),
+                    child: Column(
+                      children: [
+                        /// -- Brand with Products Count
+                        const TBrandCard(showBorder: false),
+
+                        /// -- Brand Top 3 Product Image
+                        Row(
+                          children: [
+                            Expanded(
+                              child: TRoundedContainer(
+                                height: 100,
+                                backgroundColor:
+                                THelperFunctions.isDarkMode(context)
+                                    ? TColors.darkGrey
+                                    : TColors.light,
+                                margin: const EdgeInsets.only(right: TSizes.sm),
+                                padding: const EdgeInsets.all(TSizes.md),
+                                child: const Image(
+                                  fit: BoxFit.contain,
+                                  image: AssetImage(TImages.productImage1),
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              child: TRoundedContainer(
+                                height: 100,
+                                backgroundColor:
+                                THelperFunctions.isDarkMode(context)
+                                    ? TColors.darkGrey
+                                    : TColors.light,
+                                margin: const EdgeInsets.only(right: TSizes.sm),
+                                padding: const EdgeInsets.all(TSizes.md),
+                                child: const Image(
+                                  fit: BoxFit.contain,
+                                  image: AssetImage(TImages.productImage1),
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              child: TRoundedContainer(
+                                height: 100,
+                                backgroundColor:
+                                THelperFunctions.isDarkMode(context)
+                                    ? TColors.darkGrey
+                                    : TColors.light,
+                                margin: const EdgeInsets.only(right: TSizes.sm),
+                                padding: const EdgeInsets.all(TSizes.md),
+                                child: const Image(
+                                  fit: BoxFit.contain,
+                                  image: AssetImage(TImages.productImage1),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  /// -- Products
+                ],
+              ),
+            )
+          ]),
+        ),
+      ),
+    );
+  }
+}
+
+ */
+
+

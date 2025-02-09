@@ -5,6 +5,7 @@ import '../routes/theme1_app_pages.dart';
 import 'features/settings/views/settings_view.dart';
 import 'utils/theme/theme_.dart';
  import 'features/authentication/screens/onboarding/onboarding.dart';
+ import 'package:barbershpo_flutter/navigation_menu.dart';
 
 class App extends StatelessWidget {
   const App({super.key});
@@ -14,8 +15,8 @@ class App extends StatelessWidget {
     return GetMaterialApp(
       themeMode: ThemeMode.system,
       theme: TApptheme.lightTheme,
-      darkTheme: TApptheme.darkTheme,
-      home: const OnBoardingScreen()
+      //darkTheme: TApptheme.darkTheme,
+      home: const NavigationMenu()
     );
   }
 }

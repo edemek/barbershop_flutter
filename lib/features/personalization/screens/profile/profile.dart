@@ -57,7 +57,7 @@ class ProfileScreen extends StatelessWidget {
               width: 35,
               padding: EdgeInsets.all(0),
               decoration: BoxDecoration(
-                color: TColors.buttonPrimary,
+                color: Color(0xFFDFAC1B).withOpacity(0.5),
                 borderRadius: BorderRadius.all(
                   Radius.circular(40),
                 ),
@@ -81,7 +81,7 @@ class ProfileScreen extends StatelessWidget {
         width: 295,
         height: 44,
         decoration: BoxDecoration(
-            color: TColors.buttonPrimary,
+            color: Color(0xFFDFAC1B).withOpacity(0.5),
             borderRadius: BorderRadius.all(
               Radius.circular(5),
             ),
@@ -117,7 +117,7 @@ class ProfileScreen extends StatelessWidget {
         width: 295,
         height: 44,
         decoration: BoxDecoration(
-            color: TColors.buttonDisable,
+            color: Color(0xFFDFAC1B),
             borderRadius: BorderRadius.all(
               Radius.circular(5),
             ),
@@ -136,7 +136,7 @@ class ProfileScreen extends StatelessWidget {
               'Déconnexion',
               textAlign: TextAlign.center,
               style: TextStyle(
-                color: TColors.textWhite,
+                color: TColors.black,
                 fontSize: TSizes.fontSizeMd,
                 fontWeight: FontWeight.normal,
               ),
@@ -195,7 +195,7 @@ class ProfileScreen extends StatelessWidget {
                     ),
 
                     /// -- Boutton Terminer
-                    _buildCompleteBtn(),
+                    //_buildCompleteBtn(),
 
                     /// -- Logout
                     _buildLogoutBtn(),

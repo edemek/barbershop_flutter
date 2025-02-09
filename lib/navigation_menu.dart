@@ -23,10 +23,11 @@ class NavigationMenu extends StatelessWidget {
     return Scaffold(
       drawer: const ElegantMenu(),
       appBar: AppBar(
-        title: Text("Barber Shop ",style: TextStyle(color: Colors.blue),),
+        title: Text("Barber Shop ",style: TextStyle(color: Color(0xFFDFAC1B)),),
         leading: Builder(
           builder: (context) {
             return IconButton(
+              color: darkMode ? Colors.white : Colors.black,
               icon: const Icon(Icons.menu),
               onPressed: () {
                 Scaffold.of(context).openDrawer();
@@ -44,9 +45,7 @@ class NavigationMenu extends StatelessWidget {
             controller.selectedIndex.value = index;
           },
           backgroundColor: darkMode ? Colors.black : Colors.white,
-          indicatorColor: darkMode
-              ? Colors.white.withOpacity(0.1)
-              : Colors.black.withOpacity(0.1),
+          indicatorColor: Color(0xFFDFAC1B),
           surfaceTintColor:
               Colors.transparent, // Supprimer tout effet de teinte par défaut
           destinations: [
@@ -57,13 +56,13 @@ class NavigationMenu extends StatelessWidget {
               ),
               label: 'Accueil',
             ),
-            NavigationDestination(
-              icon: Icon(
-                Iconsax.shop,
-                color: darkMode ? Colors.white : Colors.black,
-              ),
-              label: 'Boutique',
-            ),
+            // NavigationDestination(
+            //   icon: Icon(
+            //     Iconsax.shop,
+            //     color: darkMode ? Colors.white : Colors.black,
+            //   ),
+            //   label: 'Boutique',
+            // ),
             NavigationDestination(
               icon: Icon(
                 Iconsax.calendar,
@@ -90,12 +89,12 @@ class NavigationController extends GetxController {
   final Rx<int> selectedIndex = 0.obs;
 
   final List<Widget> screens = [
-    const HomeScreen(),
-
-  const StoreScreen(),
-   //const AppointmentCard(),
+    HomeScreen(),
     SalonListScreen(),
     const AccountViewClient()
+
+    //const StoreScreen(),
+   //const AppointmentCard(),
 
   ];
 }

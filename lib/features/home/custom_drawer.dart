@@ -1,11 +1,14 @@
+import 'package:barbershpo_flutter/utils/validators/validation_.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../navigation_menu.dart';
+import '../authentication/screens/login/login.dart';
 import '../experience_client/views/experience_form.dart';
 
 class ElegantMenu extends StatelessWidget {
   const ElegantMenu({Key? key}) : super(key: key);
+
 
   void _navigateTo(BuildContext context, String routeName) {
     Navigator.of(context).pop();
@@ -13,6 +16,7 @@ class ElegantMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var userController = Get.find<UserController>();
     return Drawer(
       child: Container(
         decoration: BoxDecoration(
@@ -33,8 +37,8 @@ class ElegantMenu extends StatelessWidget {
                 gradient: LinearGradient(
                   colors: [
                     Colors.white,
-                    Colors.blue.shade100,
-                    Colors.blue.shade200,
+                    Color(0xFFDFAC1B),
+                    Color(0xFFFFE859),
                   ],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
@@ -71,7 +75,7 @@ class ElegantMenu extends StatelessWidget {
                         Icon(
                           Icons.cut_rounded,
                           size: 50,
-                          color: Colors.blue.shade800,
+                          color: Colors.black87,
                         ),
                         const SizedBox(height: 10),
                         const Text(
@@ -101,9 +105,15 @@ class ElegantMenu extends StatelessWidget {
               icon: Icons.calendar_today,
               title: 'Reservation',
               onTap: () {
+                if (userController.UToken == '') {
+                  Navigator.of(context).pop();
+                  Get.to(() => LoginScreen());
+                  return; // Empêche l'exécution du reste du code
+                }
+
                 Navigator.of(context).pop();
                 final navigationController = Get.find<NavigationController>();
-                navigationController.selectedIndex.value = 2;
+                navigationController.selectedIndex.value = 1;
               },
             ),
             _buildMenuItem(
@@ -130,27 +140,27 @@ class ElegantMenu extends StatelessWidget {
             Container(
               padding: const EdgeInsets.symmetric(vertical: 20),
               decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    Colors.white,
-                    Colors.blue.shade50,
-                  ],
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                ),
+                // gradient: LinearGradient(
+                //   colors: [
+                //     Colors.white,
+                //     Colors.black,
+                //   ],
+                //   begin: Alignment.topCenter,
+                //   end: Alignment.bottomCenter,
+                // ),
               ),
               child: Column(
                 children: [
-                  Icon(
-                    Icons.content_cut,
-                    color: Colors.blue.shade800,
-                    size: 24,
-                  ),
+                  // Icon(
+                  //   Icons.content_cut,
+                  //   color: Colors.blue.shade800,
+                  //   size: 24,
+                  // ),
                   const SizedBox(height: 8),
                   Text(
-                    'BarberShop',
+                    'CHARM',
                     style: TextStyle(
-                      color: Colors.grey.shade800,
+                      color: Color(0xFFDFAC1B),
                       fontSize: 14,
                       fontWeight: FontWeight.w500,
                       letterSpacing: 1.5,
@@ -188,12 +198,12 @@ class ElegantMenu extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
-                    color: Colors.blue.shade50,
+                    color: Colors.yellow.shade50,
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Icon(
                     icon,
-                    color: Colors.blue.shade800,
+                    color: Color(0xFFDFAC1B),
                     size: 22,
                   ),
                 ),
@@ -206,12 +216,12 @@ class ElegantMenu extends StatelessWidget {
                     fontSize: 16,
                   ),
                 ),
-                const Spacer(),
-                Icon(
-                  Icons.arrow_forward_ios,
-                  color: Colors.blue.shade200,
-                  size: 16,
-                ),
+                // const Spacer(),
+                // Icon(
+                //   Icons.arrow_forward_ios,
+                //   color: Colors.blue.shade200,
+                //   size: 16,
+                // ),
               ],
             ),
           ),
