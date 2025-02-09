@@ -126,7 +126,13 @@ class ElegantMenu extends StatelessWidget {
               context: context,
               icon: Icons.star,
               title: 'Experience',
-              onTap: () => Get.to(() => ExperienceHomeScreen()),
+              onTap: () {
+                  if (userController.UToken == '') {
+                  Navigator.of(context).pop();
+                  Get.to(() => LoginScreen());
+                  return; // Empêche l'exécution du reste du code
+              }
+                  }
             ),
             _buildMenuItem(
               context: context,

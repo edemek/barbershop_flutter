@@ -22,9 +22,7 @@ class _SalonReviewsState extends State<SalonReviews> {
         : reviews;
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Reviews & Ratings"),
-      ),
+
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

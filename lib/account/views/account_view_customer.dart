@@ -93,6 +93,7 @@ class AccountViewClient extends StatelessWidget {
                 }),
                 _buildMenuItem(context, Icons.logout, "Deconnexion", () {
                   // Handle logout
+                  userController.updateUser(null, null, null, null, null, null, null);
                   Get.to(() => LoginScreen());
                 }),
               ],

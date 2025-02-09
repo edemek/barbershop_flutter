@@ -6,7 +6,6 @@ import 'package:get/get_core/src/get_main.dart';
 
 import '../../../../utils/validators/validation_.dart';
 
-
 class AccountTypeSelection extends StatelessWidget {
   // Définition des couleurs principales (les mêmes que précédemment)
   static const Color primaryGold = Color(0xFFDAA520);
@@ -43,52 +42,38 @@ class AccountTypeSelection extends StatelessWidget {
                     height: 1.3,
                   ),
                 ),
-
                 SizedBox(height: 50),
                 _buildAccountCard(
                   context: context,
                   title: "Compte Coiffeur",
                   icon: Icons.content_cut,
-                  description: "Créez votre profil professionnel et gérez votre salon",
+                  description:
+                      "Créez votre profil professionnel et gérez votre salon",
                   onTap: () {
                     // Navigation vers l'inscription coiffeur
 
+                    // userController.updateUser(null, null, null, null, null);
                     userController.updateUser(
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        "salon_owner"
-                    );
-                    Get.to(()=>SignupScreen());
+                        null, null, null, null, null, null, "salon_owner");
+                    Get.to(() => SignupScreen());
                     print("Navigation vers inscription en tant que coiffeur");
                   },
                 ),
                 SizedBox(height: 24),
                 _buildAccountCard(
-                  context: context,
-                  title: "Compte Client",
-                  icon: Icons.person,
-                  description: "Découvrez et partagez vos expériences",
-                  onTap: () {
-                    // Navigation vers l'inscription client
+                    context: context,
+                    title: "Compte Client",
+                    icon: Icons.person,
+                    description: "Découvrez et partagez vos expériences",
+                    onTap: () {
+                      // Navigation vers l'inscription client
 
-                    userController.updateUser(
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        "customer"
-                    );
-                      Get.to(()=>SignupScreen());
+                      // userController.updateUser(null, null, null, null, null);
+                      userController.updateUser(
+                          null, null, null, null, null, null, "customer");
+                      Get.to(() => SignupScreen());
                       print("Navigation vers inscription en tant que client");
-                    }
-
-                ),
+                    }),
               ],
             ),
           ),

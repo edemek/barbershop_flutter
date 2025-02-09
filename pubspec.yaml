@@ -27,6 +27,7 @@ dependencies:
   url_launcher: ^6.3.1
   flutter_native_splash: ^2.4.4
   smooth_page_indicator: ^1.2.0+3
+  intl_phone_field: 3.2.0
   geolocator: ^11.0.0
   geocoding: ^2.2.0 # Pour convertir les coordonnées en adresse (optionnel)
 
@@ -53,10 +54,10 @@ dependencies:
   carousel_slider: ^5.0.0
   font_awesome_flutter: ^10.7.0
 
-  
+
    # FONT
   google_fonts: 6.2.1
-  
+
   # GOOGLE MAPS
   #google_maps_flutter: 2.6.0
   #map_launcher: 3.3.0

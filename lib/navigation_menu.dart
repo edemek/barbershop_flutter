@@ -1,5 +1,6 @@
 import 'package:barbershpo_flutter/features/shop/screens/store/store.dart';
 import 'package:barbershpo_flutter/utils/helpers/helper_functions.dart';
+import 'package:barbershpo_flutter/utils/validators/validation_.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
@@ -7,6 +8,7 @@ import 'package:iconsax/iconsax.dart';
 import 'a/components/appointment_card.dart';
 import 'account/views/account_view_customer.dart';
 import 'features/Salon/screen/salon_liste.dart';
+import 'features/authentication/screens/login/login.dart';
 import 'features/home/custom_drawer.dart';
 import 'features/shop/screens/home/home.dart';
 import 'features/shop/screens/reservations.dart';
@@ -16,6 +18,7 @@ class NavigationMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     final controller = Get.put(NavigationController());
     // Recalculer le mode sombre à chaque reconstruction de l'interface.
     final darkMode = THelperFunctions.isDarkMode(context);
@@ -88,13 +91,16 @@ class NavigationMenu extends StatelessWidget {
 class NavigationController extends GetxController {
   final Rx<int> selectedIndex = 0.obs;
 
-  final List<Widget> screens = [
-    HomeScreen(),
-    SalonListScreen(),
-    const AccountViewClient()
+  UserController get userController => Get.find<UserController>(); // Récupération dynamique du UserController grace à get
 
-    //const StoreScreen(),
-   //const AppointmentCard(),
-
-  ];
+  List<Widget> get screens {
+    return [
+      HomeScreen(),
+      userController.UToken == ''
+          ? LoginScreen() // Redirige si l'utilisateur n'est pas connecté
+          : SalonListScreen(),
+      const AccountViewClient(),
+    ];
+  }
 }
+
