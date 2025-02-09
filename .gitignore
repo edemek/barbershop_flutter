@@ -35,7 +35,8 @@ migrate_working_dir/
 .pub/
 .metadata
 /build/
-
+.build/
+.lib/features/services/global_service
 # Symbolication related
 app.*.symbols
 
@@ -43,6 +44,7 @@ app.*.symbols
 app.*.map.json
 
 # Android Studio will place build artifacts here
+.android/
 /android/app/debug
 /android/app/profile
 /android/app/release
