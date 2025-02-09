@@ -99,7 +99,7 @@ class NavigationController extends GetxController {
       userController.UToken == ''
           ? LoginScreen() // Redirige si l'utilisateur n'est pas connecté
           : SalonListScreen(),
-      const AccountViewClient(),
+     userController.UToken == ''? LoginScreen() : AccountViewClient()
     ];
   }
 }

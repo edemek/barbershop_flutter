@@ -11,6 +11,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../common/widgets/custom_shapes/containers/primary_hearder_container.dart';
+import '../../../../navigation_menu.dart';
 import '../../../Salon/screen/salon_liste.dart';
 import '../../../home/custom_drawer.dart';
 import '../categorie/categories_screen.dart';
@@ -211,7 +212,9 @@ class HomeScreen extends StatelessWidget {
                       TextButton(
                         onPressed: () {
                           // Action pour voir tout
-                          Get.to(() => SalonListScreen());
+                          Navigator.of(context).pop();
+                          final navigationController = Get.find<NavigationController>();
+                          navigationController.selectedIndex.value = 1;
                         },
                         style: TextButton.styleFrom(
                           backgroundColor: Colors.blue.shade50,
