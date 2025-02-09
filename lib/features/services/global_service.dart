@@ -17,7 +17,7 @@ class GlobalService extends GetxService {
     // var response = await Helper.getJsonFile('config/global.json')
     // Dummy JSON data
     final response = {
-      "laravel_base_url": "http://127.0.0.1:8000",
+      "laravel_base_url": "https://barber.businesshelpconsulting.com",
       "api_path": "api/",
       "received": 1,
       "accepted": 10,

@@ -1,4 +1,4 @@
-import 'package:barbershpo_flutter/features/Reservation_client/views/reservation_form.dart';
+import 'package:barbershpo_flutter/features/reservation_client/views/reservation_form.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';

@@ -1,4 +1,3 @@
-
 import 'package:barbershpo_flutter/features/authentication/screens/onboarding/widgets/onboarding_dot_navigation.dart';
 import 'package:barbershpo_flutter/features/authentication/screens/onboarding/widgets/onboarding_next_button.dart';
 import 'package:barbershpo_flutter/features/authentication/screens/onboarding/widgets/onboarding_page.dart';
@@ -8,14 +7,13 @@ import 'package:get/get.dart';
 
 import '../../../../utils/constants/image_strings.dart';
 import '../../../../utils/constants/text_strings.dart';
-import '../../controllers.onboarding/onboard_controller.dart';
+import '../../controllers/onboard_controller.dart';
 
 class OnBoardingScreen extends StatelessWidget {
   const OnBoardingScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-
     final controller = Get.put(OnBoardingController());
 
     return Scaffold(
@@ -56,5 +54,3 @@ class OnBoardingScreen extends StatelessWidget {
     );
   }
 }
-
-

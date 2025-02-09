@@ -1,6 +1,18 @@
-// import 'package:get/get.dart';
+import 'package:get/get.dart';
+
+import '../../models/salon_model.dart';
+import '../providers/laravel_provider.dart';
+// import '../../models/award_model.dart';
+import '../../models/e_service_model.dart';
+// import '../../models/experience_model.dart';
+// import '../../models/gallery_model.dart';
+// import '../../models/review_model.dart';
+import '../../models/salon_model.dart';
+import '../../models/user_model.dart';
 
 class SalonRepository {
+
+  late LaravelApiClient _laravelApiClient;
   // Simulated data for salons, reviews, galleries, etc.
   List<Map<String, dynamic>> salons = [
     {'id': '1', 'name': 'Salon A', 'address': 'Address 1', 'rating': 4.5},
@@ -43,99 +55,69 @@ class SalonRepository {
 
   // Simulated methods returning static data
 
-  Future<List<Map<String, dynamic>>> getRecommended() async {
-    return salons.where((salon) => salon['rating'] >= 4.0).toList();
-  }
-/*
-  Future<List<Map<String, dynamic>>> getNearSalons(LatLng latLng, LatLng areaLatLng) async {
-    // Simulated logic to return salons based on location (no actual calculation)
-    return salons;
-  }*/
-
-  Future<Map<String, dynamic>> get(String salonId) async {
-    return salons.firstWhere((salon) => salon['id'] == salonId);
+  Future<List<Salon>> getRecommended() async {
+    return _laravelApiClient.getRecommendedSalons();
   }
 
-  Future<List<Map<String, dynamic>>> getReviews(String salonId) async {
-    return reviews.where((review) => review['salonId'] == salonId).toList();
+   Future<Salon> get(String salonId) {
+    return _laravelApiClient.getSalon(salonId);
   }
 
-  Future<List<Map<String, dynamic>>> getGalleries(String salonId) async {
-    return galleries.where((gallery) => gallery['salonId'] == salonId).toList();
+  // Future<List<Salon>> getNearSalons(LatLng latLng, LatLng areaLatLng) {
+  //   return _laravelApiClient.getNearSalons(latLng, areaLatLng);
+  // }
+
+  // Future<List<Review>> getReviews(String salonId) async {
+  //   return _laravelApiClient.getSalonReviews(salonId);
+  // }
+
+  // Future<List<Gallery>> getGalleries(String salonId) async {
+  //    return _laravelApiClient.getSalonGalleries(salonId);
+  // }
+
+  // Future<List<Award>> getAwards(String salonId) async {
+  //    return _laravelApiClient.getSalonAwards(salonId);
+  // }
+
+  // Future<List<Experience>> getExperiences(String salonId) async {
+  //   return _laravelApiClient.getSalonExperiences(salonId);
+  // }
+
+  Future<List<EService>> getEServices( String salonId, List<String> categories,{int page = 1}) async {
+    return _laravelApiClient.getSalonEServices(salonId, categories, page);
   }
 
-  Future<List<Map<String, dynamic>>> getAwards(String salonId) async {
-    return awards.where((award) => award['salonId'] == salonId).toList();
+  Future<List<User>> getEmployees(String salonId) async {
+    return _laravelApiClient.getSalonEmployees(salonId);
   }
 
-  Future<List<Map<String, dynamic>>> getExperiences(String salonId) async {
-    return experiences
-        .where((experience) => experience['salonId'] == salonId)
-        .toList();
-  }
-
-  Future<List<Map<String, dynamic>>> getEServices(
+  Future<List<EService>> getPopularEServices(
       String salonId, List<String> categories,
       {int page = 1}) async {
-    return eServices
-        .where((service) =>
-            service['salonId'] == salonId &&
-            categories.contains(service['category']))
-        .toList();
+     return _laravelApiClient.getSalonPopularEServices(salonId, categories, page);
   }
 
-  Future<List<Map<String, dynamic>>> getEmployees(String salonId) async {
-    return employees
-        .where((employee) => employee['salonId'] == salonId)
-        .toList();
-  }
-
-  Future<List<Map<String, dynamic>>> getPopularEServices(
+  Future<List<EService>> getMostRatedEServices(
       String salonId, List<String> categories,
       {int page = 1}) async {
-    return eServices
-        .where((service) =>
-            service['salonId'] == salonId &&
-            categories.contains(service['category']))
-        .toList();
+    return _laravelApiClient.getSalonMostRatedEServices(salonId, categories, page);
   }
 
-  Future<List<Map<String, dynamic>>> getMostRatedEServices(
+    Future<List<EService>> getAvailableEServices(
       String salonId, List<String> categories,
       {int page = 1}) async {
-    return eServices
-        .where((service) =>
-            service['salonId'] == salonId &&
-            categories.contains(service['category']))
-        .toList();
+     return _laravelApiClient.getSalonAvailableEServices(salonId, categories, page);
   }
 
-  Future<List<Map<String, dynamic>>> getAvailableEServices(
+  Future<List<EService>> getFeaturedEServices(
       String salonId, List<String> categories,
       {int page = 1}) async {
-    return eServices
-        .where((service) =>
-            service['salonId'] == salonId &&
-            categories.contains(service['category']))
-        .toList();
+    return _laravelApiClient.getSalonFeaturedEServices(salonId, categories, page);
   }
 
-  Future<List<Map<String, dynamic>>> getFeaturedEServices(
-      String salonId, List<String> categories,
-      {int page = 1}) async {
-    return eServices
-        .where((service) =>
-            service['salonId'] == salonId &&
-            categories.contains(service['category']))
-        .toList();
-  }
-
-  Future<List<Map<String, dynamic>>> getAvailabilityHours(
+  Future<List> getAvailabilityHours(
       String eProviderId, DateTime date, String employeeId) async {
     // This can return hardcoded availability, e.g., a fixed set of available hours
-    return [
-      {'start': '09:00', 'end': '17:00'},
-      {'start': '10:00', 'end': '18:00'},
-    ];
+    return _laravelApiClient.getAvailabilityHours(eProviderId, date, employeeId);
   }
 }

@@ -15,6 +15,7 @@ import '../../../../support.dart';
 import '../../../../verification.dart';
 import '../../signup/signup.dart';
 import '../../signup/signup_choice.dart';
+import '../../../../../controllers/auth_controller.dart';
 import '../../signup/verify_email.dart';
 
 class TLoginForm extends StatefulWidget {
@@ -26,18 +27,20 @@ class TLoginForm extends StatefulWidget {
 
 class _TLoginFormState extends State<TLoginForm> {
   // Clé globale pour accéder au formulaire
-  final _formKey = GlobalKey<FormState>();
+  // final _formKey = GlobalKey<FormState>();
   final TextEditingController tokenTaker = TextEditingController();
   final TextEditingController Role = TextEditingController();
   // Champs de saisie
-  final TextEditingController _PhoneController  = TextEditingController();
-  final TextEditingController _NomController  = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-  final FocusNode _emailFocusNode = FocusNode(); // création d'une instance focus sur _email
+  final TextEditingController _PhoneController = TextEditingController();
+  // final TextEditingController _NomController = TextEditingController();
+  // final TextEditingController _passwordController = TextEditingController();
+  final FocusNode _emailFocusNode =
+      FocusNode(); // création d'une instance focus sur _email
   bool _obscureText = true; // Contrôle l'état du texte masqué
 
   //compteur d'erruer
   int nbError = 0;
+
   /// Fonction pour envoyer un OTP
   void sendOtp(BuildContext context) async {
     try {
@@ -61,12 +64,12 @@ class _TLoginFormState extends State<TLoginForm> {
             builder: (context) =>
                 VerifyEmailScreen(PhoneNumber: _PhoneController.text),
           ),
-
         );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Erreur lors de l\'envoi du code OTP : ${response.body}'),
+            content:
+                Text('Erreur lors de l\'envoi du code OTP : ${response.body}'),
             backgroundColor: Colors.red,
             duration: const Duration(seconds: 50),
           ),
@@ -85,9 +88,10 @@ class _TLoginFormState extends State<TLoginForm> {
 
   @override
   Widget build(BuildContext context) {
-    final userController = Get.find<UserController>();
+    // controller.loginFormKey = new GlobalKey<FormState>();
+    final controller = Get.find<AuthController>();
     return Form(
-      key: _formKey,
+      key: controller.loginFormKey,
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: TSizes.spacetBtwSections),
         child: Column(
@@ -95,7 +99,7 @@ class _TLoginFormState extends State<TLoginForm> {
             /// -- Numéro de Téléphone/email
             TextFormField(
               focusNode: _emailFocusNode,
-              controller: _PhoneController,
+              // controller: _PhoneController,
               keyboardType: TextInputType.phone,
               inputFormatters: [
                 TogolesePhoneNumberFormatter(),
@@ -106,18 +110,20 @@ class _TLoginFormState extends State<TLoginForm> {
                 labelText: "Numéro de téléphone",
                 hintText: "+228 90 90 90 90",
               ),
-              onChanged: (value) {
-                // Optionnel : vous pouvez ajouter une logique supplémentaire ici
-                print('Valeur actuelle: $value');
-              },
+              // onChanged: (value) {},
+              initialValue: controller.currentUser.value.email,
+              onSaved: (value) => controller.currentUser.value.phoneNumber = value,
+                        
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'Veuillez entrer votre numéro de téléphone';
                 }
 
-                final cleanedValue = value.replaceAll(' ', '').replaceAll('+228', '');
+                final cleanedValue =
+                    value.replaceAll(' ', '').replaceAll('+228', '');
 
-                if (cleanedValue.length != 8 || !RegExp(r'^\d{8}$').hasMatch(cleanedValue)) {
+                if (cleanedValue.length != 8 ||
+                    !RegExp(r'^\d{8}$').hasMatch(cleanedValue)) {
                   return 'Numéro de téléphone invalide';
                 }
 
@@ -129,8 +135,9 @@ class _TLoginFormState extends State<TLoginForm> {
 
             /// -- Mot de passe
             TextFormField(
-              controller: _passwordController,
+              // controller: _passwordController,
               obscureText: _obscureText,
+              onSaved: (value) => controller.currentUser.value.password = value,
               decoration: InputDecoration(
                 prefixIcon: const Icon(Iconsax.password_check),
                 labelText: TTexts.password,
@@ -145,26 +152,26 @@ class _TLoginFormState extends State<TLoginForm> {
                   },
                 ),
               ),
-             //code pour valider le mot de passe
-             // //validator: (value) {
-             //   if (value == null || value.isEmpty) {
-             //     return 'Veuillez entrer un mot de passe';
-             //   } else if (value.length < 6) {
-             //     return 'Le mot de passe doit contenir au moins 6 caractères';
-             //   } else if (!RegExp(r'[A-Z]').hasMatch(value)) {
-             //     return 'Le mot de passe doit contenir au moins une lettre majuscule';
-             //   } else if (!RegExp(r'[0-9]').hasMatch(value)) {
-             //     return 'Le mot de passe doit contenir au moins un chiffre';
-             //   } else if (!RegExp(r'[!@#$%^&*(),.?":{}|<>]').hasMatch(value)) {
-             //     return 'Le mot de passe doit contenir au moins un caractère spécial';
-             //   }
-             //   return null;
-             // },
+              //code pour valider le mot de passe
+              // //validator: (value) {
+              //   if (value == null || value.isEmpty) {
+              //     return 'Veuillez entrer un mot de passe';
+              //   } else if (value.length < 6) {
+              //     return 'Le mot de passe doit contenir au moins 6 caractères';
+              //   } else if (!RegExp(r'[A-Z]').hasMatch(value)) {
+              //     return 'Le mot de passe doit contenir au moins une lettre majuscule';
+              //   } else if (!RegExp(r'[0-9]').hasMatch(value)) {
+              //     return 'Le mot de passe doit contenir au moins un chiffre';
+              //   } else if (!RegExp(r'[!@#$%^&*(),.?":{}|<>]').hasMatch(value)) {
+              //     return 'Le mot de passe doit contenir au moins un caractère spécial';
+              //   }
+              //   return null;
+              // },
             ),
 
             const SizedBox(height: TSizes.spaceBtwInputFields / 2),
             //
-          /*
+            /*
             Align(
               alignment: Alignment.centerLeft, // Aligne le contenu à gauche
               child: Row(
@@ -195,17 +202,13 @@ class _TLoginFormState extends State<TLoginForm> {
                         Checkbox(value: true, onChanged: (value) {}),
                         const Text(TTexts.remenderMe),
                       ],
-
                     ),
-
                     TextButton(
                       onPressed: () {
-                        Navigator.push(context,
-                           MaterialPageRoute(builder: (context)=>ForgotPasswordPage())
-                            );
-
-
-
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ForgotPasswordPage()));
                       },
                       child: const Text(TTexts.forgotPassword),
                     ),
@@ -218,29 +221,23 @@ class _TLoginFormState extends State<TLoginForm> {
                   child: TextButton(
                     onPressed: () {
                       Navigator.push(
-                      context, MaterialPageRoute(builder: (context)=>SupportClientPage()));
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => SupportClientPage()));
 
                       ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text("Bouton de support client cliqué"),
-                            elevation: 6,
-                            duration: Duration(seconds: 2), // Durée d'affichage
-                          ),
+                        SnackBar(
+                          content: Text("Bouton de support client cliqué"),
+                          elevation: 6,
+                          duration: Duration(seconds: 2), // Durée d'affichage
+                        ),
                       );
                     },
                     child: const Text(TTexts.clientSupport),
-
                   ),
-
                 ),
-
               ],
             ),
-
-
-
-
-
 
             const SizedBox(height: TSizes.spacetBtwSections),
 
@@ -248,285 +245,22 @@ class _TLoginFormState extends State<TLoginForm> {
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
-                //child: Text("data"),
-                onPressed: () async {
-                  /*if (_formKey.currentState!.validate()) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('OTP Envoié !'),
-                        duration: Duration(seconds: 3),
-                      ),
-                    );
-                    sendOtp(context);
-
-                  }
-
-                  //simulation d'identifiant
-                  final String usernameOremail = "test";
-                  final String password = "test";
-                  final String usernameOremail_clt = "client";
-                  final String password_clt = "client";*/
-
-                  if (_PhoneController.text.isNotEmpty && _passwordController.text.isNotEmpty){
-                      Get.put(UserController());
-                      final response = await ApiService.login(_PhoneController.text, _passwordController.text);
-                      final Map<String, dynamic> responseData = jsonDecode(response.body);
-
-                      if (responseData.containsKey("data")) {
-                          String name = responseData["data"]["name"];
-                          String token = responseData["data"]["api_token"];
-                          String role = responseData["data"]["roles"][0]["name"];
-                          print("Role de l'utilisateur $role");
-                          print("token de l'utilisateur:$token");
-                          _NomController.text = name; // ✅ Mise à jour du TextEditingController
-                          tokenTaker.text = token;
-                          Role.text = role;
-                          print("token de l'utilisateur recuperé:$token");
-                          userController.updateUser(
-                              _NomController.text,
-                              null,
-                              null,
-                              null,
-                              null,
-                              tokenTaker.text,
-                              Role.text
-                          );
-                          if(Role.text == "customer"){ Get.to(()=>NavigationMenu());}else{Get.to(()=>AccountView());};
-
-                          print("Contenu : ${response.body.toString()}");
-                      }else{
-                        var responseBody = jsonDecode(response.body); // Décoder la réponse JSON
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                          content: Text(
-                          "Erreur de connexion : ${responseBody['message']}",
-
-                          ),
-                        ));
-                        //print("UserController token: ${userController.UToken}");
-                       // print("UserController token value: ${userController.UToken.value}");
-                        print("Nom de l'utilisateur mis à jour : ${_NomController.text}");
-
-                        print("nombre d'erreur:" + nbError.toString());
-
-                        _PhoneController.clear();
-                        _passwordController.clear();
-
-                        if(nbError == 5){
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text("Vous avez essayer à plus de 5 tentaives, votre compte est momentanément suspendu! contacter le service client pour reinitialisation"),
-                            )
-                        );
-                      }
-                      //mettre le focus sur l'email
-                      FocusScope.of(context).requestFocus(_emailFocusNode);
-
-                    }
-                    // Simulation de connexion réussie
-
-                  }else{
-                    return ;
-                  };
-
-                },
                 child: const Text(TTexts.signIn),
-              ),
-            ),
-
-            const SizedBox(height: TSizes.spacetBtwItems),
-
-            /// -- Create Account Button
-            SizedBox(
-              width: double.infinity,
-              child: OutlinedButton(
-                onPressed: () => Get.to(() =>  AccountTypeSelection()),//defiler entre les pages en utilisant la classe Get.to
-                child: const Text(TTexts.createAccount),
-              ),
-            ),
-
-            const SizedBox(height: TSizes.spacetBtwItems),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-/*
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:iconsax/iconsax.dart';
-import 'package:http/http.dart' as http;
-import '../../../../../utils/constants/sizes.dart';
-import '../../../../../utils/constants/text_strings.dart';
-import '../../../../../utils/validators/validation.dart';
-import '../../../../personalization/screens/profile/profile.dart';
-import '../../signup/signup.dart';
-import '../../signup/verify_email.dart';
-import '../../signup/widgets/signup_form.dart';
-
-class TLoginForm extends StatefulWidget {
-  TLoginForm({super.key});
-
-  @override
-  _TLoginFormState createState() => _TLoginFormState();
-}
-
-class _TLoginFormState extends State<TLoginForm> {
-  // Clé globale pour accéder au formulaire
-  final _formKey = GlobalKey<FormState>();
-
-  // Champs de saisie
-  final TextEditingController _phoneController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-
-  bool _obscureText = true; // Contrôle l'état du texte masqué
-
-  void sendOtp(BuildContext context) async {
-    final response = await http.post(
-      Uri.parse('http://votre-backend-url/api/send-otp'),
-      body: {'phone_number': _phoneController.text},
-    );
-
-    if (response.statusCode == 200) {
-      // Aller à l'écran de saisie de l'OTP
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) =>
-              VerifyEmailScreen(emailOrPhoneNumber: _phoneController.text),
-        ),
-      );
-    } else {
-      // Afficher une erreur
-      print('Erreur : ${response.body}');
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Form(
-      key: _formKey,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: TSizes.spacetBtwSections),
-        child: Column(
-          children: [
-            /// -- Numéro de Téléphone
-            TextFormField(
-              controller: _phoneController,
-              keyboardType: TextInputType.phone,
-              inputFormatters: [
-                TogoleseemailOrPhoneNumberFormatter(), // Formatter personnalisé
-              ],
-              decoration: const InputDecoration(
-                prefixIcon: Icon(Iconsax.direct_right),
-                labelText: "Numéro de téléphone",
-                hintText: "+228 90 90 90 90",
-              ),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Veuillez entrer votre numéro de téléphone';
-                }
-
-                // Supprime les espaces pour la validation
-                final cleanedValue =
-                value.replaceAll(' ', '').replaceAll('+228', '');
-
-                // Validation pour s'assurer qu'il contient exactement 8 chiffres
-                if (cleanedValue.length != 8 ||
-                    !RegExp(r'^\d{8}$').hasMatch(cleanedValue)) {
-                  return 'Numéro de téléphone invalide';
-                }
-
-                return null;
-              },
-            ),
-
-            const SizedBox(height: TSizes.spaceBtwInputFields),
-
-            /// -- Mot de passe
-            TextFormField(
-              controller: _passwordController,
-              obscureText: _obscureText,
-              decoration: InputDecoration(
-                prefixIcon: const Icon(Iconsax.password_check),
-                labelText: TTexts.password,
-                suffixIcon: IconButton(
-                  icon: Icon(
-                    _obscureText ? Iconsax.eye_slash : Iconsax.eye,
-                  ),
-                  onPressed: () {
-                    setState(() {
-                      _obscureText = !_obscureText; // Bascule entre masqué et visible
-                    });
-                  },
-                ),
-              ),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Veuillez entrer un mot de passe';
-                } else if (value.length < 6) {
-                  return 'Le mot de passe doit contenir au moins 6 caractères';
-                } else if (!RegExp(r'[A-Z]').hasMatch(value)) {
-                  return 'Le mot de passe doit contenir au moins une lettre majuscule';
-                } else if (!RegExp(r'[0-9]').hasMatch(value)) {
-                  return 'Le mot de passe doit contenir au moins un chiffre';
-                } else if (!RegExp(r'[!@#$%^&*(),.?":{}|<>]').hasMatch(value)) {
-                  return 'Le mot de passe doit contenir au moins un caractère spécial';
-                }
-                return null;
-              },
-            ),
-
-            const SizedBox(height: TSizes.spaceBtwInputFields / 2),
-
-            /// -- Remember Me & Forget Password
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                /// Remember Me
-                Row(
-                  children: [
-                    Checkbox(value: true, onChanged: (value) {}),
-                    const Text(TTexts.remenderMe),
-                  ],
-                ),
-
-                /// Forget Password
-                TextButton(
-                  onPressed: () {},
-                  child: const Text(TTexts.forgotPassword),
-                ),
-              ],
-            ),
-
-            const SizedBox(height: TSizes.spacetBtwSections),
-
-            /// -- Sign In Button
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
                 onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    // Si la validation réussit
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Connexion faite avec succès !')),
-                    );
-                    sendOtp(context);
-                    Get.to(() => ProfileScreen());
-                  }
+                  controller.login();
+                 
                 },
-                child: const Text(TTexts.signIn),
               ),
             ),
+
             const SizedBox(height: TSizes.spacetBtwItems),
 
             /// -- Create Account Button
             SizedBox(
               width: double.infinity,
               child: OutlinedButton(
-                onPressed: () => Get.to(() => const SignupScreen()),
+                onPressed: () => Get.to(() =>
+                    AccountTypeSelection()), //defiler entre les pages en utilisant la classe Get.to
                 child: const Text(TTexts.createAccount),
               ),
             ),
@@ -538,5 +272,3 @@ class _TLoginFormState extends State<TLoginForm> {
     );
   }
 }
-
-*/

@@ -11,7 +11,9 @@ import '../../models/address_model.dart';
 import '../../models/setting_model.dart';
 import '../providers/laravel_provider.dart';
 
+
 class SettingRepository {
+  
   late LaravelApiClient _laravelApiClient;
 
   SettingRepository() {

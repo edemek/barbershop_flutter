@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'parent/model.dart';
+import 'address_model.dart';
+
 
 class Salon extends Model {
   String? id;
@@ -10,6 +12,7 @@ class Salon extends Model {
   String? landlineNumber;
   TimeOfDay? openingTime;
   TimeOfDay? closingTime;
+  Address? address;
 
   // Constructeur de la classe Salon
   Salon({
@@ -18,6 +21,7 @@ class Salon extends Model {
     String? description,
     List<String>? images,
     this.phoneNumber,
+    this.address,
     this.landlineNumber,
     this.openingTime,
     this.closingTime,
@@ -27,7 +31,7 @@ class Salon extends Model {
   }
 
   // Factory constructor pour convertir un JSON en objet Salon
-  factory Salon.fromJson(Map<String, dynamic> json) {
+  factory Salon.fromJson_(Map<String, dynamic> json) {
     return Salon(
       // id: json['id'] ?? 0, // Si la clé 'id' est absente, on met 0 par défaut
       nom: json['nom'] ?? '', // Nom du salon, chaîne vide par défaut si null
@@ -45,7 +49,7 @@ class Salon extends Model {
     );
   }
 
-  Salon.fromJson_(Map<String, dynamic>? json) {
+  Salon.fromJson(Map<String, dynamic>? json) {
     super.fromJson(json);
     nom = transStringFromJson(json, 'nom');
     description = transStringFromJson(json, 'description');
@@ -60,7 +64,7 @@ class Salon extends Model {
     // distance = doubleFromJson(json, 'distance');
     // closed = boolFromJson(json, 'closed');
     // featured = boolFromJson(json, 'featured');
-    // address = objectFromJson(json, 'address', (v) => Address.fromJson(v));
+     address = objectFromJson(json, 'address', (v) => Address.fromJson(v));
     // taxes = listFromJson(json, 'taxes', (v) => Tax.fromJson(v));
     // employees = listFromJson(json, 'users', (v) => User.fromJson(v));
     // rate = doubleFromJson(json, 'rate');

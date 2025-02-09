@@ -54,6 +54,13 @@ class UserRepository {
     return _laravelApiClient.register(user);
   }
 
+  Future<void> sendCodeToPhone(body) async {
+    // _firebaseProvider = Get.find<FirebaseProvider>();
+    // return _firebaseProvider.sendCodeToPhone();
+    _laravelApiClient = Get.find<LaravelApiClient>();
+    return _laravelApiClient.sendOtp(body);
+  }
+
   // Future<bool> signInWithEmailAndPassword(String email, String password) async {
   //   _firebaseProvider = Get.find<FirebaseProvider>();
   //   return _firebaseProvider.signInWithEmailAndPassword(email, password);
@@ -69,11 +76,10 @@ class UserRepository {
   //   return _firebaseProvider.verifyPhone(smsCode);
   // }
 
-  // Future<void> sendCodeToPhone() async {
-  //   _firebaseProvider = Get.find<FirebaseProvider>();
-  //   return _firebaseProvider.sendCodeToPhone();
-
-  // }
+  Future<bool> verifyPhone(String smsCode) async {
+    return true;
+    // return this.get(Get.find<AuthService>().user.value);
+  }
 
   Future signOut() async {
     // _firebaseProvider = Get.find<FirebaseProvider>();

@@ -1,129 +1,208 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../../models/booking_model.dart';
+import '../../../models/booking_status.dart';
+import '../../repositories/booking_repository.dart';
+import '../../repositories/salon_repository.dart';
+import '../../../../common/ui.dart';
+import '../../../models/user_model.dart';
+import '../../../routes/app_routes.dart';
+import '../../services/global_service.dart';
+import 'bookings_controller.dart';
 
-class BookingStatus {
+
+
+
+class BookingStatus_ {
   String? id;
   String? name;
   int? order;
 
-  BookingStatus({this.id, this.name, this.order});
+  BookingStatus_({this.id, this.name, this.order});
 }
 
-class Booking {
+class Booking_ {
   String? id;
   String? customerName;
-  BookingStatus? status;
+  BookingStatus_? status;
 
-  Booking({this.id, this.customerName, this.status});
+  Booking_({this.id, this.customerName, this.status});
 }
 
-class BookingsController extends GetxController {
+class BookingController extends GetxController {
   final bookings = <Booking>[].obs;
   final bookingStatuses = <BookingStatus>[].obs;
   final page = 0.obs;
   final isLoading = true.obs;
   final isDone = false.obs;
   final currentStatus = '1'.obs;
+  final booking = Booking().obs;
+  Timer? timer;
+
 
   late ScrollController scrollController;
+  late SalonRepository _salonRepository;
+  late BookingRepository _bookingRepository;
+
+  BookingController() {
+    _bookingRepository = BookingRepository();
+    _salonRepository = SalonRepository();
+  }
+
 
   // Données simulées pour les statuts de réservation
-  final List<BookingStatus> _simulatedStatuses = [
-    BookingStatus(id: '1', name: 'Pending', order: 1),
-    BookingStatus(id: '2', name: 'Confirmed', order: 2),
-    BookingStatus(id: '3', name: 'Completed', order: 3),
-    BookingStatus(id: '4', name: 'Canceled', order: 4),
+  final List<BookingStatus_> _simulatedStatuses = [
+    BookingStatus_(id: '1', name: 'Pending', order: 1),
+    BookingStatus_(id: '2', name: 'Confirmed', order: 2),
+    BookingStatus_(id: '3', name: 'Completed', order: 3),
+    BookingStatus_(id: '4', name: 'Canceled', order: 4),
   ];
 
   // Données simulées pour les réservations
-  final List<Booking> _simulatedBookings = [
-    Booking(id: '1', customerName: 'John Doe', status: BookingStatus(id: '1', name: 'Pending', order: 1)),
-    Booking(id: '2', customerName: 'Jane Smith', status: BookingStatus(id: '2', name: 'Confirmed', order: 2)),
-    Booking(id: '3', customerName: 'Robert Brown', status: BookingStatus(id: '3', name: 'Completed', order: 3)),
-    Booking(id: '4', customerName: 'Emily White', status: BookingStatus(id: '4', name: 'Canceled', order: 4)),
+  final List<Booking_> _simulatedBookings = [
+    Booking_(id: '1', customerName: 'John Doe', status: BookingStatus_(id: '1', name: 'Pending', order: 1)),
+    Booking_(id: '2', customerName: 'Jane Smith', status: BookingStatus_(id: '2', name: 'Confirmed', order: 2)),
+    Booking_(id: '3', customerName: 'Robert Brown', status: BookingStatus_(id: '3', name: 'Completed', order: 3)),
+    Booking_(id: '4', customerName: 'Emily White', status: BookingStatus_(id: '4', name: 'Canceled', order: 4)),
   ];
 
+
   @override
-  Future<void> onInit() async {
-    await getBookingStatuses();
-    currentStatus.value = getStatusByOrder(1).id!;
+  void onInit() async {
+    booking.value = Get.arguments as Booking;
     super.onInit();
   }
 
-  Future refreshBookings({bool showMessage = false, String? statusId}) async {
-    changeTab(statusId);
+  @override
+  void onReady() async {
+    await refreshBooking();
+    super.onReady();
+  }
+
+  Future refreshBooking({bool showMessage = false}) async {
+    await getBooking();
     if (showMessage) {
-      await getBookingStatuses();
-      Get.showSnackbar(SnackBar(content: Text("Bookings page refreshed successfully")) as GetSnackBar);
+      Get.showSnackbar(Ui.SuccessSnackBar(message: "Booking page refreshed successfully".tr));
     }
   }
 
-  void initScrollController() {
-    scrollController = ScrollController();
-    scrollController.addListener(() {
-      if (scrollController.position.pixels == scrollController.position.maxScrollExtent && !isDone.value) {
-        loadBookingsOfStatus(statusId: currentStatus.value);
-      }
-    });
-  }
-
-  void changeTab(String? statusId) async {
-    this.bookings.clear();
-    currentStatus.value = statusId ?? currentStatus.value;
-    page.value = 0;
-    await loadBookingsOfStatus(statusId: currentStatus.value);
-  }
-
-  Future getBookingStatuses() async {
+  Future<void> getBooking() async {
     try {
-      bookingStatuses.assignAll(_simulatedStatuses); // Utilisation des statuts simulés
+      booking.value = await _bookingRepository.get(booking.value.id!);
+      if (booking.value.status == Get.find<BookingsController>().getStatusByOrder(Get.find<GlobalService>().global.value.inProgress! ) && timer == null) {
+        timer = Timer.periodic(Duration(minutes: 1), (t) {
+          booking.update((val) {
+            val?.duration = val.duration! + (1 / 60);
+          });
+        });
+      }
     } catch (e) {
-      Get.showSnackbar(SnackBar(content: Text("Error: $e")) as GetSnackBar);
+      Get.showSnackbar(Ui.ErrorSnackBar(message: e.toString()));
     }
   }
 
-  BookingStatus getStatusByOrder(int order) => bookingStatuses.firstWhere(
-        (s) => s.order == order,
-    orElse: () {
-      Get.showSnackbar(SnackBar(content: Text("Booking status not found")) as GetSnackBar);
-      return BookingStatus();
-    },
-  );
+  Future<void> onTheWayBookingService() async {
+    final _status = Get.find<BookingsController>().getStatusByOrder(Get.find<GlobalService>().global.value.onTheWay!);
+    await changeBookingStatus(_status);
+  }
 
-  Future loadBookingsOfStatus({String statusId = ''}) async {
+  Future<void> readyBookingService() async {
+    final _status = Get.find<BookingsController>().getStatusByOrder(Get.find<GlobalService>().global.value.ready!);
+    await changeBookingStatus(_status);
+  }
+
+  Future<void> startBookingService() async {
     try {
-      isLoading.value = true;
-      isDone.value = false;
-      page.value++;
-
-      // Filtrer les réservations en fonction du statut actuel
-      List<Booking> _bookings = _simulatedBookings
-          .where((booking) => booking.status!.id == statusId)
-          .toList();
-
-      if (_bookings.isNotEmpty) {
-        bookings.addAll(_bookings);
-      } else {
-        isDone.value = true;
-      }
+      final _status = Get.find<BookingsController>().getStatusByOrder(Get.find<GlobalService>().global.value.inProgress!);
+      final _booking = new Booking(id: booking.value.id, startAt: DateTime.now(), status: _status);
+      await _bookingRepository.update(_booking);
+      booking.update((val) {
+        val!.startAt = _booking.startAt;
+        val.status = _status;
+      });
+      timer = Timer.periodic(Duration(minutes: 1), (t) {
+        booking.update((val) {
+          val?.duration = val.duration! + (1 / 60);
+        });
+      });
     } catch (e) {
-      isDone.value = true;
-      Get.showSnackbar(SnackBar(content: Text("Error: $e")) as GetSnackBar);
-    } finally {
-      isLoading.value = false;
+      Get.showSnackbar(Ui.ErrorSnackBar(message: e.toString()));
     }
   }
 
-  Future<void> cancelBookingService(Booking booking) async {
+  Future<void> finishBookingService() async {
     try {
-      if (booking.status!.order! < 3) { // Par exemple, si l'ordre est inférieur à 'Completed'
-        final _status = getStatusByOrder(4); // Statut "Canceled"
-        final _booking = Booking(id: booking.id, customerName: booking.customerName, status: _status);
-        bookings.removeWhere((element) => element.id == booking.id);
-        bookings.add(_booking);
+      final _status = Get.find<BookingsController>().getStatusByOrder(Get.find<GlobalService>().global.value.done!);
+      var _booking = new Booking(id: booking.value.id, endsAt: DateTime.now(), status: _status);
+      final result = await _bookingRepository.update(_booking);
+      booking.update((val) {
+        val!.endsAt = result.endsAt;
+        val.duration = result.duration;
+        val.status = _status;
+      });
+      timer?.cancel();
+    } catch (e) {
+      Get.showSnackbar(Ui.ErrorSnackBar(message: e.toString()));
+    }
+  }
+  
+  Future<void> cancelBookingService() async {
+    try {
+      if (booking.value.status!.order < Get.find<GlobalService>().global.value.onTheWay!) {
+        final _status = Get.find<BookingsController>().getStatusByOrder(Get.find<GlobalService>().global.value.failed!);
+        final _booking = new Booking(id: booking.value.id, cancel: true, status: _status);
+        await _bookingRepository.update(_booking);
+        booking.update((val) {
+          val!.cancel = true;
+          val.status = _status;
+        });
       }
     } catch (e) {
-      Get.showSnackbar(SnackBar(content: Text("Error: $e")) as GetSnackBar);
+      Get.showSnackbar(Ui.ErrorSnackBar(message: e.toString()));
+    }
+  }
+  
+  String getTime({String separator = ":"}) {
+    String hours = "";
+    String minutes = "";
+    int minutesInt = ((booking.value.duration! - booking.value.duration!.toInt()) * 60).toInt();
+    int hoursInt = booking.value.duration!.toInt();
+    if (hoursInt < 10) {
+      hours = "0" + hoursInt.toString();
+    } else {
+      hours = hoursInt.toString();
+    }
+    if (minutesInt < 10) {
+      minutes = "0" + minutesInt.toString();
+    } else {
+      minutes = minutesInt.toString();
+    }
+    return hours + separator + minutes;
+  }
+
+  //  Future<void> startChat() async {
+  //   List<User> _employees = await _salonRepository.getEmployees(booking.value.salon!.id!);
+  //   _employees = _employees
+  //       .map((e) {
+  //         // e.avatar = booking.value.salon!.images![0];
+  //         return e;
+  //       })
+  //       .toSet()
+  //       .toList();
+  //   Message _message = new Message(_employees, name: booking.value.salon!.name);
+  //   Get.toNamed(Routes.CHAT, arguments: _message);
+  // }
+
+  Future<void> changeBookingStatus(BookingStatus bookingStatus) async {
+    try {
+      final _booking = new Booking(id: booking.value.id, status: bookingStatus);
+      await _bookingRepository.update(_booking);
+      booking.update((val) {
+        val!.status = bookingStatus;
+      });
+    } catch (e) {
+      Get.showSnackbar(Ui.ErrorSnackBar(message: e.toString()));
     }
   }
 }

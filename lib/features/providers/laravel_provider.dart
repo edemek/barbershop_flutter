@@ -11,6 +11,8 @@ import 'dart:convert';
 // import 'package:dio/dio.dart' as dio;
 import 'package:barbershpo_flutter/models/setting_model.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart' show DateFormat;
+
 
 // import 'package:google_maps_flutter/google_maps_flutter.dart';
 // import 'package:intl/intl.dart' show DateFormat;
@@ -18,12 +20,17 @@ import 'package:get/get.dart';
 // import '../../common/uuid.dart';
 import '../../models/custom_page_model.dart';
 import '../../models/address_model.dart';
-// import '../../models/salon_model.dart';
-// import '../../models/e_service_model.dart';
+import '../../models/booking_model.dart';
+import '../../models/category_model.dart';
+import '../../models/booking_status.dart';
+import '../services/settings_service.dart';
+import '../../models/salon_model.dart';
+import '../../models/e_service_model.dart';
 // import '../../models/setting_model.dart';
 import '../../models/user_model.dart';
 // import '../services/settings_service.dart';
 import 'api_provider.dart';
+
 
 class LaravelApiClient extends GetxService with ApiClient {
   LaravelApiClient() {
@@ -35,10 +42,7 @@ class LaravelApiClient extends GetxService with ApiClient {
     return this;
   }
 
-  // Future<LaravelApiClient> init() async {
-  //   super.init();
-  //   return this;
-  // }
+  
 
   // Future<List<Slide>> getHomeSlider() async {
   //   Uri _uri = getApiBaseUri("slides");
@@ -53,7 +57,7 @@ class LaravelApiClient extends GetxService with ApiClient {
   //   }
   // }
 
-  Future<User> getUser(User user) async {
+  Future <User> getUser(User user) async {
     if (!authService.isAuth) {
       throw new Exception(
           "You don't have the permission to access to this area!".tr +
@@ -94,9 +98,9 @@ class LaravelApiClient extends GetxService with ApiClient {
     var Response = await httpClient.post(
       _uri,
       headers: {
-        ...head // Ajoutez d'autres en-têtes si nécessaire
+        ...optionsNetwork // Ajoutez d'autres en-têtes si nécessaire
       },
-      body: json.encode(user.toJson()),
+      body: user.toJson(),
     );
 
     if (Response.statusCode == 200) {
@@ -115,18 +119,49 @@ class LaravelApiClient extends GetxService with ApiClient {
     }
   }
 
+  Future<void> sendOtp(body) async {
+    Uri _uri = getApiBaseUri("send-otp");
+    var Response = await httpClient.post(
+      _uri,
+      headers: {},
+      body: body,
+    );
+    // final response = await http.post(
+    //   Uri.parse('http://votre-backend-url/api/send-otp'),
+    //   body: {'phone_number': _phoneController.text},
+    // );
+
+    if (Response.statusCode == 200) {
+      // Aller à l'écran de saisie de l'OTP
+      // Decode the JSON jsonResponse
+      var jsonResponse = jsonDecode(Response.body);
+
+      if (jsonResponse['success'] == true) {
+        jsonResponse['data']['auth'] = true;
+        return jsonResponse['data'];
+      } else {
+        throw new Exception(jsonResponse['message']);
+      }
+    } else {
+      throw Exception(
+          'Failed to send otp. Status code: ${Response.statusCode}');
+    }
+  }
+
+
+
   Future<User> register(User user) async {
     Uri _uri = getApiBaseUri("register");
     final head = {
       "Authorization":
           "Bearer " + authService.apiToken, // Add Bearer token here
     };
-
+   final mergedData = {...user.toJson(), ...{'password_confirmation' : user.password}};
     var Response = await httpClient.post(_uri,
         headers: {
-          ...head // Ajoutez d'autres en-têtes si nécessaire
+          ...optionsNetwork // Ajoutez d'autres en-têtes si nécessaire
         },
-        body: json.encode(user.toJson()));
+        body: mergedData);
     if (Response.statusCode == 200) {
       // Decode the JSON jsonResponse
       var jsonResponse = jsonDecode(Response.body);
@@ -184,12 +219,12 @@ class LaravelApiClient extends GetxService with ApiClient {
     };
     Uri _uri = getApiBaseUri("users/${user.id}")
         .replace(queryParameters: _queryParameters);
-
+  
     var Response = await httpClient.post(_uri,
         headers: {
-          ...head // Ajoutez d'autres en-têtes si nécessaire
+          ...optionsNetwork // Ajoutez d'autres en-têtes si nécessaire
         },
-        body: json.encode(user.toJson()));
+        body: user.toJson());
     if (Response.statusCode == 200) {
       // Decode the JSON jsonResponse
       var jsonResponse = jsonDecode(Response.body);
@@ -217,12 +252,11 @@ class LaravelApiClient extends GetxService with ApiClient {
     };
     Uri _uri =
         getApiBaseUri("users").replace(queryParameters: _queryParameters);
-    final head = {
-      "Authorization":
-          "Bearer " + authService.apiToken, // Add Bearer token here
-    };
+    
 
-    var Response = await httpClient.deleteUri(_uri);
+    var Response = await httpClient.deleteUri(_uri, headers: {
+          ...optionsNetwork // Ajoutez d'autres en-têtes si nécessaire
+        });
     if (Response.statusCode == 200) {
       // Decode the JSON jsonResponse
       var jsonResponse = jsonDecode(Response.body);
@@ -277,31 +311,42 @@ class LaravelApiClient extends GetxService with ApiClient {
     }
   }
 
-  // Future<List<Salon>> getRecommendedSalons() async {
-  //   final _address = Get.find<SettingsService>().address.value;
-  //   // TODO get Only Recommended
-  //   var _queryParameters = {
-  //     'only':
-  //         'id;name;has_media;media;total_reviews;rate;salonLevel;distance;closed',
-  //     'with': 'salonLevel',
-  //     'limit': '6',
-  //   };
-  //   if (!_address.isUnknown()) {
-  //     _queryParameters['myLat'] = _address.latitude.toString();
-  //     _queryParameters['myLon'] = _address.longitude.toString();
-  //   }
-  //   Uri _uri =
-  //       getApiBaseUri("salons").replace(queryParameters: _queryParameters);
+  Future<List<Salon>> getRecommendedSalons() async {
+    final _address = Get.find<SettingsService>().address.value;
+    // TODO get Only Recommended
+    var _queryParameters = {
+      'only':
+          'id;name;has_media;media;total_reviews;rate;salonLevel;distance;closed',
+      'with': 'salonLevel',
+      'limit': '6',
+    };
+    if (!_address.isUnknown()) {
+      _queryParameters['myLat'] = _address.latitude.toString();
+      _queryParameters['myLon'] = _address.longitude.toString();
+    }
+    Uri _uri =
+        getApiBaseUri("salons").replace(queryParameters: _queryParameters);
 
-  //   var Response = await httpClient.getUri(_uri, options: optionsCache);
-  //   if (jsonResponse['success'] == true) {
-  //     return jsonResponse['data']
-  //         .map<Salon>((obj) => Salon.fromJson(obj))
-  //         .toList();
-  //   } else {
-  //     throw new Exception(jsonResponse['message']);
-  //   }
-  // }
+    var Response = await httpClient.getUri(_uri,  headers: {
+          ...optionsNetwork // Ajoutez d'autres en-têtes si nécessaire
+        });
+
+    if (Response.statusCode == 200) {
+      // Decode the JSON jsonResponse
+      var jsonResponse = jsonDecode(Response.body);
+
+      if (jsonResponse['success'] == true) {
+        return jsonResponse['data']
+            .map<Salon>((obj) => Salon.fromJson(obj))
+            .toList();
+      } else {
+        throw new Exception(jsonResponse['message']);
+      }
+    } else {
+      throw Exception(
+          'Failed to load user. Status code: ${Response.statusCode}');
+    }
+  }
 
   // Future<List<Salon>> getNearSalons(LatLng latLng, LatLng areaLatLng) async {
   //   var _queryParameters = {
@@ -520,37 +565,57 @@ class LaravelApiClient extends GetxService with ApiClient {
   //   }
   // }
 
-  // Future<Salon> getSalon(String salonId) async {
-  //   const _queryParameters = {
-  //     'with': 'salonLevel;availabilityHours;users;taxes;address',
-  //   };
-  //   Uri _uri = getApiBaseUri("salons/$salonId")
-  //       .replace(queryParameters: _queryParameters);
+  Future<Salon> getSalon(String salonId) async {
+    const _queryParameters = {
+      'with': 'salonLevel;availabilityHours;users;taxes;address',
+    };
+    Uri _uri = getApiBaseUri("salons/$salonId")
+        .replace(queryParameters: _queryParameters);
 
-  //   var Response = await httpClient.getUri(_uri, options: optionsNetwork);
-  //   if (jsonResponse['success'] == true) {
-  //     return Salon.fromJson(jsonResponse['data']);
-  //   } else {
-  //     throw new Exception(jsonResponse['message']);
-  //   }
-  // }
+    var Response = await httpClient.getUri(_uri, headers: {
+          ...optionsNetwork // Ajoutez d'autres en-têtes si nécessaire
+        });
+    if (Response.statusCode == 200) {
+      // Decode the JSON jsonResponse
+      var jsonResponse = jsonDecode(Response.body);
 
-  // Future<List> getAvailabilityHours(
-  //     String salonId, DateTime date, String? employeeId) async {
-  //   var _queryParameters = {
-  //     'date': DateFormat('y-MM-dd').format(date),
-  //     'employee_id': employeeId ?? '0',
-  //   };
-  //   Uri _uri = getApiBaseUri("availability_hours/$salonId")
-  //       .replace(queryParameters: _queryParameters);
+      if (jsonResponse['success'] == true) {
+        return Salon.fromJson(jsonResponse['data']);
+      } else {
+        throw new Exception(jsonResponse['message']);
+      }
+    } else {
+      throw Exception(
+          'Failed to load user. Status code: ${Response.statusCode}');
+    }
+  }
 
-  //   var Response = await httpClient.getUri(_uri, options: optionsNetwork);
-  //   if (jsonResponse['success'] == true) {
-  //     return jsonResponse['data'];
-  //   } else {
-  //     throw new Exception(jsonResponse['message']);
-  //   }
-  // }
+  Future<List> getAvailabilityHours(
+      String salonId, DateTime date, String? employeeId) async {
+    var _queryParameters = {
+      'date': DateFormat('y-MM-dd').format(date),
+      'employee_id': employeeId ?? '0',
+    };
+    Uri _uri = getApiBaseUri("availability_hours/$salonId")
+        .replace(queryParameters: _queryParameters);
+
+    var Response = await httpClient.getUri(_uri,  headers: {
+          ...optionsNetwork // Ajoutez d'autres en-têtes si nécessaire
+        });
+    if (Response.statusCode == 200) {
+      // Decode the JSON jsonResponse
+      var jsonResponse = jsonDecode(Response.body);
+
+      if (jsonResponse['success'] == true) {
+        return jsonResponse['data'];
+      } else {
+        throw new Exception(jsonResponse['message']);
+      }
+    } else {
+      throw Exception(
+          'Failed to load user. Status code: ${Response.statusCode}');
+    }
+  }
 
   // Future<List<Review>> getSalonReviews(String salonId) async {
   //   var _queryParameters = {
@@ -631,150 +696,210 @@ class LaravelApiClient extends GetxService with ApiClient {
   //   }
   // }
 
-  // Future<List<EService>> getSalonFeaturedEServices(
-  //     String salonId, List<String> categories, int page) async {
-  //   var _queryParameters = {
-  //     'with':
-  //         'categories;optionGroups;optionGroups.options;optionGroups.options.media',
-  //     'search':
-  //         'categories.id:${categories.join(',')};salon_id:$salonId;featured:1',
-  //     'searchFields': 'categories.id:in;salon_id:=;featured:=',
-  //     'searchJoin': 'and',
-  //     'limit': '4',
-  //     'offset': ((page - 1) * 4).toString()
-  //   };
-  //   Uri _uri =
-  //       getApiBaseUri("e_services").replace(queryParameters: _queryParameters);
+  Future<List<EService>> getSalonFeaturedEServices(
+      String salonId, List<String> categories, int page) async {
+    var _queryParameters = {
+      'with':
+          'categories;optionGroups;optionGroups.options;optionGroups.options.media',
+      'search':
+          'categories.id:${categories.join(',')};salon_id:$salonId;featured:1',
+      'searchFields': 'categories.id:in;salon_id:=;featured:=',
+      'searchJoin': 'and',
+      'limit': '4',
+      'offset': ((page - 1) * 4).toString()
+    };
+    Uri _uri =
+        getApiBaseUri("e_services").replace(queryParameters: _queryParameters);
 
-  //   var Response = await httpClient.getUri(_uri, options: optionsCache);
-  //   if (jsonResponse['success'] == true) {
-  //     return jsonResponse['data']
-  //         .map<EService>((obj) => EService.fromJson(obj))
-  //         .toList();
-  //   } else {
-  //     throw new Exception(jsonResponse['message']);
-  //   }
-  // }
+    var Response = await httpClient.getUri(_uri,  headers: {
+          ...optionsNetwork // Ajoutez d'autres en-têtes si nécessaire
+        });
+    if (Response.statusCode == 200) {
+      // Decode the JSON jsonResponse
+      var jsonResponse = jsonDecode(Response.body);
 
-  // Future<List<EService>> getSalonPopularEServices(
-  //     String salonId, List<String> categories, int page) async {
-  //   // TODO popular eServices
-  //   var _queryParameters = {
-  //     'with':
-  //         'categories;optionGroups;optionGroups.options;optionGroups.options.media',
-  //     'search': 'categories.id:${categories.join(',')};salon_id:$salonId',
-  //     'searchFields': 'categories.id:in;salon_id:=',
-  //     'searchJoin': 'and',
-  //     'rating': 'true',
-  //     'limit': '4',
-  //     'offset': ((page - 1) * 4).toString()
-  //   };
-  //   Uri _uri =
-  //       getApiBaseUri("e_services").replace(queryParameters: _queryParameters);
+      if (jsonResponse['success'] == true) {
+        return jsonResponse['data']
+            .map<EService>((obj) => EService.fromJson(obj))
+            .toList();
+      } else {
+        throw new Exception(jsonResponse['message']);
+      }
+    } else {
+      throw Exception(
+          'Failed to load user. Status code: ${Response.statusCode}');
+    }
+  }
 
-  //   var Response = await httpClient.getUri(_uri, options: optionsCache);
-  //   if (jsonResponse['success'] == true) {
-  //     return jsonResponse['data']
-  //         .map<EService>((obj) => EService.fromJson(obj))
-  //         .toList();
-  //   } else {
-  //     throw new Exception(jsonResponse['message']);
-  //   }
-  // }
+  Future<List<EService>> getSalonPopularEServices(
+      String salonId, List<String> categories, int page) async {
+    // TODO popular eServices
+    var _queryParameters = {
+      'with':
+          'categories;optionGroups;optionGroups.options;optionGroups.options.media',
+      'search': 'categories.id:${categories.join(',')};salon_id:$salonId',
+      'searchFields': 'categories.id:in;salon_id:=',
+      'searchJoin': 'and',
+      'rating': 'true',
+      'limit': '4',
+      'offset': ((page - 1) * 4).toString()
+    };
+    Uri _uri =
+        getApiBaseUri("e_services").replace(queryParameters: _queryParameters);
 
-  // Future<List<EService>> getSalonAvailableEServices(
-  //     String salonId, List<String> categories, int page) async {
-  //   var _queryParameters = {
-  //     'with':
-  //         'categories;optionGroups;optionGroups.options;optionGroups.options.media',
-  //     'search': 'categories.id:${categories.join(',')};salon_id:$salonId',
-  //     'searchFields': 'categories.id:in;salon_id:=',
-  //     'searchJoin': 'and',
-  //     'available_salon': 'true',
-  //     'limit': '4',
-  //     'offset': ((page - 1) * 4).toString()
-  //   };
-  //   Uri _uri =
-  //       getApiBaseUri("e_services").replace(queryParameters: _queryParameters);
+     var Response = await httpClient.getUri(_uri,  headers: {
+          ...optionsNetwork // Ajoutez d'autres en-têtes si nécessaire
+        });
+    if (Response.statusCode == 200) {
+      // Decode the JSON jsonResponse
+      var jsonResponse = jsonDecode(Response.body);
 
-  //   var Response = await httpClient.getUri(_uri, options: optionsNetwork);
-  //   if (jsonResponse['success'] == true) {
-  //     return jsonResponse['data']
-  //         .map<EService>((obj) => EService.fromJson(obj))
-  //         .toList();
-  //   } else {
-  //     throw new Exception(jsonResponse['message']);
-  //   }
-  // }
+      if (jsonResponse['success'] == true) {
+        return jsonResponse['data']
+            .map<EService>((obj) => EService.fromJson(obj))
+            .toList();
+      } else {
+        throw new Exception(jsonResponse['message']);
+      }
+    } else {
+      throw Exception(
+          'Failed to load user. Status code: ${Response.statusCode}');
+    }
+  }
 
-  // Future<List<EService>> getSalonMostRatedEServices(
-  //     String salonId, List<String> categories, int page) async {
-  //   var _queryParameters = {
-  //     //'only': 'id;name;price;discount_price;price_unit;duration;has_media;total_reviews;rate',
-  //     'with':
-  //         'categories;optionGroups;optionGroups.options;optionGroups.options.media',
-  //     'search': 'categories.id:${categories.join(',')};salon_id:$salonId',
-  //     'searchFields': 'categories.id:in;salon_id:=',
-  //     'searchJoin': 'and',
-  //     'rating': 'true',
-  //     'limit': '4',
-  //     'offset': ((page - 1) * 4).toString()
-  //   };
-  //   Uri _uri =
-  //       getApiBaseUri("e_services").replace(queryParameters: _queryParameters);
+  Future<List<EService>> getSalonAvailableEServices(
+      String salonId, List<String> categories, int page) async {
+    var _queryParameters = {
+      'with':
+          'categories;optionGroups;optionGroups.options;optionGroups.options.media',
+      'search': 'categories.id:${categories.join(',')};salon_id:$salonId',
+      'searchFields': 'categories.id:in;salon_id:=',
+      'searchJoin': 'and',
+      'available_salon': 'true',
+      'limit': '4',
+      'offset': ((page - 1) * 4).toString()
+    };
+    Uri _uri =
+        getApiBaseUri("e_services").replace(queryParameters: _queryParameters);
 
-  //   var Response = await httpClient.getUri(_uri, options: optionsCache);
-  //   if (jsonResponse['success'] == true) {
-  //     return jsonResponse['data']
-  //         .map<EService>((obj) => EService.fromJson(obj))
-  //         .toList();
-  //   } else {
-  //     throw new Exception(jsonResponse['message']);
-  //   }
-  // }
+    var Response = await httpClient.getUri(_uri,  headers: {
+          ...optionsNetwork // Ajoutez d'autres en-têtes si nécessaire
+        });
+    if (Response.statusCode == 200) {
+      // Decode the JSON jsonResponse
+      var jsonResponse = jsonDecode(Response.body);
 
-  // Future<List<User>> getSalonEmployees(String salonId) async {
-  //   var _queryParameters = {
-  //     'with': 'users',
-  //     'only':
-  //         'users;users.id;users.name;users.email;users.phone_number;users.device_token'
-  //   };
-  //   Uri _uri = getApiBaseUri("salons/$salonId")
-  //       .replace(queryParameters: _queryParameters);
-  //   printUri(StackTrace.current, _uri);
-  //   var Response = await httpClient.getUri(_uri, options: optionsNetwork);
-  //   if (jsonResponse['success'] == true) {
-  //     return jsonResponse['data']['users']
-  //         .map<User>((obj) => User.fromJson(obj))
-  //         .toList();
-  //   } else {
-  //     throw new Exception(jsonResponse['message']);
-  //   }
-  // }
+      if (jsonResponse['success'] == true) {
+        return jsonResponse['data']
+            .map<EService>((obj) => EService.fromJson(obj))
+            .toList();
+      } else {
+        throw new Exception(jsonResponse['message']);
+      }
+    } else {
+      throw Exception(
+          'Failed to load user. Status code: ${Response.statusCode}');
+    }
+  }
 
-  // Future<List<EService>> getSalonEServices(
-  //     String salonId, List<String> categories, int page) async {
-  //   var _queryParameters = {
-  //     'with':
-  //         'categories;optionGroups;optionGroups.options;optionGroups.options.media',
-  //     'search': 'categories.id:${categories.join(',')};salon_id:$salonId',
-  //     'searchFields': 'categories.id:in;salon_id:=',
-  //     'searchJoin': 'and',
-  //     'limit': '4',
-  //     'offset': ((page - 1) * 4).toString()
-  //   };
-  //   Uri _uri =
-  //       getApiBaseUri("e_services").replace(queryParameters: _queryParameters);
+  Future<List<EService>> getSalonMostRatedEServices(
+      String salonId, List<String> categories, int page) async {
+    var _queryParameters = {
+      //'only': 'id;name;price;discount_price;price_unit;duration;has_media;total_reviews;rate',
+      'with':
+          'categories;optionGroups;optionGroups.options;optionGroups.options.media',
+      'search': 'categories.id:${categories.join(',')};salon_id:$salonId',
+      'searchFields': 'categories.id:in;salon_id:=',
+      'searchJoin': 'and',
+      'rating': 'true',
+      'limit': '4',
+      'offset': ((page - 1) * 4).toString()
+    };
+    Uri _uri =
+        getApiBaseUri("e_services").replace(queryParameters: _queryParameters);
 
-  //   var Response = await httpClient.getUri(_uri, options: optionsCache);
-  //   if (jsonResponse['success'] == true) {
-  //     return jsonResponse['data']
-  //         .map<EService>((obj) => EService.fromJson(obj))
-  //         .toList();
-  //   } else {
-  //     throw new Exception(jsonResponse['message']);
-  //   }
-  // }
+    var Response = await httpClient.getUri(_uri,  headers: {
+          ...optionsNetwork // Ajoutez d'autres en-têtes si nécessaire
+        });
+    if (Response.statusCode == 200) {
+      // Decode the JSON jsonResponse
+      var jsonResponse = jsonDecode(Response.body);
+
+      if (jsonResponse['success'] == true) {
+        return jsonResponse['data']
+            .map<EService>((obj) => EService.fromJson(obj))
+            .toList();
+      } else {
+        throw new Exception(jsonResponse['message']);
+      }
+    } else {
+      throw Exception(
+          'Failed to load user. Status code: ${Response.statusCode}');
+    }
+  }
+
+  Future<List<User>> getSalonEmployees(String salonId) async {
+    var _queryParameters = {
+      'with': 'users',
+      'only':
+          'users;users.id;users.name;users.email;users.phone_number;users.device_token'
+    };
+    Uri _uri = getApiBaseUri("salons/$salonId")
+        .replace(queryParameters: _queryParameters);
+    printUri(StackTrace.current, _uri);
+     var Response = await httpClient.getUri(_uri,  headers: {
+          ...optionsNetwork // Ajoutez d'autres en-têtes si nécessaire
+        });
+    if (Response.statusCode == 200) {
+      // Decode the JSON jsonResponse
+      var jsonResponse = jsonDecode(Response.body);
+
+      if (jsonResponse['success'] == true) {
+        return jsonResponse['data']['users']
+            .map<User>((obj) => User.fromJson(obj))
+            .toList();
+      } else {
+        throw new Exception(jsonResponse['message']);
+      }
+    } else {
+      throw Exception(
+          'Failed to load user. Status code: ${Response.statusCode}');
+    }
+  }
+
+  Future<List<EService>> getSalonEServices(
+      String salonId, List<String> categories, int page) async {
+    var _queryParameters = {
+      'with':
+          'categories;optionGroups;optionGroups.options;optionGroups.options.media',
+      'search': 'categories.id:${categories.join(',')};salon_id:$salonId',
+      'searchFields': 'categories.id:in;salon_id:=',
+      'searchJoin': 'and',
+      'limit': '4',
+      'offset': ((page - 1) * 4).toString()
+    };
+    Uri _uri =
+        getApiBaseUri("e_services").replace(queryParameters: _queryParameters);
+
+    var Response = await httpClient.getUri(_uri,  headers: {
+          ...optionsNetwork // Ajoutez d'autres en-têtes si nécessaire
+        });
+    if (Response.statusCode == 200) {
+      // Decode the JSON jsonResponse
+      var jsonResponse = jsonDecode(Response.body);
+
+      if (jsonResponse['success'] == true) {
+      return jsonResponse['data']
+          .map<EService>((obj) => EService.fromJson(obj))
+          .toList();
+      } else {
+        throw new Exception(jsonResponse['message']);
+      }
+    } else {
+      throw Exception(
+          'Failed to load user. Status code: ${Response.statusCode}');
+    }
+  }
 
   // Future<List<Review>> getEServiceReviews(String eServiceId) async {
   //   var _queryParameters = {
@@ -851,34 +976,44 @@ class LaravelApiClient extends GetxService with ApiClient {
   //   }
   // }
 
-  // Future<List<EService>> getPopularEServices(
-  //     String categoryId, int page) async {
-  //   final _address = Get.find<SettingsService>().address.value;
-  //   var _queryParameters = {
-  //     //'only': 'id;name;price;discount_price;price_unit;duration;has_media;total_reviews;rate',
-  //     'with': 'salon;salon.address;categories',
-  //     'search': 'categories.id:$categoryId',
-  //     'searchFields': 'categories.id:=',
-  //     'rating': 'true',
-  //     'limit': '4',
-  //     'offset': ((page - 1) * 4).toString()
-  //   };
-  //   if (!_address.isUnknown()) {
-  //     _queryParameters['myLat'] = _address.latitude.toString();
-  //     _queryParameters['myLon'] = _address.longitude.toString();
-  //   }
-  //   Uri _uri =
-  //       getApiBaseUri("e_services").replace(queryParameters: _queryParameters);
+  Future<List<EService>> getPopularEServices(
+      String categoryId, int page) async {
+    final _address = Get.find<SettingsService>().address.value;
+    var _queryParameters = {
+      //'only': 'id;name;price;discount_price;price_unit;duration;has_media;total_reviews;rate',
+      'with': 'salon;salon.address;categories',
+      'search': 'categories.id:$categoryId',
+      'searchFields': 'categories.id:=',
+      'rating': 'true',
+      'limit': '4',
+      'offset': ((page - 1) * 4).toString()
+    };
+    if (!_address.isUnknown()) {
+      _queryParameters['myLat'] = _address.latitude.toString();
+      _queryParameters['myLon'] = _address.longitude.toString();
+    }
+    Uri _uri =
+        getApiBaseUri("e_services").replace(queryParameters: _queryParameters);
 
-  //   var Response = await httpClient.getUri(_uri, options: optionsCache);
-  //   if (jsonResponse['success'] == true) {
-  //     return jsonResponse['data']
-  //         .map<EService>((obj) => EService.fromJson(obj))
-  //         .toList();
-  //   } else {
-  //     throw new Exception(jsonResponse['message']);
-  //   }
-  // }
+    var Response = await httpClient.getUri(_uri,  headers: {
+          ...optionsNetwork // Ajoutez d'autres en-têtes si nécessaire
+        });
+    if (Response.statusCode == 200) {
+      // Decode the JSON jsonResponse
+      var jsonResponse = jsonDecode(Response.body);
+
+      if (jsonResponse['success'] == true) {
+        return jsonResponse['data']
+            .map<EService>((obj) => EService.fromJson(obj))
+            .toList();
+      } else {
+        throw new Exception(jsonResponse['message']);
+      }
+    } else {
+      throw Exception(
+          'Failed to load user. Status code: ${Response.statusCode}');
+    }
+  }
 
   // Future<List<EService>> getMostRatedEServices(
   //     String categoryId, int page) async {
@@ -937,168 +1072,248 @@ class LaravelApiClient extends GetxService with ApiClient {
   //   }
   // }
 
-  // Future<List<Category>> getAllCategories() async {
-  //   const _queryParameters = {
-  //     'orderBy': 'order',
-  //     'sortBy': 'asc',
-  //   };
-  //   Uri _uri =
-  //       getApiBaseUri("categories").replace(queryParameters: _queryParameters);
+  Future<List<Category>> getAllCategories() async {
+    const _queryParameters = {
+      'orderBy': 'order',
+      'sortBy': 'asc',
+    };
+    Uri _uri =
+        getApiBaseUri("categories").replace(queryParameters: _queryParameters);
 
-  //   var Response = await httpClient.getUri(_uri, options: optionsCache);
-  //   if (jsonResponse['success'] == true) {
-  //     return jsonResponse['data']
-  //         .map<Category>((obj) => Category.fromJson(obj))
-  //         .toList();
-  //   } else {
-  //     throw new Exception(jsonResponse['message']);
-  //   }
-  // }
+    var Response = await httpClient.getUri(_uri,  headers: {
+          ...optionsNetwork // Ajoutez d'autres en-têtes si nécessaire
+        });
+    if (Response.statusCode == 200) {
+      // Decode the JSON jsonResponse
+      var jsonResponse = jsonDecode(Response.body);
 
-  // Future<List<Category>> getAllParentCategories() async {
-  //   const _queryParameters = {
-  //     'parent': 'true',
-  //     'orderBy': 'order',
-  //     'sortBy': 'asc',
-  //   };
-  //   Uri _uri =
-  //       getApiBaseUri("categories").replace(queryParameters: _queryParameters);
+      if (jsonResponse['success'] == true) {
+        return jsonResponse['data']
+            .map<Category>((obj) => Category.fromJson(obj))
+            .toList();
+      } else {
+        throw new Exception(jsonResponse['message']);
+      }
+    } else {
+      throw Exception(
+          'Failed to load user. Status code: ${Response.statusCode}');
+    }
+  }
 
-  //   var Response = await httpClient.getUri(_uri, options: optionsCache);
-  //   if (jsonResponse['success'] == true) {
-  //     return jsonResponse['data']
-  //         .map<Category>((obj) => Category.fromJson(obj))
-  //         .toList();
-  //   } else {
-  //     throw new Exception(jsonResponse['message']);
-  //   }
-  // }
+  Future<List<Category>> getAllParentCategories() async {
+    const _queryParameters = {
+      'parent': 'true',
+      'orderBy': 'order',
+      'sortBy': 'asc',
+    };
+    Uri _uri =
+        getApiBaseUri("categories").replace(queryParameters: _queryParameters);
 
-  // Future<List<Category>> getSubCategories(String categoryId) async {
-  //   final _queryParameters = {
-  //     'search': "parent_id:$categoryId",
-  //     'searchFields': "parent_id:=",
-  //     'orderBy': 'order',
-  //     'sortBy': 'asc',
-  //   };
-  //   Uri _uri =
-  //       getApiBaseUri("categories").replace(queryParameters: _queryParameters);
+    var Response = await httpClient.getUri(_uri,  headers: {
+          ...optionsNetwork // Ajoutez d'autres en-têtes si nécessaire
+        });
+    if (Response.statusCode == 200) {
+      // Decode the JSON jsonResponse
+      var jsonResponse = jsonDecode(Response.body);
 
-  //   var Response = await httpClient.getUri(_uri, options: optionsCache);
-  //   if (jsonResponse['success'] == true) {
-  //     return jsonResponse['data']
-  //         .map<Category>((obj) => Category.fromJson(obj))
-  //         .toList();
-  //   } else {
-  //     throw new Exception(jsonResponse['message']);
-  //   }
-  // }
+      if (jsonResponse['success'] == true) {
+        return jsonResponse['data']
+            .map<Category>((obj) => Category.fromJson(obj))
+            .toList();
+      } else {
+        throw new Exception(jsonResponse['message']);
+      }
+    } else {
+      throw Exception(
+          'Failed to load user. Status code: ${Response.statusCode}');
+    }
+  }
 
-  // Future<List<Category>> getAllWithSubCategories() async {
-  //   const _queryParameters = {
-  //     'with': 'subCategories',
-  //     'parent': 'true',
-  //     'orderBy': 'order',
-  //     'sortBy': 'asc',
-  //   };
-  //   Uri _uri =
-  //       getApiBaseUri("categories").replace(queryParameters: _queryParameters);
+  Future<List<Category>> getSubCategories(String categoryId) async {
+    final _queryParameters = {
+      'search': "parent_id:$categoryId",
+      'searchFields': "parent_id:=",
+      'orderBy': 'order',
+      'sortBy': 'asc',
+    };
+    Uri _uri =
+        getApiBaseUri("categories").replace(queryParameters: _queryParameters);
 
-  //   var Response = await httpClient.getUri(_uri, options: optionsCache);
-  //   if (jsonResponse['success'] == true) {
-  //     return jsonResponse['data']
-  //         .map<Category>((obj) => Category.fromJson(obj))
-  //         .toList();
-  //   } else {
-  //     throw new Exception(jsonResponse['message']);
-  //   }
-  // }
+    var Response = await httpClient.getUri(_uri,  headers: {
+          ...optionsNetwork // Ajoutez d'autres en-têtes si nécessaire
+        });
+    if (Response.statusCode == 200) {
+      // Decode the JSON jsonResponse
+      var jsonResponse = jsonDecode(Response.body);
 
-  // Future<List<Category>> getFeaturedCategories() async {
-  //   final _address = Get.find<SettingsService>().address.value;
-  //   var _queryParameters = {
-  //     'with': 'featuredEServices',
-  //     'parent': 'true',
-  //     'search': 'featured:1',
-  //     'searchFields': 'featured:=',
-  //     'orderBy': 'order',
-  //     'sortedBy': 'asc',
-  //   };
-  //   if (!_address.isUnknown()) {
-  //     _queryParameters['myLat'] = _address.latitude.toString();
-  //     _queryParameters['myLon'] = _address.longitude.toString();
-  //   }
-  //   Uri _uri =
-  //       getApiBaseUri("categories").replace(queryParameters: _queryParameters);
+      if (jsonResponse['success'] == true) {
+        return jsonResponse['data']
+            .map<Category>((obj) => Category.fromJson(obj))
+            .toList();
+      } else {
+        throw new Exception(jsonResponse['message']);
+      }
+    } else {
+      throw Exception(
+          'Failed to load user. Status code: ${Response.statusCode}');
+    }
+  }
 
-  //   var Response = await httpClient.getUri(_uri, options: optionsCache);
-  //   if (jsonResponse['success'] == true) {
-  //     return jsonResponse['data']
-  //         .map<Category>((obj) => Category.fromJson(obj))
-  //         .toList();
-  //   } else {
-  //     throw new Exception(jsonResponse['message']);
-  //   }
-  // }
+  Future<List<Category>> getAllWithSubCategories() async {
+    const _queryParameters = {
+      'with': 'subCategories',
+      'parent': 'true',
+      'orderBy': 'order',
+      'sortBy': 'asc',
+    };
+    Uri _uri =
+        getApiBaseUri("categories").replace(queryParameters: _queryParameters);
 
-  // Future<List<Booking>> getBookings(String statusId, int page) async {
-  //   var _queryParameters = {
-  //     'with': 'bookingStatus;payment;payment.paymentStatus;employee',
-  //     'api_token': authService.apiToken,
-  //     'search': 'booking_status_id:${statusId}',
-  //     'orderBy': 'created_at',
-  //     'sortedBy': 'desc',
-  //     'limit': '4',
-  //     'offset': ((page - 1) * 4).toString()
-  //   };
-  //   Uri _uri =
-  //       getApiBaseUri("bookings").replace(queryParameters: _queryParameters);
+     var Response = await httpClient.getUri(_uri,  headers: {
+          ...optionsNetwork // Ajoutez d'autres en-têtes si nécessaire
+        });
+    if (Response.statusCode == 200) {
+      // Decode the JSON jsonResponse
+      var jsonResponse = jsonDecode(Response.body);
 
-  //   var Response = await httpClient.getUri(_uri, options: optionsNetwork);
-  //   if (jsonResponse['success'] == true) {
-  //     return jsonResponse['data']
-  //         .map<Booking>((obj) => Booking.fromJson(obj))
-  //         .toList();
-  //   } else {
-  //     throw new Exception(jsonResponse['message']);
-  //   }
-  // }
+      if (jsonResponse['success'] == true) {
+        return jsonResponse['data']
+            .map<Category>((obj) => Category.fromJson(obj))
+            .toList();
+      } else {
+        throw new Exception(jsonResponse['message']);
+      }
+    } else {
+      throw Exception(
+          'Failed to load user. Status code: ${Response.statusCode}');
+    }
+  }
 
-  // Future<List<BookingStatus>> getBookingStatuses() async {
-  //   var _queryParameters = {
-  //     'only': 'id;status;order',
-  //     'orderBy': 'order',
-  //     'sortedBy': 'asc',
-  //   };
-  //   Uri _uri = getApiBaseUri("booking_statuses")
-  //       .replace(queryParameters: _queryParameters);
+  Future<List<Category>> getFeaturedCategories() async {
+    final _address = Get.find<SettingsService>().address.value;
+    var _queryParameters = {
+      'with': 'featuredEServices',
+      'parent': 'true',
+      'search': 'featured:1',
+      'searchFields': 'featured:=',
+      'orderBy': 'order',
+      'sortedBy': 'asc',
+    };
+    if (!_address.isUnknown()) {
+      _queryParameters['myLat'] = _address.latitude.toString();
+      _queryParameters['myLon'] = _address.longitude.toString();
+    }
+    Uri _uri =
+        getApiBaseUri("categories").replace(queryParameters: _queryParameters);
 
-  //   var Response = await httpClient.getUri(_uri, options: optionsCache);
-  //   if (jsonResponse['success'] == true) {
-  //     return jsonResponse['data']
-  //         .map<BookingStatus>((obj) => BookingStatus.fromJson(obj))
-  //         .toList();
-  //   } else {
-  //     throw new Exception(jsonResponse['message']);
-  //   }
-  // }
+    var Response = await httpClient.getUri(_uri,  headers: {
+          ...optionsNetwork // Ajoutez d'autres en-têtes si nécessaire
+        });
+    if (Response.statusCode == 200) {
+      // Decode the JSON jsonResponse
+      var jsonResponse = jsonDecode(Response.body);
 
-  // Future<Booking> getBooking(String bookingId) async {
-  //   var _queryParameters = {
-  //     'with':
-  //         'bookingStatus;user;employee;payment;payment.paymentMethod;payment.paymentStatus',
-  //     'api_token': authService.apiToken,
-  //   };
-  //   Uri _uri = getApiBaseUri("bookings/${bookingId}")
-  //       .replace(queryParameters: _queryParameters);
+      if (jsonResponse['success'] == true) {
+        return jsonResponse['data']
+            .map<Category>((obj) => Category.fromJson(obj))
+            .toList();
+      } else {
+        throw new Exception(jsonResponse['message']);
+      }
+    } else {
+      throw Exception(
+          'Failed to load user. Status code: ${Response.statusCode}');
+    }
+  }
 
-  //   var Response = await httpClient.getUri(_uri, options: optionsNetwork);
-  //   if (jsonResponse['success'] == true) {
-  //     return Booking.fromJson(jsonResponse['data']);
-  //   } else {
-  //     throw new Exception(jsonResponse['message']);
-  //   }
-  // }
+  Future<List<Booking>> getBookings(String statusId, int page) async {
+    var _queryParameters = {
+      'with': 'bookingStatus;payment;payment.paymentStatus;employee',
+      'api_token': authService.apiToken,
+      'search': 'booking_status_id:${statusId}',
+      'orderBy': 'created_at',
+      'sortedBy': 'desc',
+      'limit': '4',
+      'offset': ((page - 1) * 4).toString()
+    };
+    Uri _uri =
+        getApiBaseUri("bookings").replace(queryParameters: _queryParameters);
+
+    var Response = await httpClient.getUri(_uri,  headers: {
+          ...optionsNetwork // Ajoutez d'autres en-têtes si nécessaire
+        });
+    if (Response.statusCode == 200) {
+      // Decode the JSON jsonResponse
+      var jsonResponse = jsonDecode(Response.body);
+
+      if (jsonResponse['success'] == true) {
+        return jsonResponse['data']
+            .map<Booking>((obj) => Booking.fromJson(obj))
+            .toList();
+      } else {
+        throw new Exception(jsonResponse['message']);
+      }
+    } else {
+      throw Exception(
+          'Failed to load user. Status code: ${Response.statusCode}');
+    }
+  }
+
+  Future<List<BookingStatus>> getBookingStatuses() async {
+    var _queryParameters = {
+      'only': 'id;status;order',
+      'orderBy': 'order',
+      'sortedBy': 'asc',
+    };
+    Uri _uri = getApiBaseUri("booking_statuses")
+        .replace(queryParameters: _queryParameters);
+
+    var Response = await httpClient.getUri(_uri,  headers: {
+          ...optionsNetwork // Ajoutez d'autres en-têtes si nécessaire
+        });
+    if (Response.statusCode == 200) {
+      // Decode the JSON jsonResponse
+      var jsonResponse = jsonDecode(Response.body);
+
+      if (jsonResponse['success'] == true) {
+        return jsonResponse['data']
+            .map<BookingStatus>((obj) => BookingStatus.fromJson(obj))
+            .toList();
+      } else {
+        throw new Exception(jsonResponse['message']);
+      }
+    } else {
+      throw Exception(
+          'Failed to load user. Status code: ${Response.statusCode}');
+    }
+  }
+
+  Future<Booking> getBooking(String bookingId) async {
+    var _queryParameters = {
+      'with':
+          'bookingStatus;user;employee;payment;payment.paymentMethod;payment.paymentStatus',
+      'api_token': authService.apiToken,
+    };
+    Uri _uri = getApiBaseUri("bookings/${bookingId}")
+        .replace(queryParameters: _queryParameters);
+
+    var Response = await httpClient.getUri(_uri,  headers: {
+          ...optionsNetwork // Ajoutez d'autres en-têtes si nécessaire
+        });
+    if (Response.statusCode == 200) {
+      // Decode the JSON jsonResponse
+      var jsonResponse = jsonDecode(Response.body);
+
+      if (jsonResponse['success'] == true) {
+        return Booking.fromJson(jsonResponse['data']);
+      } else {
+        throw new Exception(jsonResponse['message']);
+      }
+    } else {
+      throw Exception(
+          'Failed to load user. Status code: ${Response.statusCode}');
+    }
+  }
 
   // Future<Coupon> validateCoupon(Booking booking) async {
   //   var _queryParameters = {
@@ -1122,46 +1337,68 @@ class LaravelApiClient extends GetxService with ApiClient {
   //   }
   // }
 
-  // Future<Booking> updateBooking(Booking booking) async {
-  //   if (!authService.isAuth) {
-  //     throw new Exception(
-  //         "You don't have the permission to access to this area!".tr +
-  //             "[ updateBooking() ]");
-  //   }
-  //   var _queryParameters = {
-  //     'api_token': authService.apiToken,
-  //   };
-  //   Uri _uri = getApiBaseUri("bookings/${booking.id}")
-  //       .replace(queryParameters: _queryParameters);
+  Future<Booking> updateBooking(Booking booking) async {
+    if (!authService.isAuth) {
+      throw new Exception(
+          "You don't have the permission to access to this area!".tr +
+              "[ updateBooking() ]");
+    }
+    var _queryParameters = {
+      'api_token': authService.apiToken,
+    };
+    Uri _uri = getApiBaseUri("bookings/${booking.id}")
+        .replace(queryParameters: _queryParameters);
 
-  //   var Response = await httpClient.putUri(_uri,
-  //       data: booking.toJson(), options: optionsNetwork);
-  //   if (jsonResponse['success'] == true) {
-  //     return Booking.fromJson(jsonResponse['data']);
-  //   } else {
-  //     throw new Exception(jsonResponse['message']);
-  //   }
-  // }
+    var Response = await httpClient.put(_uri,  headers: {
+          ...optionsNetwork // Ajoutez d'autres en-têtes si nécessaire
+        },
+        body: booking.toJson());
+    if (Response.statusCode == 200) {
+      // Decode the JSON jsonResponse
+      var jsonResponse = jsonDecode(Response.body);
 
-  // Future<Booking> addBooking(Booking booking) async {
-  //   if (!authService.isAuth) {
-  //     throw new Exception(
-  //         "You don't have the permission to access to this area!".tr +
-  //             "[ addBooking() ]");
-  //   }
-  //   var _queryParameters = {
-  //     'api_token': authService.apiToken,
-  //   };
-  //   Uri _uri =
-  //       getApiBaseUri("bookings").replace(queryParameters: _queryParameters);
-  //   var Response = await httpClient.post(_uri,
-  //       data: booking.toJson(), options: optionsNetwork);
-  //   if (jsonResponse['success'] == true) {
-  //     return Booking.fromJson(jsonResponse['data']);
-  //   } else {
-  //     throw new Exception(jsonResponse['message']);
-  //   }
-  // }
+      if (jsonResponse['success'] == true) {
+        return Booking.fromJson(jsonResponse['data']);
+      } else {
+        throw new Exception(jsonResponse['message']);
+      }
+    } else {
+      throw Exception(
+          'Failed to load user. Status code: ${Response.statusCode}');
+    }
+  }
+
+  Future<Booking> addBooking(Booking booking) async {
+    if (!authService.isAuth) {
+      throw new Exception(
+          "You don't have the permission to access to this area!".tr +
+              "[ addBooking() ]");
+    }
+    var _queryParameters = {
+      // 'api_token': authService.apiToken,
+      'param': authService.apiToken,
+    };
+    Uri _uri =
+        getApiBaseUri("bookings").replace(queryParameters: _queryParameters);
+   
+    var Response = await httpClient.post(_uri,  headers: {
+          ...optionsNetwork // Ajoutez d'autres en-têtes si nécessaire
+        },
+        body:booking.toJson());
+    if (Response.statusCode == 200) {
+      // Decode the JSON jsonResponse
+      var jsonResponse = jsonDecode(Response.body);
+
+      if (jsonResponse['success'] == true) {
+        return Booking.fromJson(jsonResponse['data']);
+      } else {
+        throw new Exception(jsonResponse['message']);
+      }
+    } else {
+      throw Exception(
+          'Failed to load user. Status code: ${Response.statusCode}');
+    }
+  }
 
   // Future<Review> addReview(Review review) async {
   //   if (!authService.isAuth) {

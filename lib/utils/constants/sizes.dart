@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 class TSizes {
   // Padding and marging sizes
   static const double xs = 4.0;
@@ -16,6 +18,9 @@ class TSizes {
   static const double fontSizeSm = 14.0;
   static const double fontSizeMd = 16.0;
   static const double fontSizeLg = 18.0;
+  
+  //  Screen
+
 
   // Button sizes
   static const double buttonHeight = 18.0;

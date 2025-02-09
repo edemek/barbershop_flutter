@@ -1,19 +1,16 @@
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import '../../../../../routes/app_routes.dart';
 import 'package:iconsax/iconsax.dart';
-import '../../../../../api_service/api_service_.dart';
 import '../../../../../utils/constants/colors.dart';
 import '../../../../../utils/constants/sizes.dart';
 import '../../../../../utils/constants/text_strings.dart';
 import 'package:http/http.dart' as http;
 import '../../../../../utils/validators/validation_.dart';
-import '../../../../personalization/screens/profile/profile.dart';
-import '../../login/login.dart';
-import '../../login/widgets/login_form.dart';
 import '../verify_email.dart';
+import '../../../../../controllers/auth_controller.dart';
 
 class TSignupForm extends StatefulWidget {
   TSignupForm({
@@ -29,20 +26,19 @@ class TSignupForm extends StatefulWidget {
 
 class _TSignupFormState extends State<TSignupForm> {
   // Clé globale pour accéder au formulaire
-  final _formKey = GlobalKey<FormState>();
+  // final _formKey = GlobalKey<FormState>();
 
   // Champs de saisie
   final TextEditingController _phoneController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController =
-  TextEditingController();
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _shopNameController = TextEditingController();
-  final TextEditingController _firstNameController = TextEditingController();
-  final TextEditingController _lastNameController = TextEditingController();
-
+  String? _confirmPasswordValue; //
   // Pour contrôler la visibilité des mots de passe
   bool _obscureText = true;
+
+   @override
+  void dispose() {
+    _phoneController.dispose();
+    super.dispose();
+  }
 
   void sendOtp(BuildContext context) async {
     final response = await http.post(
@@ -67,8 +63,10 @@ class _TSignupFormState extends State<TSignupForm> {
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.find<AuthController>();
+
     return Form(
-      key: _formKey,
+      key: controller.registerFormKey,
       child: Column(
         children: [
           Row(
@@ -76,7 +74,6 @@ class _TSignupFormState extends State<TSignupForm> {
               Expanded(
                 /// -- Prénoms
                 child: TextFormField(
-                  controller: _firstNameController,
                   expands: false,
                   decoration: const InputDecoration(
                     labelText: TTexts.firstName,
@@ -86,12 +83,17 @@ class _TSignupFormState extends State<TSignupForm> {
                     TextInputFormatter.withFunction((oldValue, newValue) {
                       // Applique la capitalisation à chaque mot
                       String formatted = newValue.text.split(' ').map((word) {
-                        return word.isNotEmpty ? word[0].toUpperCase() + word.substring(1).toLowerCase() : '';
+                        return word.isNotEmpty
+                            ? word[0].toUpperCase() +
+                                word.substring(1).toLowerCase()
+                            : '';
                       }).join(' ');
 
                       return newValue.copyWith(text: formatted);
                     }),
                   ],
+                  initialValue: controller.currentUser.value.name,
+                  onSaved: (value) => controller.currentUser.value.name = value,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Prénoms obligatoire';
@@ -108,7 +110,6 @@ class _TSignupFormState extends State<TSignupForm> {
               Expanded(
                 /// -- Nom
                 child: TextFormField(
-                  controller: _lastNameController,
                   expands: false,
                   inputFormatters: [
                     UpperCaseTextInputFormatter(), // Applique un formatage en majuscule
@@ -117,6 +118,8 @@ class _TSignupFormState extends State<TSignupForm> {
                     labelText: TTexts.lastName,
                     prefixIcon: Icon(Iconsax.user),
                   ),
+                  initialValue: controller.currentUser.value.name,
+                  onSaved: (value) => controller.currentUser.value.name = value,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Nom obligatoire';
@@ -134,24 +137,24 @@ class _TSignupFormState extends State<TSignupForm> {
             height: TSizes.spaceBtwInputFields,
           ),
 
-
           /// -- Email
-          TextFormField(
-            controller: _emailController,
-            expands: false,
-            decoration: const InputDecoration(
-              labelText: TTexts.email,
-              prefixIcon: Icon(Iconsax.direct),
-            ),
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'Veuillez entrer un mot de passe';
-              } else if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
-                return 'Adresse email invalide';
-              }
-              return null;
-            },
-          ),
+          // TextFormField(
+          //   expands: false,
+          //   decoration: const InputDecoration(
+          //     labelText: TTexts.email,
+          //     prefixIcon: Icon(Iconsax.direct),
+          //   ),
+          //   initialValue: controller.currentUser.value.email,
+          //   onSaved: (value) => controller.currentUser.value.email = value,
+          //   validator: (value) {
+          //     if (value == null || value.isEmpty) {
+          //       return 'Veuillez entrer un mot de passe';
+          //     } else if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
+          //       return 'Adresse email invalide';
+          //     }
+          //     return null;
+          //   },
+          // ),
 
           const SizedBox(
             height: TSizes.spaceBtwInputFields,
@@ -170,6 +173,10 @@ class _TSignupFormState extends State<TSignupForm> {
               labelText: "Numéro de téléphone",
               hintText: "+22890909090",
             ),
+            initialValue: controller.currentUser.value.phoneNumber,
+            onSaved: (value) =>
+                controller.currentUser.value.phoneNumber = value,
+
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return 'Veuillez entrer votre numéro de téléphone';
@@ -195,9 +202,8 @@ class _TSignupFormState extends State<TSignupForm> {
 
           /// -- Password
           TextFormField(
-            controller: _passwordController,
             obscureText:
-            _obscureText, // Utilisation de l'état pour masquer/afficher le texte
+                _obscureText, // Utilisation de l'état pour masquer/afficher le texte
             decoration: InputDecoration(
               prefixIcon: const Icon(Iconsax.password_check),
               labelText: TTexts.password,
@@ -210,11 +216,14 @@ class _TSignupFormState extends State<TSignupForm> {
                 onPressed: () {
                   setState(() {
                     _obscureText =
-                    !_obscureText; // Change l'état de visibilité du mot de passe
+                        !_obscureText; // Change l'état de visibilité du mot de passe
                   });
                 },
               ),
             ),
+            initialValue: controller.currentUser.value.password,
+            onSaved: (value) => controller.currentUser.value.password = value,
+
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return 'Veuillez entrer un mot de passe';
@@ -237,9 +246,8 @@ class _TSignupFormState extends State<TSignupForm> {
 
           /// -- Confirm the Password
           TextFormField(
-            controller: _confirmPasswordController,
             obscureText:
-            _obscureText, // Utilisation de l'état pour masquer/afficher le texte
+                _obscureText, // Utilisation de l'état pour masquer/afficher le texte
             decoration: InputDecoration(
               prefixIcon: const Icon(Iconsax.password_check),
               labelText: TTexts.password,
@@ -252,12 +260,15 @@ class _TSignupFormState extends State<TSignupForm> {
                 onPressed: () {
                   setState(() {
                     _obscureText =
-                    !_obscureText; // Change l'état de visibilité du mot de passe
+                        !_obscureText; // Change l'état de visibilité du mot de passe
                   });
                 },
               ),
             ),
+            onSaved: (value) => _confirmPasswordValue = value,
             validator: (value) {
+              print(value);
+              print(controller.currentUser.value.password);
               if (value == null || value.isEmpty) {
                 return 'Veuillez entrer un mot de passe';
               } else if (value.length < 6) {
@@ -268,10 +279,7 @@ class _TSignupFormState extends State<TSignupForm> {
                 return 'Le mot de passe doit contenir au moins un chiffre';
               } else if (!RegExp(r'[!@#$%^&*(),.?":{}|<>]').hasMatch(value)) {
                 return 'Le mot de passe doit contenir au moins un caractère spécial';
-              } else if (_confirmPasswordController.text !=
-                  _passwordController.text) {
-                return 'Les mots de passes ne correspondent pas';
-              }
+              } 
               return null;
             },
           ),
@@ -319,7 +327,7 @@ class _TSignupFormState extends State<TSignupForm> {
                         color: widget.dark ? TColors.white : TColors.primary,
                         decoration: TextDecoration.underline,
                         decorationColor:
-                        widget.dark ? TColors.white : TColors.primary),
+                            widget.dark ? TColors.white : TColors.primary),
                   ),
                 ]),
               ),
@@ -334,48 +342,69 @@ class _TSignupFormState extends State<TSignupForm> {
           SizedBox(
             width: double.infinity,
             child: ElevatedButton(
-              onPressed: () async {
-                if (_formKey.currentState!.validate()) {
-                  // Mettre à jour les données utilisateur dans GetX
-                  final userController = Get.find<UserController>();
-                  userController.updateUser(
-                    _firstNameController.text,
-                    _lastNameController.text,
-                    _emailController.text,
-                    _phoneController.text,
-                    _shopNameController.text,
-                    null,
-                    userController.UserRole.value,
-                  );
+              onPressed: () {
+                if (controller.registerFormKey.currentState!.validate()) {
+                 controller.registerFormKey.currentState!.save();
 
-                  final name = _firstNameController.text + " " + _lastNameController.text;
-                  print("Nom complet1:"+name);
-                  var  reponse;
-                  if(userController.UserRole.value == "customer"){
-                    reponse =  await ApiService.register_client(name, _phoneController.text,_emailController.text,_passwordController.text,_passwordController.text);
-                  }else{
-                    reponse =  await ApiService.register_salon_owner(name, _phoneController.text,_emailController.text,_passwordController.text,_passwordController.text);
+                  // After saving, compare password and confirm password
+                  if (controller.currentUser.value.password != _confirmPasswordValue) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text("Passwords do not match.")),
+                    );
+                    return;
                   }
 
-                  // Afficher un message de confirmation
-                  if (reponse.statusCode == 200) {
-
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Compte créé avec succès !')),
-                    );
-
-                    print("Nom complet : $name");
-                    Get.to(() => LoginScreen());
-                  } else {
-                    var responseBody = jsonDecode(reponse.body); // Décoder la réponse JSON
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text("Erreur lors de la création : ${responseBody['message']}")),
-                    );
-                  }
-
-                  // Aller à la page de profil
-
+                  // If passwords match, proceed with further actions (e.g., saving)
+                  controller.register();
+                  Get.offAllNamed(Routes.PHONE_VERIFICATION , arguments: {
+                    'emailOrPhone': 'user@example.com',
+                    'role': 'customer',
+                  },);
+                  // Add your logic here to save the data or navigate
                 }
+               
+                // controller.register(name, email, password, passwordConfirmation);
+                // if (_formKey.currentState!.validate()) {
+                //   // Mettre à jour les données utilisateur dans GetX
+                //   final userController = Get.find<UserController>();
+                //   userController.updateUser(
+                //     _firstNameController.text,
+                //     _lastNameController.text,
+                //     _emailController.text,
+                //     _phoneController.text,
+                //     _shopNameController.text,
+                //     null,
+                //     userController.UserRole.value,
+                //   );
+
+                //   final name = _firstNameController.text + " " + _lastNameController.text;
+                //   print("Nom complet1:"+name);
+                //   var  reponse;
+                //   if(userController.UserRole.value == "customer"){
+                //     reponse =  await ApiService.register_client(name, _phoneController.text,_emailController.text,_passwordController.text,_passwordController.text);
+                //   }else{
+                //     reponse =  await ApiService.register_salon_owner(name, _phoneController.text,_emailController.text,_passwordController.text,_passwordController.text);
+                //   }
+
+                //   // Afficher un message de confirmation
+                //   if (reponse.statusCode == 200) {
+
+                //     ScaffoldMessenger.of(context).showSnackBar(
+                //       const SnackBar(content: Text('Compte créé avec succès !')),
+                //     );
+
+                //     print("Nom complet : $name");
+                //     Get.to(() => LoginScreen());
+                //   } else {
+                //     var responseBody = jsonDecode(reponse.body); // Décoder la réponse JSON
+                //     ScaffoldMessenger.of(context).showSnackBar(
+                //       SnackBar(content: Text("Erreur lors de la création : ${responseBody['message']}")),
+                //     );
+                //   }
+
+                //   // Aller à la page de profil
+
+                // }
               },
               child: const Text(TTexts.signIn),
             ),
