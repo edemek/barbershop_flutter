@@ -6,11 +6,13 @@
 .DS_Store
 .atom/
 .build/
+.android/
 .buildlog/
 .history
 .svn/
 .swiftpm/
 migrate_working_dir/
+.lib/features/services/global_service.dart
 
 # IntelliJ related
 *.iml
