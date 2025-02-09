@@ -13,7 +13,6 @@ android {
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
-        // Par exemple, pour utiliser Java 17 :
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
     }
@@ -42,7 +41,11 @@ android {
         }
     }
 }
-
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
+    kotlinOptions {
+        jvmTarget = "17"
+    }
+}
 flutter {
     source = "../.."
 }
