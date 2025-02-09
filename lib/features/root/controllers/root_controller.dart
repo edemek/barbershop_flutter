@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -10,10 +9,12 @@ import '../../home/controllers/home_controller.dart';
 import '../../../routes/app_routes.dart';
 import '../../services/auth_service.dart';
 // import '../../account/views/account_view.dart';
+
 import '../../bookings/controllers/bookings_controller.dart';
-// import '../../bookings/views/bookings_view.dart';
+import '../../../../common/ui.dart';
+import '../../bookings/views/bookings_view.dart';
 // import '../../home/controllers/home_controller.dart';
-// import '../../home/views/home2_view.dart';
+import '../../home/home_view.dart';
 // import '../../messages/controllers/messages_controller.dart';
 // import '../../messages/views/messages_view.dart';
 
@@ -36,8 +37,8 @@ class RootController extends GetxController {
   }
 
   List<Widget> pages = [
-    // Home2View(),
-    // BookingsView(),
+    Home2View(),
+    BookingsView(),
     // MessagesView(),
     // AccountView(),
   ];
@@ -48,6 +49,7 @@ class RootController extends GetxController {
    * change page in route
    * */
   Future<void> changePageInRoot(int _index) async {
+   
     if (!Get.find<AuthService>().isAuth && _index > 0) {
       await Get.toNamed(Routes.LOGIN);
     } else {
@@ -57,8 +59,9 @@ class RootController extends GetxController {
   }
 
   Future<void> changePageOutRoot(int _index) async {
+   
     if (!Get.find<AuthService>().isAuth && _index > 0) {
-    // if ("hhhhh" == "ttttt" && _index > 0) {
+      // if ("hhhhh" == "ttttt" && _index > 0) {
       await Get.toNamed(Routes.LOGIN);
     }
     currentIndex.value = _index;
@@ -72,6 +75,7 @@ class RootController extends GetxController {
   }
 
   Future<void> changePage(int _index) async {
+   
     if (Get.currentRoute == Routes.ROOT) {
       await changePageInRoot(_index);
     } else {

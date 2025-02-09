@@ -5,8 +5,8 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 
 import '../../features/Reservation/reservationPage.dart';
-import '../../features/Reservation_client/views/reservation_form.dart';
-import '../../features/Reservation_client/views/reservation_page.dart';
+import '../../features/reservation_client/views/reservation_form.dart';
+import '../../features/reservation_client/views/reservation_page.dart';
 import '../../features/Salon/screen/salon_liste.dart';
 import '../../features/authentication/screens/login/login.dart';
 import '../../features/authentication/screens/login/widgets/login_form.dart';

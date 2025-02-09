@@ -1,7 +1,7 @@
 // import 'package:flutter/material.dart';
 import 'package:barbershpo_flutter/utils/validators/validation_.dart';
 import 'app.dart';
-import 'features/Reservation_client/controllers/reservation_controller.dart';
+import 'features/reservation_client/controllers/reservation_controller.dart';
 import 'features/services/auth_service.dart';
 import 'features/services/settings_service.dart';
 import 'features/services/global_service.dart';

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:barbershpo_flutter/features/Reservation_client/views/reservation_liste.dart';
-import 'package:barbershpo_flutter/features/Reservation_client/views/reservation_page.dart';
+import 'package:barbershpo_flutter/features/reservation_client/views/reservation_liste.dart';
+import 'package:barbershpo_flutter/features/reservation_client/views/reservation_page.dart';
 
 import '../../support.dart';
 

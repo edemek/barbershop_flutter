@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'parent/model.dart';
+import 'address_model.dart';
+
 
 class Salon extends Model {
   String? id;
@@ -10,6 +12,7 @@ class Salon extends Model {
   String? landlineNumber;
   TimeOfDay? openingTime;
   TimeOfDay? closingTime;
+  Address? address;
 
   // Constructeur de la classe Salon
   Salon({
@@ -18,6 +21,7 @@ class Salon extends Model {
     String? description,
     List<String>? images,
     this.phoneNumber,
+    this.address,
     this.landlineNumber,
     this.openingTime,
     this.closingTime,
@@ -60,7 +64,7 @@ class Salon extends Model {
     // distance = doubleFromJson(json, 'distance');
     // closed = boolFromJson(json, 'closed');
     // featured = boolFromJson(json, 'featured');
-    // address = objectFromJson(json, 'address', (v) => Address.fromJson(v));
+     address = objectFromJson(json, 'address', (v) => Address.fromJson(v));
     // taxes = listFromJson(json, 'taxes', (v) => Tax.fromJson(v));
     // employees = listFromJson(json, 'users', (v) => User.fromJson(v));
     // rate = doubleFromJson(json, 'rate');
