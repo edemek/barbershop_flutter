@@ -1,11 +1,14 @@
+import 'package:barbershpo_flutter/utils/validators/validation_.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../navigation_menu.dart';
+import '../authentication/screens/login/login.dart';
 import '../experience_client/views/experience_form.dart';
 
 class ElegantMenu extends StatelessWidget {
   const ElegantMenu({Key? key}) : super(key: key);
+
 
   void _navigateTo(BuildContext context, String routeName) {
     Navigator.of(context).pop();
@@ -13,6 +16,7 @@ class ElegantMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var userController = Get.find<UserController>();
     return Drawer(
       child: Container(
         decoration: BoxDecoration(
@@ -101,9 +105,15 @@ class ElegantMenu extends StatelessWidget {
               icon: Icons.calendar_today,
               title: 'Reservation',
               onTap: () {
+                if (userController.UToken == '') {
+                  Navigator.of(context).pop();
+                  Get.to(() => LoginScreen());
+                  return; // Empêche l'exécution du reste du code
+                }
+
                 Navigator.of(context).pop();
                 final navigationController = Get.find<NavigationController>();
-                navigationController.selectedIndex.value = 2;
+                navigationController.selectedIndex.value = 1;
               },
             ),
             _buildMenuItem(
