@@ -211,8 +211,6 @@ class HomeScreen extends StatelessWidget {
                       ),
                       TextButton(
                         onPressed: () {
-                          // Action pour voir tout
-                          Navigator.of(context).pop();
                           final navigationController = Get.find<NavigationController>();
                           navigationController.selectedIndex.value = 1;
                         },

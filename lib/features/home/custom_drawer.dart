@@ -1,6 +1,7 @@
 import 'package:barbershpo_flutter/utils/validators/validation_.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../../../navigation_menu.dart';
 import '../authentication/screens/login/login.dart';
@@ -139,6 +140,13 @@ class ElegantMenu extends StatelessWidget {
               icon: Icons.share,
               title: 'Partager mon code',
               onTap: () {
+                String code = "123456";
+
+                Share.share(
+                  'Voici mon code : $code',
+                  subject: 'Mon Code de Partage pour bénéficier de 50 credits',
+                );
+
                 Navigator.of(context).pop();
               },
             ),
